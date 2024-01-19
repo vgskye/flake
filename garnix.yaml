@@ -1,5 +1,5 @@
 builds:
-exclude: []
-include:
-  - 'nixosConfigurations.*.config.system.build.toplevel'
-  - 'homeConfigurations.*.activationPackage'
+  exclude: []
+  include:
+    - 'nixosConfigurations.*.config.system.build.toplevel'
+    - 'homeConfigurations.*.activationPackage'
