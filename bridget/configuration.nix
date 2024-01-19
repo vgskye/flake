@@ -155,23 +155,22 @@ in {
     owner = "root";
   };
 
-  systemd.services.backups =
-  let
-    script = builtins.replaceStrings [
-      "%%SECRETS_FILE%%"
-      "%%CURL_BIN%%"
-      "%%SQLITE3_BIN%%"
-      "%%DOCKER_BIN%%"
-      "%%RESTIC_BIN%%"
-    ] [
-      config.age.secrets.restic-secrets.path
-      "${pkgs.curl}/bin/curl"
-      "${pkgs.sqlite}/bin/sqlite3"
-      "${pkgs.docker}/bin/docker"
-      "${pkgs.restic}/bin/restic"
-    ] (builtins.readFile ./backup.sh);
-  in
-  {
+  systemd.services.backups = let
+    script =
+      builtins.replaceStrings [
+        "%%SECRETS_FILE%%"
+        "%%CURL_BIN%%"
+        "%%SQLITE3_BIN%%"
+        "%%DOCKER_BIN%%"
+        "%%RESTIC_BIN%%"
+      ] [
+        config.age.secrets.restic-secrets.path
+        "${pkgs.curl}/bin/curl"
+        "${pkgs.sqlite}/bin/sqlite3"
+        "${pkgs.docker}/bin/docker"
+        "${pkgs.restic}/bin/restic"
+      ] (builtins.readFile ./backup.sh);
+  in {
     inherit script;
     serviceConfig = {
       Type = "oneshot";

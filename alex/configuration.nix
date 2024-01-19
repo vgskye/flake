@@ -15,7 +15,7 @@
   boot.loader.grub.device = "/dev/sda";
 
   networking.hostName = "alex";
-  
+
   time.timeZone = "Asia/Seoul";
 
   users.users.bs2k = {
@@ -79,8 +79,8 @@
 
   services.tailscale.enable = true;
 
-  networking.firewall.allowedTCPPorts = [ 80 443 25565 ];
-  networking.firewall.allowedUDPPorts = [ 443 25575 ];
+  networking.firewall.allowedTCPPorts = [80 443 25565];
+  networking.firewall.allowedUDPPorts = [443 25575];
 
   programs.mosh.enable = true;
 

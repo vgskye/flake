@@ -1,4 +1,8 @@
-{modulesPath, region, ...}: {
+{
+  modulesPath,
+  region,
+  ...
+}: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./networking-${region}.nix
