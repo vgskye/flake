@@ -1,0 +1,22 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 749f67b60..68ae05487 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -337,16 +337,7 @@ add_subdirectory(laf)
+ 
+ # libwebp
+ if(ENABLE_WEBP)
+-  # Use libwebp from Skia
+-  if(LAF_BACKEND STREQUAL "skia")
+-    find_library(WEBP_LIBRARIES webp
+-      NAMES libwebp # required for Windows
+-      PATHS "${SKIA_LIBRARY_DIR}" NO_DEFAULT_PATH)
+-    set(WEBP_INCLUDE_DIR "${SKIA_DIR}/third_party/externals/libwebp/src")
+-  else()
+-    set(WEBP_LIBRARIES webp webpdemux libwebpmux)
+-    set(WEBP_INCLUDE_DIR ${LIBWEBP_DIR}/src)
+-  endif()
++  pkg_check_modules(WEBP REQUIRED libwebp libwebpdemux libwebpmux)
+   include_directories(${WEBP_INCLUDE_DIR})
+ endif()
+ message(STATUS "aseprite libwebp: ${WEBP_LIBRARIES}")

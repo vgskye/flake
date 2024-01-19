@@ -1,0 +1,12 @@
+diff --git a/GalaxyBudsClient/GalaxyBudsClient.csproj b/GalaxyBudsClient/GalaxyBudsClient.csproj
+index 7aacc27..a519a00 100644
+--- a/GalaxyBudsClient/GalaxyBudsClient.csproj
++++ b/GalaxyBudsClient/GalaxyBudsClient.csproj
+@@ -39,7 +39,6 @@
+     </PropertyGroup>
+     <PropertyGroup Condition="'$(IsLinux)'=='true'">
+         <DefineConstants>Linux</DefineConstants>
+-        <InvariantGlobalization>true</InvariantGlobalization>
+     </PropertyGroup>
+
+     <PropertyGroup Condition=" '$(Configuration)' == 'Debug (Local server)' ">

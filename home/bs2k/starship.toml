@@ -1,0 +1,12 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+right_format = "$sudo$time"
+
+[time]
+disabled = false
+format = "[$time]($style)"
+time_format = "%I:%M %p"
+
+[sudo]
+disabled = false
+format = "[sudo authorized]($style) "

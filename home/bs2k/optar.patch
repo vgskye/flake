@@ -1,0 +1,14 @@
+--- a/optar.h	2015-02-10 02:46:21.000000000 +0900
++++ b/optar.h	2022-12-14 23:21:55.642769277 +0900
+@@ -9,9 +9,9 @@
+ #define CPITCH 24 /* Distance between cross centers */
+ 
+ /* XCROSSES A4 65, US Letter 67. */
+-#define XCROSSES 65 /* Number of crosses horizontally */
++#define XCROSSES 24 /* Number of crosses horizontally */
+ /* YCROSSES A4 93, US Letter 87. */
+-#define YCROSSES 93 /* Number of crosses vertically */
++#define YCROSSES 34 /* Number of crosses vertically */
+ 
+ #define DATA_WIDTH (CPITCH*(XCROSSES-1)+2*CHALF) /* The rectangle occupied by
+ 						    the data and crosses */
