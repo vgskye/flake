@@ -203,28 +203,6 @@
         "type": "github"
       }
     },
-    "discord-cc-bridge": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1698499589,
-        "narHash": "sha256-JI6a1QBRc7InbVQN4NEXgTmd2slnbu62gzeRJrm9lDM=",
-        "ref": "madness",
-        "rev": "c950d11e5c7ed43512053d4c1691e7abe69a7595",
-        "revCount": 5,
-        "type": "git",
-        "url": "https://git.skye.vg/me/discord-cc-bridge.git"
-      },
-      "original": {
-        "ref": "madness",
-        "rev": "c950d11e5c7ed43512053d4c1691e7abe69a7595",
-        "type": "git",
-        "url": "https://git.skye.vg/me/discord-cc-bridge.git"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -891,7 +869,6 @@
         "catppuccin": "catppuccin",
         "catppuccin-vsc": "catppuccin-vsc",
         "comma": "comma",
-        "discord-cc-bridge": "discord-cc-bridge",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
