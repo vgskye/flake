@@ -148,9 +148,9 @@
   in {
     apps = nixinate.nixinate.x86_64-linux self;
     nixosConfigurations = let
-      e4mcFn = region: provider:
+      e4mcFn = region: provider: arch:
         nixpkgs.lib.nixosSystem rec {
-          system = "x86_64-linux";
+          system = "${arch}-linux";
           modules = [
             ./e4mc/configuration.nix
             ./e4mc/hardware-configuration-${provider}.nix
@@ -170,11 +170,9 @@
         nixpkgs.pkgs = nixpkgs.legacyPackages.${system};
       };
     in {
-      e4mc-us = e4mcFn "us" "do";
-      e4mc-de = e4mcFn "de" "do";
-      e4mc-au = e4mcFn "au" "do";
-      e4mc-jp = e4mcFn "jp" "linode";
-      e4mc-oc = e4mcFn "oc" "linode";
+      e4mc-jp = e4mcFn "jp" "linode" "x86_64";
+      e4mc-oc = e4mcFn "oc" "linode" "x86_64";
+      e4mc-eu = e4mcFn "eu" "hetzner" "aarch64";
       chell = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [

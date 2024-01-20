@@ -12,8 +12,9 @@ let
   e4mc-au = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIONHlKU9+D8awEZvCv/3ufUDbpXCgnbf340rFHFLUPnT";
   e4mc-jp = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINykTNT8C2IWl7C2K3J5ekpM5wQAoVRcyA5dOuVEjhpg";
   e4mc-oc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIa5Om7O0cvuilCRd+HEX+4mCyAExdrH0WYsbbB4Lr3j";
+  e4mc-eu = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMdfyV3oGKeFXmrHzlvzDufg+caZ8mR1Q6s02CQM6Ny2";
   alex = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM8JVv9KAmACsDEBXRm1vm7ww4rtu4RQPaddU6JJ2MOo";
-  e4mc = [e4mc-us e4mc-de e4mc-au e4mc-jp e4mc-oc alex];
+  e4mc = [e4mc-us e4mc-de e4mc-au e4mc-jp e4mc-oc e4mc-eu alex];
   bridget = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHmdvjJ9WkP1bbL965gt8d+d/RUK8TZLwnk+eEMhbaVZ";
   jenny = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPbyhPgceZnlXr5RIgY0TRplK+5/ZaejMDP2oDYAsab3";
   all = [bridget jenny] ++ e4mc;
