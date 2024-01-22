@@ -18,8 +18,8 @@ mkdir "$TEMP_DIR"
 mkdir "$TEMP_DIR/vaultwarden"
 
 %%SQLITE3_BIN%% "$VAULTWARDEN_DATA_DIR/db.sqlite3" ".backup '$TEMP_DIR/vaultwarden/db.sqlite3'"
-cp -r "$VAULTWARDEN_DATA_DIR/attachments/" "$TEMP_DIR/vaultwarden/attachments/"
-cp $VAULTWARDEN_DATA_DIR/rsa_key* "$TEMP_DIR/vaultwarden/"
+cp --reflink=auto -r "$VAULTWARDEN_DATA_DIR/attachments/" "$TEMP_DIR/vaultwarden/attachments/"
+cp --reflink=auto $VAULTWARDEN_DATA_DIR/rsa_key* "$TEMP_DIR/vaultwarden/"
 
 mkdir "$TEMP_DIR/mastodon"
 %%DOCKER_BIN%% exec mastodon-db-1 pg_dumpall -O -U postgres > $TEMP_DIR/mastodon/db.sql
@@ -29,7 +29,7 @@ mkdir "$TEMP_DIR/ory"
 
 mkdir "$TEMP_DIR/conduit"
 %%SQLITE3_BIN%% "$CONDUIT_DATA_DIR/conduit.db" ".backup '$TEMP_DIR/conduit/conduit.db'"
-cp -r "$CONDUIT_DATA_DIR/media/" "$TEMP_DIR/conduit/media/"
+cp --reflink=auto -r "$CONDUIT_DATA_DIR/media/" "$TEMP_DIR/conduit/media/"
 
 %%RESTIC_BIN%% backup "$TEMP_DIR"
 
