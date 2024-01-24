@@ -51,6 +51,26 @@
     # package = pkgsUnstable.docker;
   };
 
+  users.users.radiohead = {
+    group = "radiohead";
+    isSystemUser = true;
+  };
+
+  users.groups.radiohead = {
+  };
+
+  # a thingy :3
+  systemd.services.radiohead = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    serviceConfig = {
+      Type = "simple";
+      User = "radiohead";
+      Group = "radiohead";
+      ExecStart = "/radiohead";
+    };
+};
+
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";

@@ -151,6 +151,25 @@ in {
   #   };
   # };
 
+  services.spotifyd = {
+    enable = true;
+    package = pkgs.spotifyd.override {
+      withMpris = true;
+      withKeyring = true;
+    };
+    settings = {
+      global = {
+        username = "31dohyohht5s5rb7xq4vfw6ihomq";
+        use_keyring = true;
+        use_mpris = true;
+        bitrate = 320;
+        volume_normalisation = true;
+        device_name = "dæmon";
+        device_type = "computer";
+      };
+    };
+  };
+
   home.sessionVariables = {
     # GTK_THEME = config.gtk.theme.name;
     HSA_OVERRIDE_GFX_VERSION = "10.3.0";
