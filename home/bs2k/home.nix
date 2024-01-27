@@ -598,8 +598,14 @@ in {
 
   gtk = {
     enable = true;
-    catppuccin.enable = true;
-    font.name = "Inter";
+    catppuccin = {
+      enable = true;
+    };
+    font = {
+      name = "Inter Variable Medium";
+      size = 10;
+    };
+    iconTheme.name = "Papirus-Dark";
   };
 
   programs.mangohud.enable = true;
@@ -607,12 +613,13 @@ in {
   qt = {
     enable = true;
     platformTheme = "kde";
-    style.name = "kvantum";
+    style.name = "kvantum-dark";
   };
 
   home.pointerCursor = {
     package = pkgs.catppuccin-cursors."${config.catppuccin.flavour}${mkUpper catppuccinDarkness}";
     name = "Catppuccin-${mkUpper config.catppuccin.flavour}-${mkUpper catppuccinDarkness}-Cursors";
+    size = 24;
     gtk.enable = true;
   };
 
@@ -850,7 +857,7 @@ in {
       ];
   };
 
-  # programs.go.enable = true;
+  programs.go.enable = true;
   # programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
 

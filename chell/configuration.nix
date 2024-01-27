@@ -362,6 +362,11 @@ in {
 
   services.tailscale.enable = true;
 
+  boot.binfmt.emulatedSystems = [
+    "wasm32-wasi"
+    "aarch64-linux"
+  ];
+
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
