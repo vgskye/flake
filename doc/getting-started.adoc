@@ -1,0 +1,156 @@
+= Getting Started
+include::_support/common.inc[]
+
+== Using the guided installer
+
+For a limited set of devices, there is a guided installer that can be used
+to do your first-time install.
+
+The device page for the supported devices will describe the requirements
+for the installer.
+
+* <<devices/pine64-pinephone.adoc#,Pine64 PinePhone>>
+
+
+== Other options
+
+This guide assumes the user knows how to prepare their device for development
+use. These instructions are device-dependent, but not specific to Mobile NixOS.
+
+Briefly said, the device's bootloader must be unlocked, meaning that it allows
+running custom-built operating system images.
+
+The project is hosted under the link:https://github.com/NixOS/[NixOS organization],
+as link:https://github.com/NixOS/mobile-nixos[mobile-nixos].
+
+=== Getting the sources
+
+Depending on your configuration, for users with a GitHub account and the proper
+ssh configuration.
+
+```
+$ git clone git@github.com:NixOS/mobile-nixos.git
+```
+
+Or, for everyone else.
+
+```
+$ git clone https://github.com/NixOS/mobile-nixos.git
+```
+
+Nothing else! Everything required is self-contained.
+
+If you're interested in testing with a device not-yet-approved, you will have
+to roll up your sleeves and checkout the relevant branch for the PRs.
+The link:https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/checking-out-pull-requests-locally[
+GitHub help article] may help.
+
+
+== Compiling and Running
+
+This is where it becomes harder to make a simple guide. These are different,
+heterogeneous, hardware platforms, with different quirks, compilation steps,
+and mainly, installation steps.
+
+Fear not, look for your particular device on the <<devices/index.adoc#,devices list>>
+page, will likely contain the necessary instructions.
+
+=== Using a known-good revision
+
+Things change, and sometimes things break. This is even more true with Mobile
+NixOS as the project depends on another moving target, NixOS.
+
+You can look at the
+link:https://hydra.nixos.org/job/mobile-nixos/unstable/tested/latest-finished#tabs-buildinputs[latest successful build's inputs]
+to see which _revisions_ were used for a successful build.
+
+You can then clone Nixpkgs somewhere, checkout that commit ID, and refer to it
+using `NIX_PATH`. The following is only an example of how one would do this.
+
+```
+$ cd ~/Projects/
+$ git clone https://github.com/NixOS/nixpkgs.git
+$ cd nixpkgs
+$ git checkout $revision
+$ cd ~/Projects/mobile-nixos/
+$ export NIX_PATH="nixpkgs=$HOME/Projects/nixpkgs"
+$ nix-build [...]
+```
+
+== Customizing
+
+You probably will want to toggle options and such things when fiddling with
+Mobile NixOS, at first. The repository is structured in a way to allow you to
+add options to an untracked `local.nix` file. The default `nix-build`
+invocations will respect the content of that file as your configuration.
+
+A sample `local.nix`.
+
+```nix
+{ lib, ... }:
+
+{
+  # Disables splash screens during boot
+  mobile.boot.stage-1.splash.enable = false;
+}
+```
+
+As Mobile NixOS is a superset on top of NixOS, all NixOS options can be used in
+this configuration file, though take note that most NixOS options will only
+affect the stage-2 (rootfs, system.img) build.
+
+The <<options/index.adoc#,Options list>> page will be useful, as it provides an
+overview of all the Mobile NixOS specific options.
+
+
+== Using in your system configuration
+
+As the Mobile NixOS configuration may include fixes and quirks for your device,
+it is useful to include its configuration into your system's
+`configuration.nix`.
+
+Assuming your `NIX_PATH` includes `mobile-nixos=/path/to/mobile-nixos` you can
+import the Mobile NixOS configuration for your device by doing the following.
+
+```nix
+# configuration.nix
+{
+  # "xxx-yyy" is your device "Identifier" from https://mobile.nixos.org/devices,
+  # e.g. "google-marlin".
+  imports = [
+    (import <mobile-nixos/lib/configuration.nix> { device = "xxx-yyy"; })
+    # ...
+  ];
+
+  # ...
+  # Other configurations...
+  # ...
+}
+```
+
+While it is possible, it is discouraged to directly import the configuration
+files from the `examples` directories. They may change in ways breaking your
+system configuration. It is recommended to copy and edit the configuration
+files from the `examples` directories if you are basing your configuration off
+of an example.
+
+
+== Contributing
+
+This is a big topic, and not something about getting started! Though, quickly
+noted, contributions are currently handled through GitHub pull requests.
+
+If you are unable or unwilling to use GitHub for pull requests, you can e-mail
+contributions, following the usual git via e-mail contribution workflow, to my
+e-mail address, which you will find attached to commits I authored.
+
+Note that there are more in-depth guides about specific contribution topics.
+
+ifdef::env-github[]
+* <<../CONTRIBUTING.adoc#,Contributing Guide>>
+endif::[]
+ifndef::env-github[]
+* <<contributing.adoc#,Contributing Guide>>
+endif::[]
+* <<porting-guide.adoc#,Device Porting Guide>>
+

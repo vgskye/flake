@@ -1,0 +1,10 @@
+# Out links
+result
+*.img
+
+# Local overrides
+local.nix
+
+# Misc
+*.swp
+devices/*/kernel/config.*.old
