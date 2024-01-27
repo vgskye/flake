@@ -1,0 +1,27 @@
+= Device Porting Guide
+include::_support/common.inc[]
+
+NOTE: This subject needs to be expanded upon.
+
+In a nutshell, the basic steps are:
+
+* Preparing the device for development use (unlocking the bootloader).
+* Finding appropriate the sources (mainly the kernel).
+* Writing the expressions to build said sources.
+
+== Kernel configuration
+
+The kernel can be configured using a helper command, assuming you are at the
+root of the repo. (Replace `$device_name` with the correct name.)
+
+```
+ $ bin/menuconfig $device_name
+```
+
+When importing a configuration from another source, manually editing the kernel
+configuration, or updating the kernel version, it is recommended to run the
+kernel configuration normalization helper, too.
+
+```
+ $ bin/kernel-normalize-config $device_name
+```

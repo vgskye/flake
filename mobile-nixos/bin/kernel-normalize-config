@@ -1,0 +1,155 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -p ruby -i ruby
+
+# This script is expected to be used to copy back the `kernel-builder` built
+# linux configuration to the kernel's source directory.
+#
+# Use this to normalize the configuration after:
+#
+#  - Changing configuration options
+#  - Changing the kernel version
+
+require "shellwords"
+ROOT = File.join(__dir__, "..")
+
+def usage()
+  puts "Usage: bin/kernel-normalize-config [--file=config.path] --only-check <device_name>"
+  puts ""
+  puts " --file=path/to/kernel/config.file -- detected automatically if not present."
+  puts " --only-check"
+  puts " --also-commit"
+end
+
+FAMILIES_DIR = File.absolute_path(File.join(__dir__(), "..", "/devices/families/"))
+
+# Poor approximation to arguments parsing.
+params, other_args = ARGV.partition { |s| s.match(/^--/) }
+
+if other_args.empty?
+  $stderr.puts "Device name required."
+  usage
+  exit 1
+end
+
+# Somewhat embarassing parameter parsing
+params = params.map do |param|
+  k, v = param.split("=", 2)
+  v = true unless v
+  k = k.sub(/^--/, "")
+  [k, v]
+end.to_h
+
+ONLY_CHECK =
+  if params["only-check"] then
+    true
+    params.delete("only-check")
+  else
+    false
+  end
+
+ALSO_COMMIT =
+  if params["also-commit"] then
+    true
+    params.delete("also-commit")
+  else
+    false
+  end
+
+DEVICE = other_args.shift
+
+args =
+  # Is the device a path?
+  if DEVICE.match(%r{/})
+    ["--arg", "device", DEVICE.sub(%r{/+$}, "")]
+  else
+    ["--argstr", "device", DEVICE]
+  end
+
+# 
+args << File.join(ROOT, "support/kernel-config/default.nix")
+
+@file =
+  if params["file"]
+    params.delete("file")
+  end
+
+unless params.empty?
+  $stderr.puts "Unknown parameters #{params.keys.join(", ")}."
+  usage
+  exit 1
+end
+
+unless other_args.empty?
+  $stderr.puts "Unexpected arguments #{other_args.join(", ")}."
+  usage
+  exit 1
+end
+
+unless ONLY_CHECK
+  unless @file
+    $stderr.puts "\nGetting config file path to update..."
+    @file = 
+      `#{[
+        "nix-instantiate",
+        "--eval",
+        *args,
+        "--attr", "config.mobile.boot.stage-1.kernel.package.configfile",
+      ].shelljoin}`.strip
+  end
+
+  unless @file and File.exists?(@file)
+    $stderr.puts "Kernel config file not found."
+    $stderr.puts "Please provide path to the config file with `--file=...`."
+    $stderr.puts
+    usage
+    exit 1
+  end
+
+  unless @file
+    $stderr.puts "Could not find kernel configuration file for #{DEVICE}."
+    usage
+    exit 1
+  end
+
+  $stderr.puts "\nNOTE: This will update '#{@file}'\n\n"
+end
+
+attr =
+  if ONLY_CHECK
+    "config.mobile.boot.stage-1.kernel.package.validatedConfig"
+  else
+    "config.mobile.boot.stage-1.kernel.package.normalizedConfig"
+  end
+
+result = `#{[
+  "nix-build",
+  "--no-out-link",
+  *args,
+  "-A", attr
+].shelljoin}`.strip
+
+if ONLY_CHECK
+  if $?.success?
+    $stderr.puts "Configuration passed."
+    exit 0
+  else
+    $stderr.puts "Configuration is stale."
+    exit 1
+  end
+end
+
+# We "cat" into the file to ensure we don't copy the store path access rights.
+File.write(@file, File.read(result))
+
+if ALSO_COMMIT
+  device_name =
+    if @file.match?(%r{^#{FAMILIES_DIR}})
+      @file.split("/")[-3]
+    else
+      DEVICE.split("/").last
+    end
+  message = "#{device_name}: Normalize kernel config\n\n(Automatically using bin/kernel-normalize-all)"
+  system("git", "commit", "-m", message, "--", @file)
+end
+
+# vim: ft=ruby

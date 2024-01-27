@@ -1,0 +1,93 @@
+++++
+<div align="center"><a href="https://mobile.nixos.org/"><img src="artwork/logo/logo.svg" alt="Mobile NixOS" title="Mobile NixOS" width="500" height="130" /></a></div>
+++++
+
+*Mobile NixOS* is a superset on top of link:https://nixos.org/nixos/[NixOS Linux],
+link:https://nixos.org/nixpkgs/[Nixpkgs] and link:https://nixos.org/nix/[Nix],
+aiming to abstract away the differences between _mobile_ devices.
+
+In four words: _“NixOS, on your phone”_.
+
+ifdef::env-github[]
+Read more: <<doc/about.adoc#,About Mobile NixOS>>.
+endif::[]
+ifndef::env-github[]
+Read more: <<about.adoc#,About Mobile NixOS>>.
+endif::[]
+
+ifdef::env-github[]
+⚠️ **Note**: Mobile NixOS is only expected to build succesfully against the **unstable** branch of Nixpkgs.
+endif::[]
+ifndef::env-github[]
+[NOTE]
+====
+Mobile NixOS is only expected to build succesfully against the **unstable** branch of Nixpkgs.
+====
+endif::[]
+
+== Documentation
+
+ * link:https://mobile.nixos.org/[The Mobile NixOS website] hosts the rendered link:https://github.com/NixOS/mobile-nixos/tree/master/doc[doc folder] for Mobile NixOS documentation.
+
+As Mobile NixOS is a superset of NixOS Linux, the following documentation applies:
+
+ * link:https://nixos.org/nixos/manual[NixOS Manual] - how to install, configure, and maintain a purely-functional Linux distribution
+ * link:https://nixos.org/nixpkgs/manual/[Nixpkgs Manual] - contributing to Nixpkgs and using programming-language-specific Nix expressions
+ * link:https://nixos.org/nix/manual[Nix Package Manager Manual] - how to write Nix expressions (programs), and how to use Nix command line tools
+
+== Community
+
+Mobile NixOS development and questions is currently hosted on the
+**NixOS on ARM** channel.
+
+ * link:https://matrix.to/#/#nixos-on-arm:nixos.org?via=nixos.org&via=matrix.org[NixOS on ARM on the NixOS Matrix Space]
+
+The following community resources are also available, for NixOS questions.
+
+ * link:https://matrix.to/#/#nix:nixos.org?via=nixos.org&via=matrix.org[Nix and NixOS support channel on the NixOS Matrix Space]
+ * link:https://discourse.nixos.org/[Discourse Forum]
+
+== Other Project Repositories
+
+ * link:https://github.com/NixOS/nix[Nix] - the purely functional package manager
+ * link:https://github.com/NixOS/nixpkgs[Nixpkgs] - the Nix packages collection
+
+== Continuous Integration
+
+Mobile NixOS is continuously built on the link:https://hydra.nixos.org/[organization's Hydra instance].
+
+ * link:https://hydra.nixos.org/jobset/mobile-nixos/unstable[Against the `nixos-unstable` branch of NixOS]
+ ** link:https://hydra.nixos.org/job/mobile-nixos/unstable/tested[`tested` job]
+
+There is no published artifacts for the time being, but the documentation
+should point you towards resources that you can use to get started quicker when
+your device is supported.
+
+== Contributing
+
+There are two ways your contributions can reach this project.
+
+ifdef::env-github[]
+ * <<CONTRIBUTING.adoc#,Contributing to Mobile NixOS>>
+endif::[]
+ifndef::env-github[]
+ * <<contributing.adoc#,Contributing to Mobile NixOS>>
+endif::[]
+ * link:https://github.com/NixOS/nixpkgs/blob/master/CONTRIBUTING.md[Contributing to Nixpkgs or NixOS]
+
+Contributions are always welcome. If it's your first time contributing:
+jump in and don't be scared. Mistakes in your first contributions are room for
+improvement; it is not in our nature to scold new contributors.
+
+== License
+
+Mobile NixOS is licensed under the link:https://github.com/NixOS/mobile-nixos/blob/master/LICENSE[MIT License].
+
+[NOTE]
+====
+As with Nixpkgs, the MIT license does not apply to the packages built,
+but only to the files in this repository (expressions, scripts, modules, etc.).
+
+Patches and derivative work are covered by the licenses of their respective
+packages.
+====
