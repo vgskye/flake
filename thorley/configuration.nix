@@ -22,6 +22,9 @@ in {
     "L+ ${channelPath} - - - - ${pkgs.path}"
   ];
 
+  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+
   networking.hostName = "thorley";
 
   time.timeZone = "Asia/Seoul";
