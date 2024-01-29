@@ -254,6 +254,12 @@
           ./thorley/configuration.nix
           agenix.nixosModules.default
           tailscalepkgmodule
+          {
+            nix.registry = {
+              nixpkgs.flake = nixpkgs-unwrapped;
+              nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
+            };
+          }
         ];
         specialArgs = {
           pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
