@@ -226,7 +226,6 @@ in {
     # pkgs.eagle
     # pkgs.gcc
     # pkgs.openocd
-    pkgs.blender
     pkgs.godot_4
     # pkgs.godot-export-templates
     # pkgs.tiled
@@ -534,7 +533,10 @@ in {
 
     pkgs.minisign
     pkgs.rage
-  ] ++ (if pkgs.system == "x86_64-linux" then [pkgs.lutris] else []);
+  ] ++ (if pkgs.system == "x86_64-linux" then [
+    pkgs.lutris
+    pkgs.blender
+  ] else []);
 
   fonts.fontconfig.enable = true;
   xdg.configFile."fontconfig/conf.d/10-nerd-font-symbols.conf" = let
