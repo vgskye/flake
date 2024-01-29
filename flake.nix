@@ -248,6 +248,17 @@
           pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
         };
       };
+      thorley = nixpkgs.lib.nixosSystem rec {
+        system = "aarch64-linux";
+        modules = [
+          ./thorley/configuration.nix
+          agenix.nixosModules.default
+          tailscalepkgmodule
+        ];
+        specialArgs = {
+          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+        };
+      };
     };
     homeConfigurations.bs2k = let
       system = "x86_64-linux";
