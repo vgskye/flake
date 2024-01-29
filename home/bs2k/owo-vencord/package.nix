@@ -50,6 +50,11 @@ in
         };
       };
 
+      postPatch = ''
+        mv package.json package.json.orig
+        jq --raw-output ". * $pnpmPatch" package.json.orig > package.json
+      '';
+
       # https://github.com/NixOS/nixpkgs/blob/763e59ffedb5c25774387bf99bc725df5df82d10/pkgs/applications/misc/pot/default.nix#L56
       installPhase = ''
         export HOME=$(mktemp -d)
@@ -66,7 +71,7 @@ in
 
       dontFixup = true;
       outputHashMode = "recursive";
-      outputHash = "sha256-QKk/r9l8iXUBka4PraqdnWPPSrENx/pvpkTKueg/dv4=";
+      outputHash = "sha256-mw8YhSHYAIVJQA4/zMyeXnhNus56k/dDv9MwqzClVNs=";
     };
 
     VENCORD_HASH = gitHash;
