@@ -57,5 +57,8 @@ in {
     git
   ];
 
+  programs.fish.enable = true;
+  users.defaultUserShell = pkgs.fish;
+
   system.stateVersion = "23.05";
 }

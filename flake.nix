@@ -266,45 +266,39 @@
         };
       };
     };
-    homeConfigurations.bs2k = let
-      system = "x86_64-linux";
-    in
-      home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${system};
-        modules = [
-          ./home/bs2k/home.nix
-          catppuccin.homeManagerModules.catppuccin
-          # ({ lib, types, ... }: {
-          #   options.wayland.windowManager.hyprland = {
-          #     enable = lib.mkEnableOption "Does nothing, just a stub";
-          #     settings = lib.mkOption {
-          #       type = types.set;
-          #       description = lib.mdDoc "Does nothing, just a stub";
-          #     };
-          #   };
-          # })
-        ];
+    homeConfigurations = let
+      configFn = system:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          modules = [
+            ./home/bs2k/home.nix
+            catppuccin.homeManagerModules.catppuccin
+          ];
 
-        extraSpecialArgs = {
-          inherit
-            rust-overlay
-            nix-alien
-            comma
-            nur
-            prismlauncher
-            agenix
-            packwiz
-            catppuccin-vsc
-            ;
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          extraSpecialArgs = {
+            inherit
+              rust-overlay
+              nix-alien
+              comma
+              nur
+              prismlauncher
+              agenix
+              packwiz
+              catppuccin-vsc
+              ;
+            pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          };
+
+          # Optionally use extraSpecialArgs
+          # to pass through arguments to home.nix
         };
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-      };
+    in {
+      bs2k = configFn "x86_64-linux";
+      bs2k-arm = configFn "aarch64-linux";
+    };
   };
   nixConfig = {
-    extra-substituters = [ "https://cache.garnix.io" ];
-    extra-trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
+    extra-substituters = ["https://cache.garnix.io"];
+    extra-trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
   };
 }
