@@ -824,8 +824,6 @@ in {
         matklad.rust-analyzer
         tamasfe.even-better-toml
 
-        ms-python.python
-        ms-python.vscode-pylance
 
         sumneko.lua
 
@@ -841,19 +839,23 @@ in {
           sha256 = "sha256-CV2OloqE1P6/tVkIA7Ptb11alSSAK/5FyErQ5R5MhrI=";
         }
         {
+          name = "godot-tools";
+          publisher = "geequlim";
+          version = "1.3.1";
+          sha256 = "sha256-wJICDW8bEBjilhjhoaSddN63vVn6l6aepPtx8VKTdZA=";
+        }
+      ] ++ (if pkgs.system == "x86_64-linux" then [
+        ms-python.python
+        ms-python.vscode-pylance
+      ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+        {
           name = "pico-w-go";
           publisher = "paulober";
           version = "3.5.0";
           arch = "linux-x64";
           sha256 = "sha256-6cGcJaYTFWvmR1PKBymoHC8GnQ0AGOSsdoYKlbNE1U0=";
         }
-        {
-          name = "godot-tools";
-          publisher = "geequlim";
-          version = "1.3.1";
-          sha256 = "sha256-wJICDW8bEBjilhjhoaSddN63vVn6l6aepPtx8VKTdZA=";
-        }
-      ];
+      ] else []);
   };
 
   programs.go.enable = true;
