@@ -20,12 +20,11 @@
   nodejs,
   cacert,
 }: let
-  version = "owo-2023-12-14";
   gitHash = "beaf164aa88d139ca4d998cbc447936f47b8e171";
 in
   stdenv.mkDerivation rec {
     pname = "owo-vencord";
-    inherit version;
+    version = builtins.substring 0 6 gitHash;
 
     src = fetchgit {
       url = "https://git.skye.vg/me/owo-vencord.git";
@@ -43,6 +42,13 @@ in
         nodePackages.pnpm
         cacert
       ];
+
+      pnpmPatch = builtins.toJSON {
+        pnpm.supportedArchitectures = {
+          os = [ "linux" ];
+          cpu = [ "x64" "arm64" ];
+        };
+      };
 
       # https://github.com/NixOS/nixpkgs/blob/763e59ffedb5c25774387bf99bc725df5df82d10/pkgs/applications/misc/pot/default.nix#L56
       installPhase = ''
@@ -93,18 +99,6 @@ in
 
       runHook postInstall
     '';
-
-    desktopItems = [
-      (makeDesktopItem {
-        name = "vencorddesktop";
-        desktopName = "Vesktop";
-        exec = "vencorddesktop %U";
-        icon = "vencorddesktop";
-        startupWMClass = "VencordDesktop";
-        genericName = "Internet Messenger";
-        keywords = ["discord" "vencord" "electron" "chat"];
-      })
-    ];
 
     meta = with lib; {
       description = "Vencord but patch";
