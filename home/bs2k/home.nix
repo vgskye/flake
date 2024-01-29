@@ -141,7 +141,7 @@ in {
           nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
         };
 
-      stockfish = self.callPackage (import ./stockfish.nix) {};
+      stockfish = if self.system == "x86_64-linux" then self.callPackage (import ./stockfish.nix) {} else super.stockfish;
     })
   ];
 
@@ -267,7 +267,6 @@ in {
     pkgs.yt-dlp
     pkgs.ffmpeg
     pkgs.kolourpaint
-    pkgs.lutris
     # (pkgsUnstable.lapce.overrideAttrs (old: rec {
     #   version = "v0.2.5";
     #   src = pkgs.fetchFromGitHub {
@@ -306,7 +305,7 @@ in {
     pkgs.nix-alien
     pkgs.nix-index-update
     pkgs.nix-index
-    comma.packages.x86_64-linux.comma
+    comma.packages.${pkgs.system}.comma
     # pkgs.openai-whisper
     (pkgs.python310.withPackages (pythonPackages:
       with pythonPackages; [
@@ -535,7 +534,7 @@ in {
 
     pkgs.minisign
     pkgs.rage
-  ];
+  ] ++ (if pkgs.system == "x86_64-linux" then [pkgs.lutris] else []);
 
   fonts.fontconfig.enable = true;
   xdg.configFile."fontconfig/conf.d/10-nerd-font-symbols.conf" = let
