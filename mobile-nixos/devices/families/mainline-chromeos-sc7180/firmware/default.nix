@@ -7,6 +7,7 @@
 runCommand "chromeos-sc7180-firmware" {
   src = firmwareLinuxNonfree;
   meta.license = firmwareLinuxNonfree.meta.license;
+  compressFirmware = false;
 } ''
   for firmware in \
     ath10k/WCN3990/hw1.0 \
