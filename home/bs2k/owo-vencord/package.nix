@@ -2,18 +2,7 @@
   lib,
   stdenv,
   stdenvNoCC,
-  gcc13Stdenv,
-  fetchFromGitHub,
   fetchgit,
-  substituteAll,
-  makeWrapper,
-  makeDesktopItem,
-  copyDesktopItems,
-  vencord,
-  electron,
-  pipewire,
-  libpulseaudio,
-  libicns,
   jq,
   moreutils,
   nodePackages,
@@ -24,7 +13,7 @@
 in
   stdenv.mkDerivation rec {
     pname = "owo-vencord";
-    version = builtins.substring 0 6 gitHash;
+    version = builtins.substring 0 8 gitHash;
 
     src = fetchgit {
       url = "https://git.skye.vg/me/owo-vencord.git";
@@ -32,11 +21,23 @@ in
       sha256 = "sha256-smXQt+bRz0b+Dh+H1uy04SLUBddXJ4NTrqZ8K++Xn+s=";
     };
 
+    pnpmPatch = builtins.toJSON {
+      pnpm.supportedArchitectures = {
+        os = [ "linux" ];
+        cpu = [ "x64" "arm64" ];
+      };
+    };
+
+    postPatch = ''
+      mv package.json package.json.orig
+      jq --raw-output ". * $pnpmPatch" package.json.orig > package.json
+    '';
+
     pnpmDeps =
       assert lib.versionAtLeast nodePackages.pnpm.version "8.10.0";
       stdenvNoCC.mkDerivation {
       pname = "${pname}-pnpm-deps";
-      inherit src version;
+      inherit src version pnpmPatch postPatch;
 
       nativeBuildInputs = [
         jq
@@ -44,18 +45,6 @@ in
         nodePackages.pnpm
         cacert
       ];
-
-      pnpmPatch = builtins.toJSON {
-        pnpm.supportedArchitectures = {
-          os = [ "linux" ];
-          cpu = [ "x64" "arm64" ];
-        };
-      };
-
-      postPatch = ''
-        mv package.json package.json.orig
-        jq --raw-output ". * $pnpmPatch" package.json.orig > package.json
-      '';
 
       # https://github.com/NixOS/nixpkgs/blob/763e59ffedb5c25774387bf99bc725df5df82d10/pkgs/applications/misc/pot/default.nix#L56
       installPhase = ''
@@ -79,6 +68,7 @@ in
     VENCORD_REMOTE = "vgskye/owo-vencord";
 
     nativeBuildInputs = [
+      jq
       nodePackages.pnpm
       nodejs
     ];
@@ -105,6 +95,10 @@ in
 
       runHook postInstall
     '';
+
+    passthru = {
+      inherit pnpmDeps;
+    };
 
     meta = with lib; {
       description = "Vencord but patch";
