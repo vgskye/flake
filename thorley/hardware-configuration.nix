@@ -32,8 +32,8 @@
     # kernel = pkgs.callPackage ./kernel.nix {};
   in pkgs.linuxPackagesFor kernelLies;
 
-  networking.wireless.enable = true;
-  networking.wireless.userControlled.enable = true;
+  networking.wireless.enable = lib.mkDefault true;
+  networking.wireless.userControlled.enable = lib.mkDefault true;
 
   # All the required stuff's built-in thru the defconfig anyways
   boot.initrd.includeDefaultModules = false;
@@ -108,7 +108,7 @@
     fsType = "ext4";
   };
 
-  networking.useDHCP = true;
+  networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = "aarch64-linux";
 }
