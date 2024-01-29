@@ -180,7 +180,7 @@ in {
   # services.flameshot.enable = true;
 
   home.packages = [
-    pkgs.nerdfonts
+    # pkgs.nerdfonts
     pkgs.nanum
     pkgs.noto-fonts
     pkgs.noto-fonts-extra
@@ -517,11 +517,17 @@ in {
 
     pkgs.minisign
     pkgs.rage
+
+    (pkgs.callPackage ./nerd-font-symbols/package.nix {})
   ] ++ (if pkgs.system == "x86_64-linux" then [
     pkgs.lutris
     pkgs.blender
     pkgs.jetbrains.idea-ultimate
-  ] else []);
+  ] else [
+    pkgs.rnote
+    pkgs.maliit-keyboard
+    pkgs.maliit-framework
+  ]);
 
   fonts.fontconfig.enable = true;
   xdg.configFile."fontconfig/conf.d/10-nerd-font-symbols.conf" = let

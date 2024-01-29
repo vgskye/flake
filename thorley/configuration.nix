@@ -12,11 +12,17 @@ in {
     ./hardware-configuration.nix
   ];
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
   nix.nixPath = [
     "nixpkgs=${channelPath}"
   ];
+
+  powerManagement.cpuFreqGovernor = "schedutil";
+
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+    substituters = ["https://cache.garnix.io"];
+    trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
+  };
 
   systemd.tmpfiles.rules = [
     "L+ ${channelPath} - - - - ${pkgs.path}"
@@ -24,9 +30,16 @@ in {
 
   programs.command-not-found.enable = false;
 
+  programs.dconf.enable = true;
+
   services.xserver.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.displayManager = {
+    sddm.enable = true;
+    setupCommands = "${pkgs.xorg.xrandr}/bin/xrandr --output DSI-1 --rotate left";
+  };
+
+  networking.networkmanager.enable = true;
   networking.wireless.enable = false;
   networking.wireless.userControlled.enable = false;
 

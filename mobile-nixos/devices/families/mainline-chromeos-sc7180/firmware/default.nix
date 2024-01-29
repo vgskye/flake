@@ -11,7 +11,7 @@ runCommand "chromeos-sc7180-firmware" {
   for firmware in \
     ath10k/WCN3990/hw1.0 \
     qca/crbtfw32.tlv \
-    qca/crnv32u.bin \
+    qca/crnv32.bin \
     qcom/a630_gmu.bin \
     qcom/a630_sqe.fw \
     qcom/venus-5.4 \

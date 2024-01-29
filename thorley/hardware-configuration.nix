@@ -62,6 +62,40 @@
     (pkgs.callPackage ../mobile-nixos/devices/families/mainline-chromeos-sc7180/firmware {})
   ];
 
+  # NixOS, by default, tries to "smartly" figure out
+  # which firmwares are needed in initrd.
+  # In this case, it selects nothing.
+  # That is... wrong, and we need to supply them.
+  # However, /lib/firmware is still taken by the empty directory.
+  # So we put them in /hacky-fw-links, and tell the kernel.
+  boot.initrd.extraFiles =
+    let
+      firmwares = [
+        "qcom/venus-5.4/venus.mdt"
+        "qcom/a630_sqe.fw"
+        "qca/crbtfw32.tlv"
+        "qca/crnv32.bin"
+        "regulatory.db"
+        "regulatory.db.p7s"
+      ];
+    in
+    builtins.listToAttrs
+      (builtins.map (fw:
+      {
+        name = "/hacky-fw-links/${fw}.xz";
+        value = {
+          source = pkgs.runCommand "hacky-fw-links-${fw}" {
+            src = "${config.hardware.firmware}/lib/firmware/${fw}.xz";
+            preferLocalBuild = true;
+          } ''
+            cat $src > $out
+          '';
+        };
+      }
+      ) firmwares);
+
+  hardware.sensor.iio.enable = true;
+
   system.build.fsImage = pkgs.callPackage (modulesPath + "/../lib/make-ext4-fs.nix") {
     storePaths = config.system.build.toplevel;
     populateImageCommands = "${config.boot.loader.generic-extlinux-compatible.populateCmd} -c ${config.system.build.toplevel} -d ./files/boot";
@@ -88,7 +122,12 @@
       ACCEL_MOUNT_MATRIX=0, 1, 0; -1, 0, 0; 0, 0, -1
   '';
 
-  boot.kernelParams = lib.mkBefore ["console=ttyMSM0,115200n8"];
+  boot.kernelParams = lib.mkBefore [
+    "console=ttyMSM0,115200n8"
+
+    # Tell the kernel to look for firmwares in our links
+    "firmware_class.path=/hacky-fw-links"
+  ];
 
   systemd.services."serial-getty@ttyMSM0" = {
     enable = true;
