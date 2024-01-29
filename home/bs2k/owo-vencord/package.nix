@@ -32,7 +32,9 @@ in
       sha256 = "sha256-smXQt+bRz0b+Dh+H1uy04SLUBddXJ4NTrqZ8K++Xn+s=";
     };
 
-    pnpm-deps = stdenvNoCC.mkDerivation {
+    pnpmDeps =
+      assert lib.versionAtLeast nodePackages.pnpm.version "8.10.0";
+      stdenvNoCC.mkDerivation {
       pname = "${pname}-pnpm-deps";
       inherit src version;
 
@@ -58,10 +60,8 @@ in
       # https://github.com/NixOS/nixpkgs/blob/763e59ffedb5c25774387bf99bc725df5df82d10/pkgs/applications/misc/pot/default.nix#L56
       installPhase = ''
         export HOME=$(mktemp -d)
-
         pnpm config set store-dir $out
         pnpm install --frozen-lockfile --ignore-script
-
         rm -rf $out/v3/tmp
         for f in $(find $out -name "*.json"); do
           sed -i -E -e 's/"checkedAt":[0-9]+,//g' $f
@@ -69,6 +69,7 @@ in
         done
       '';
 
+      dontBuild = true;
       dontFixup = true;
       outputHashMode = "recursive";
       outputHash = "sha256-mw8YhSHYAIVJQA4/zMyeXnhNus56k/dDv9MwqzClVNs=";
@@ -86,7 +87,7 @@ in
       export HOME=$(mktemp -d)
       export STORE_PATH=$(mktemp -d)
 
-      cp -r ${pnpm-deps}/* "$STORE_PATH"
+      cp -Tr "$pnpmDeps" "$STORE_PATH"
       chmod -R +w "$STORE_PATH"
 
       pnpm config set store-dir "$STORE_PATH"
