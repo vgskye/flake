@@ -95,22 +95,7 @@ in {
           hash = "sha256-apJJBu/fVHrFBGJ2f1rdU5AkNuekhi0sDiTKkbd2FQg=";
         };
       });
-      godot_4 = super.godot_4.overrideAttrs rec {
-        version = "4.2.1-stable";
-        commitHash = "b09f793f564a6c95dc76acc654b390e68441bd01";
-
-        src = pkgs.fetchFromGitHub {
-          owner = "godotengine";
-          repo = "godot";
-          rev = commitHash;
-          hash = "sha256-Q6Og1H4H2ygOryMPyjm6kzUB6Su6T9mJIp0alNAxvjQ=";
-        };
-
-        preConfigure = ''
-          mkdir -p .git
-          echo ${commitHash} > .git/HEAD
-        '';
-      };
+      godot_4 = pkgsUnstable.godot_4;
 
       libreoffice-qt = override-icon super.libreoffice-qt "" "libreoffice-";
 
@@ -395,7 +380,7 @@ in {
 
         onnxruntime
         pillow
-        (opencv4.override {enableGtk3 = true;})
+        opencv4
       ]))
 
     (pkgs.rust-bin.stable.latest.default.override {
