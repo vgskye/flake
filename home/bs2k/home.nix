@@ -428,7 +428,6 @@ in {
 
     pkgs.transmission-qt
     pkgs.libsForQt5.ktorrent
-    pkgs.jetbrains.idea-ultimate
     # pkgs.jetbrains.clion
     pkgs.gnumake
 
@@ -521,6 +520,7 @@ in {
   ] ++ (if pkgs.system == "x86_64-linux" then [
     pkgs.lutris
     pkgs.blender
+    pkgs.jetbrains.idea-ultimate
   ] else []);
 
   fonts.fontconfig.enable = true;
