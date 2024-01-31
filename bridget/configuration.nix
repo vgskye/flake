@@ -100,6 +100,8 @@ in {
     };
   };
 
+  services.rspamd.enable = true;
+
   age.secrets.cf-api-key = {
     file = ../secrets/cf-api-key.age;
     mode = "400";
