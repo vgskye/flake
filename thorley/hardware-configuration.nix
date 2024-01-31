@@ -55,6 +55,24 @@
         CHARGER_SBS = module;
         MANAGER_SBS = module;
       })
+    # copied from pmOS
+    # do they work? I don't fucking know
+    (helpers:
+      with helpers; {
+        # okay this one isn't pmOS I just wanted some insight
+        I2C_CHARDEV = yes;
+
+        # Cr50 TPM
+        TCG_TIS_SPI = yes;
+        TCG_TIS_SPI_CR50 = yes;
+
+        # cameras
+        VIDEO_V4L2_SUBDEV_API = yes;
+        VIDEO_QCOM_CAMSS = module;
+        VIDEO_IMX219 = module;
+        VIDEO_OV5640 = module;
+        VIDEO_OV5645 = module;
+      })
   ];
 
   hardware.firmware = [
