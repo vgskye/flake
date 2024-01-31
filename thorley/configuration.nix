@@ -4,6 +4,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: let
   channelPath = "/etc/nix/channels/nixpkgs";
@@ -58,9 +59,54 @@ in {
 
   boot.binfmt.registrations.x86_64-linux = {
     interpreter = "${pkgs.box64}/bin/box64";
-    wrapInterpreterInShell = false;
     magicOrExtension = ''\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x3e\x00'';
     mask = ''\xff\xff\xff\xff\xff\xfe\xfe\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff'';
+  };
+
+
+  nixpkgs.overlays = [
+    (self: super: {
+      keyd = self.callPackage ./keyd.nix {};
+    })
+  ];
+
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      hammer = {
+        ids = [ "k:18d1:5057" ];
+        settings = {
+          main = {
+            leftshift = "overload(shift, S-9)";
+            rightshift = "overload(shift, S-0)";
+          };
+          meta = {
+            back = "f1";
+            refresh = "f2";
+            zoom = "f3";
+            scale = "f4";
+            brightnessdown = "f5";
+            brightnessup = "f6";
+            micmute = "f7";
+            mute = "f8";
+            volumedown = "f9";
+            volumeup = "f10";
+            sleep = "f11";
+            backspace = "f12";
+          };
+        };
+      };
+    };
+  };
+
+  systemd.services.keyd.serviceConfig = {
+    CapabilityBoundingSet = lib.mkForce [ "CAP_SYS_NICE" ];
+    PrivateUsers = lib.mkForce false;
+    SystemCallFilter = lib.mkForce [
+      "nice"
+      "@system-service"
+      "~@privileged"
+    ];
   };
 
   networking.hostName = "thorley";

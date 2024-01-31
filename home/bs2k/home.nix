@@ -528,6 +528,15 @@ in {
     pkgs.rnote
     pkgs.maliit-keyboard
     pkgs.maliit-framework
+    (pkgs.steam.override {
+      # steamn't
+      steam = null;
+      steam-runtime-wrapped = pkgs.steamPackages.steam-runtime-wrapped.override {
+        steamArch = "amd64";
+      };
+      steam-runtime-wrapped-i686 = null;
+      glxinfo-i686 = null;
+    }).run
   ]);
 
   fonts.fontconfig.enable = true;
