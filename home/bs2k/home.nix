@@ -159,6 +159,7 @@ in {
     # GTK_THEME = config.gtk.theme.name;
     HSA_OVERRIDE_GFX_VERSION = "10.3.0";
     NIXOS_OZONE_WL = "1";
+    QT_QUICK_CONTROLS_STYLE = "org.kde.desktop";
     # CHROME_EXECUTABLE = "${pkgs.google-chrome}/bin/google-chrome-stable";
   };
 

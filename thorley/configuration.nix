@@ -54,13 +54,15 @@ in {
   hardware.pulseaudio.enable = false;
   hardware.bluetooth.enable = true;
 
+  virtualisation.waydroid.enable = true;
+
   networking.hostName = "thorley";
 
   time.timeZone = "Asia/Seoul";
 
   users.users.bs2k = {
     isNormalUser = true;
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "networkmanager"];
     password = "hunter2"; # CHANGEME
   };
 
