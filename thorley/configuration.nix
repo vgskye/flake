@@ -63,13 +63,6 @@ in {
     mask = ''\xff\xff\xff\xff\xff\xfe\xfe\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff'';
   };
 
-
-  nixpkgs.overlays = [
-    (self: super: {
-      keyd = self.callPackage ./keyd.nix {};
-    })
-  ];
-
   services.keyd = {
     enable = true;
     keyboards = {
@@ -97,16 +90,6 @@ in {
         };
       };
     };
-  };
-
-  systemd.services.keyd.serviceConfig = {
-    CapabilityBoundingSet = lib.mkForce [ "CAP_SYS_NICE" ];
-    PrivateUsers = lib.mkForce false;
-    SystemCallFilter = lib.mkForce [
-      "nice"
-      "@system-service"
-      "~@privileged"
-    ];
   };
 
   networking.hostName = "thorley";
