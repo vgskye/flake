@@ -15,6 +15,7 @@ runCommand "chromeos-sc7180-firmware" {
     qcom/a630_gmu.bin \
     qcom/a630_sqe.fw \
     qcom/venus-5.4 \
+    qcom/sdm845/wlanmdsp.mbn \
   ; do
     mkdir -p "$(dirname $out/lib/firmware/$firmware)"
     cp -vrf "$src/lib/firmware/$firmware" $out/lib/firmware/$firmware
