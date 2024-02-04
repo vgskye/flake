@@ -115,7 +115,7 @@ in {
 
   users.users.bs2k = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager"];
+    extraGroups = ["wheel" "networkmanager" "tss"];
     password = "hunter2"; # CHANGEME
   };
 

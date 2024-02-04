@@ -537,6 +537,7 @@ in {
       steam-runtime-wrapped-i686 = null;
       glxinfo-i686 = null;
     }).run
+    pkgs.krita
   ]);
 
   fonts.fontconfig.enable = true;

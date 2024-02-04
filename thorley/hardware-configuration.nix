@@ -75,6 +75,8 @@
       })
   ];
 
+  security.tpm2.enable = true;
+
   hardware.firmware = [
     pkgs.chromeos-sc7180-unredistributable-firmware
     (pkgs.callPackage ../mobile-nixos/devices/families/mainline-chromeos-sc7180/firmware {})
