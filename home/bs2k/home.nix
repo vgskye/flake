@@ -2,6 +2,7 @@
   config,
   pkgs,
   pkgsUnstable,
+  pkgsAmd64,
   rust-overlay,
   nix-alien,
   comma,
@@ -562,6 +563,12 @@ in {
           };
           steam-runtime-wrapped-i686 = null;
           glxinfo-i686 = null;
+          extraPkgs = _: with pkgsAmd64; [
+            mbedtls_2
+            libgcc.lib
+            libunwind
+            libpng12
+          ];
         })
         .run
         pkgs.krita

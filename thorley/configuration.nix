@@ -67,7 +67,7 @@ in {
 
   nix.settings = {
     extra-platforms = "armv7l-linux";
-    extra-sandbox-paths = [ "/run/binfmt" pkgs.box64 ];
+    extra-sandbox-paths = [ "/run/binfmt" "${pkgs.box64}" ];
   };
 
   services.keyd = {

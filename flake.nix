@@ -285,6 +285,7 @@
               catppuccin-vsc
               ;
             pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+            pkgsAmd64 = nixpkgs.legacyPackages.x86_64-linux;
           };
 
           # Optionally use extraSpecialArgs
