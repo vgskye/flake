@@ -55,7 +55,6 @@ in {
     rust-overlay.overlays.default
     nix-alien.overlays.default
     agenix.overlays.default
-    catppuccin-vsc.overlays.default
     (self: super: {
       monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
@@ -817,7 +816,9 @@ in {
         dbaeumer.vscode-eslint
 
         eamodio.gitlens
-        (pkgs.catppuccin-vsc.override {
+        # catppuccin-vsc's output is architecture-agnostic
+        # so just build this once
+        (catppuccin-vsc.packages.x86_64-linux.default.override {
           accent = config.catppuccin.accent;
         })
 
