@@ -51,83 +51,106 @@ in {
   # };
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [
-    rust-overlay.overlays.default
-    nix-alien.overlays.default
-    agenix.overlays.default
-    (self: super: {
-      monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
+  nixpkgs.overlays =
+    [
+      rust-overlay.overlays.default
+      nix-alien.overlays.default
+      agenix.overlays.default
+      (self: super: {
+        monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
-      # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
-      vesktop = super.vesktop.override {
-        vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
-        # gcc13Stdenv = pkgsUnstable.gcc13Stdenv;
-        # electron = self.electron_27;
-      };
-
-      # openai-whisper = pkgsUnstable.python310Packages.openai-whisper.override {
-      #   torch = pkgsUnstable.python310Packages.torch-bin;
-      # };
-      discord-canary = super.discord-canary.override {nss = pkgs.nss_latest;};
-      discord = super.discord.override {
-        nss = pkgs.nss_latest;
-        withOpenASAR = true;
-      };
-
-      cutter = super.cutter.overrideAttrs (old: rec {
-        version = "2.3.0";
-        src = self.fetchFromGitHub {
-          owner = "rizinorg";
-          repo = "cutter";
-          rev = "v${version}";
-          hash = "sha256-oQ3sLIGKMEw3k27aSFcrJqo0TgGkkBNdzl6GSoOIYak=";
-          fetchSubmodules = true;
+        # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
+        vesktop = super.vesktop.override {
+          vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
+          # gcc13Stdenv = pkgsUnstable.gcc13Stdenv;
+          # electron = self.electron_27;
         };
-      });
 
-      aseprite-unfree = self.callPackage (import ./aseprite/default.nix) {};
-
-      rizin = super.rizin.overrideAttrs (old: rec {
-        version = "0.6.0";
-        src = self.fetchurl {
-          url = "https://github.com/rizinorg/rizin/releases/download/v${version}/rizin-src-v${version}.tar.xz";
-          hash = "sha256-apJJBu/fVHrFBGJ2f1rdU5AkNuekhi0sDiTKkbd2FQg=";
+        # openai-whisper = pkgsUnstable.python310Packages.openai-whisper.override {
+        #   torch = pkgsUnstable.python310Packages.torch-bin;
+        # };
+        discord-canary = super.discord-canary.override {nss = pkgs.nss_latest;};
+        discord = super.discord.override {
+          nss = pkgs.nss_latest;
+          withOpenASAR = true;
         };
-      });
-      godot_4 = pkgsUnstable.godot_4;
 
-      libreoffice-qt = override-icon super.libreoffice-qt "" "libreoffice-";
-
-      # prismlauncher-alt = prismlauncher.packages.x86_64-linux.prismlauncher-qt5;
-      # override-icon prismlauncher.packages.x86_64-linux.prismlauncher-qt5
-      # "org.prismlauncher.PrismLauncher" "minecraft";
-
-      # nheko = override-icon super.nheko "nheko" "google-chat";
-
-      # galaxy-buds-client =
-      #   super.callPackage (import ./galaxy-buds-client.nix) {};
-
-      optar = super.optar.overrideAttrs (old: {patches = [./optar.patch];});
-
-      cutechess = with self;
-        stdenv.mkDerivation rec {
-          pname = "cutechess";
-          version = "1.3.1";
-
-          src = fetchFromGitHub {
-            owner = "cutechess";
-            repo = "cutechess";
+        cutter = super.cutter.overrideAttrs (old: rec {
+          version = "2.3.0";
+          src = self.fetchFromGitHub {
+            owner = "rizinorg";
+            repo = "cutter";
             rev = "v${version}";
-            hash = "sha256-P44Twbw2MGz+oTzPwMFCe73zPxAex6uYjSTtaUypfHw=";
+            hash = "sha256-oQ3sLIGKMEw3k27aSFcrJqo0TgGkkBNdzl6GSoOIYak=";
+            fetchSubmodules = true;
+          };
+        });
+
+        aseprite-unfree = self.callPackage (import ./aseprite/default.nix) {};
+
+        rizin = super.rizin.overrideAttrs (old: rec {
+          version = "0.6.0";
+          src = self.fetchurl {
+            url = "https://github.com/rizinorg/rizin/releases/download/v${version}/rizin-src-v${version}.tar.xz";
+            hash = "sha256-apJJBu/fVHrFBGJ2f1rdU5AkNuekhi0sDiTKkbd2FQg=";
+          };
+        });
+        godot_4 = pkgsUnstable.godot_4;
+
+        libreoffice-qt = override-icon super.libreoffice-qt "" "libreoffice-";
+
+        # prismlauncher-alt = prismlauncher.packages.x86_64-linux.prismlauncher-qt5;
+        # override-icon prismlauncher.packages.x86_64-linux.prismlauncher-qt5
+        # "org.prismlauncher.PrismLauncher" "minecraft";
+
+        # nheko = override-icon super.nheko "nheko" "google-chat";
+
+        # galaxy-buds-client =
+        #   super.callPackage (import ./galaxy-buds-client.nix) {};
+
+        optar = super.optar.overrideAttrs (old: {patches = [./optar.patch];});
+
+        cutechess = with self;
+          stdenv.mkDerivation rec {
+            pname = "cutechess";
+            version = "1.3.1";
+
+            src = fetchFromGitHub {
+              owner = "cutechess";
+              repo = "cutechess";
+              rev = "v${version}";
+              hash = "sha256-P44Twbw2MGz+oTzPwMFCe73zPxAex6uYjSTtaUypfHw=";
+            };
+
+            buildInputs = [libsForQt5.qt5.qtbase];
+            nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
           };
 
-          buildInputs = [libsForQt5.qt5.qtbase];
-          nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
-        };
-
-      stockfish = if self.system == "x86_64-linux" then self.callPackage (import ./stockfish.nix) {} else super.stockfish;
-    })
-  ];
+        stockfish =
+          if self.system == "x86_64-linux"
+          then self.callPackage (import ./stockfish.nix) {}
+          else super.stockfish;
+      })
+    ]
+    ++ (
+      if pkgs.system == "aarch64-linux"
+      then [(self: super: let
+        scale-electron = pkg: bin:
+          self.symlinkJoin {
+            name = pkg.name;
+            paths = [pkg];
+            buildInputs = [self.makeWrapper];
+            postBuild = ''
+              wrapProgram $out/bin/${bin} \
+                --add-flags "--force-device-scale-factor=1.5"
+            '';
+          };
+      in {
+        vesktop = scale-electron super.vesktop "vencorddesktop";
+        vscode = scale-electron super.vscode "code";
+      })]
+      else []
+    );
 
   # home.files = {
   #   catppuccin-kde = {
@@ -179,365 +202,372 @@ in {
 
   # services.flameshot.enable = true;
 
-  home.packages = [
-    # pkgs.nerdfonts
-    pkgs.nanum
-    pkgs.noto-fonts
-    pkgs.noto-fonts-extra
-    pkgs.noto-fonts-cjk-sans
-    pkgs.noto-fonts-cjk-serif
-    pkgs.noto-fonts-emoji
-    pkgs.cm_unicode
-    pkgs.lmmath
+  home.packages =
+    [
+      # pkgs.nerdfonts
+      pkgs.nanum
+      pkgs.noto-fonts
+      pkgs.noto-fonts-extra
+      pkgs.noto-fonts-cjk-sans
+      pkgs.noto-fonts-cjk-serif
+      pkgs.noto-fonts-emoji
+      pkgs.cm_unicode
+      pkgs.lmmath
 
-    pkgs.taplo
+      pkgs.taplo
 
-    pkgs.mosh
+      pkgs.mosh
 
-    pkgs.kate
-    pkgs.git
-    pkgs.onlykey-cli
-    pkgs.yubikey-manager-qt
-    pkgs.yubioath-flutter
+      pkgs.kate
+      pkgs.git
+      pkgs.onlykey-cli
+      pkgs.yubikey-manager-qt
+      pkgs.yubioath-flutter
 
-    # pkgsUnstable.android-studio
-    # pkgs.keepassxc
-    # pkgs.yakuake
-    # pkgs.polymc
-    pkgs.thunderbird
-    pkgs.ckan
-    pkgs.libsForQt5.ark
-    pkgs.kicad
-    # pkgs.eagle
-    # pkgs.gcc
-    # pkgs.openocd
-    pkgs.godot_4
-    # pkgs.godot-export-templates
-    # pkgs.tiled
-    pkgs.thefuck
-    # pkgs.deploy-rs.deploy-rs
-    pkgs.spotify-qt
-    # pkgs.spotify-tui
-    pkgs.rnix-lsp
-    pkgs.fusee-launcher
-    # pkgs.nur.repos.jakobrs.libtasMulti
-    pkgs.love
-    pkgs.easyeffects
-    # pkgs.wireguard-tools
-    # pkgsUnstable.wgcf
-    # pkgs.sr
-    pkgs.xclip
-    pkgs.cloudflared
-    pkgs.yarn
-    pkgs.nodejs
-    pkgs.inkscape
-    # pkgsUnstable.nodePackages_latest.wrangler
-    # pkgsUnstable.cargo
-    # pkgsUnstable.rust-analyzer
-    # pkgsUnstable.rustc
-    # pkgsUnstable.cargo-edit
-    # pkgsUnstable.cargo-audit
-    # pkgsUnstable.clippy
-    pkgs.unzip
-    pkgs.gnupg
-    pkgs.pinentry-qt
-    pkgs.curl
-    # pkgs.onlykey
-    pkgs.nheko
+      # pkgsUnstable.android-studio
+      # pkgs.keepassxc
+      # pkgs.yakuake
+      # pkgs.polymc
+      pkgs.thunderbird
+      pkgs.ckan
+      pkgs.libsForQt5.ark
+      pkgs.kicad
+      # pkgs.eagle
+      # pkgs.gcc
+      # pkgs.openocd
+      pkgs.godot_4
+      # pkgs.godot-export-templates
+      # pkgs.tiled
+      pkgs.thefuck
+      # pkgs.deploy-rs.deploy-rs
+      pkgs.spotify-qt
+      # pkgs.spotify-tui
+      pkgs.rnix-lsp
+      pkgs.fusee-launcher
+      # pkgs.nur.repos.jakobrs.libtasMulti
+      pkgs.love
+      pkgs.easyeffects
+      # pkgs.wireguard-tools
+      # pkgsUnstable.wgcf
+      # pkgs.sr
+      pkgs.xclip
+      pkgs.cloudflared
+      pkgs.yarn
+      pkgs.nodejs
+      pkgs.inkscape
+      # pkgsUnstable.nodePackages_latest.wrangler
+      # pkgsUnstable.cargo
+      # pkgsUnstable.rust-analyzer
+      # pkgsUnstable.rustc
+      # pkgsUnstable.cargo-edit
+      # pkgsUnstable.cargo-audit
+      # pkgsUnstable.clippy
+      pkgs.unzip
+      pkgs.gnupg
+      pkgs.pinentry-qt
+      pkgs.curl
+      # pkgs.onlykey
+      pkgs.nheko
 
-    pkgs.libsForQt5.neochat
+      pkgs.libsForQt5.neochat
 
-    pkgs.vlc
-    pkgs.yt-dlp
-    pkgs.ffmpeg
-    pkgs.kolourpaint
-    # (pkgsUnstable.lapce.overrideAttrs (old: rec {
-    #   version = "v0.2.5";
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "lapce";
-    #     repo = "lapce";
-    #     rev = "v0.2.5";
-    #     sha256 = "sha256-WFFn1l7d70x5v6jo5m+Thq1WoZjY7f8Lvr3U473xx48=";
-    #   };
-    #   cargoDeps = old.cargoDeps.overrideAttrs (_: {
-    #     inherit src;
-    #     outputHash = "sha256-iRo+56y3q/+WRVRFYjWIOMckZi64PJABuKAofErRXwA=";
-    #   });
-    # }))
-    # pkgs.element-desktop
-    pkgs.inter
-    # pkgs.davinci-resolve
-    pkgs.libsForQt5.kdenlive
-    pkgs.wget
-    pkgs.arduino
+      pkgs.vlc
+      pkgs.yt-dlp
+      pkgs.ffmpeg
+      pkgs.kolourpaint
+      # (pkgsUnstable.lapce.overrideAttrs (old: rec {
+      #   version = "v0.2.5";
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "lapce";
+      #     repo = "lapce";
+      #     rev = "v0.2.5";
+      #     sha256 = "sha256-WFFn1l7d70x5v6jo5m+Thq1WoZjY7f8Lvr3U473xx48=";
+      #   };
+      #   cargoDeps = old.cargoDeps.overrideAttrs (_: {
+      #     inherit src;
+      #     outputHash = "sha256-iRo+56y3q/+WRVRFYjWIOMckZi64PJABuKAofErRXwA=";
+      #   });
+      # }))
+      # pkgs.element-desktop
+      pkgs.inter
+      # pkgs.davinci-resolve
+      pkgs.libsForQt5.kdenlive
+      pkgs.wget
+      pkgs.arduino
 
-    (pkgsUnstable.catppuccin-kde.override {
-      flavour = [config.catppuccin.flavour];
-      accents = [config.catppuccin.accent];
-      winDecStyles = ["classic"];
-    })
+      (pkgsUnstable.catppuccin-kde.override {
+        flavour = [config.catppuccin.flavour];
+        accents = [config.catppuccin.accent];
+        winDecStyles = ["classic"];
+      })
 
-    (pkgs.catppuccin-kvantum.override {
-      variant = mkUpper config.catppuccin.flavour;
-      accent = mkUpper config.catppuccin.accent;
-    })
+      (pkgs.catppuccin-kvantum.override {
+        variant = mkUpper config.catppuccin.flavour;
+        accent = mkUpper config.catppuccin.accent;
+      })
 
-    # pkgs.qtstyleplugin-kvantum-qt4
-    pkgs.libsForQt5.qtstyleplugin-kvantum
-    pkgs.qt6Packages.qtstyleplugin-kvantum
+      # pkgs.qtstyleplugin-kvantum-qt4
+      pkgs.libsForQt5.qtstyleplugin-kvantum
+      pkgs.qt6Packages.qtstyleplugin-kvantum
 
-    pkgs.nix-alien
-    pkgs.nix-index-update
-    pkgs.nix-index
-    comma.packages.${pkgs.system}.comma
-    # pkgs.openai-whisper
-    (pkgs.python310.withPackages (pythonPackages:
-      with pythonPackages; [
-        # (openai-whisper.override {
-        #   torch = torch-bin.overrideAttrs (old: {
-        #     src = pkgs.fetchurl {
-        #       name = "torch-1.13.1-cp310-cp310-linux_x86_64.whl";
-        #       url = "https://download.pytorch.org/whl/rocm5.2/torch-1.13.1%2Brocm5.2-cp310-cp310-linux_x86_64.whl";
-        #       hash = "sha256-82hdCKwNjJUcw2f5vUsskkxdRRdmnEdoB3SKvNlmE28=";
-        #     };
-        #     patches = [];
-        #     # buildInputs = with pkgs; old.buildInputs ++ [
-        #     #   rocm-runtime
-        #     #   rocm-device-libs
-        #     # ];
-        #     patchPhase = "";
-        #     postFixup = let
-        #       rpath = lib.makeLibraryPath [
-        #         stdenv.cc.cc.lib
-        #         pkgs.rocmPackages.rocm-runtime
-        #         pkgs.rocmPackages.rocm-device-libs
-        #         pkgs.rocmPackages.clr
-        #         # pkgs.rocfft
-        #         pkgs.rocmPackages.rccl
-        #         # pkgs.rocsparse
-        #         # pkgs.rocprim
-        #         # pkgs.rocthrust
-        #         pkgs.rocmPackages.rocblas
-        #         # pkgs.hipsparse
-        #       ];
-        #     in ''
-        #       find $out/${python.sitePackages}/torch/lib -type f \( -name '*.so' -or -name '*.so.*' \) | while read lib; do
-        #         echo "setting rpath for $lib..."
-        #         patchelf --set-rpath "${rpath}:$out/${python.sitePackages}/torch/lib" "$lib"
-        #         addOpenGLRunpath "$lib"
-        #       done
-        #     '';
-        #   });
-        # })
-        sounddevice
-        numpy
-        scipy
-        pyaudio
-        pkgs.yubikey-manager
-        yubico-client
-        pyscard
-        # (torchvision-bin.override { torch = torch-bin.overrideAttrs(old: {
-        #   src = pkgs.fetchurl {
-        #     name = "torch-1.13.1-cp310-cp310-linux_x86_64.whl";
-        #     url = "https://download.pytorch.org/whl/rocm5.2/torch-1.13.1%2Brocm5.2-cp310-cp310-linux_x86_64.whl";
-        #     hash = "sha256-82hdCKwNjJUcw2f5vUsskkxdRRdmnEdoB3SKvNlmE28=";
-        #   };
-        #   patches = [];
-        #   # buildInputs = with pkgs; old.buildInputs ++ [
-        #   #   rocm-runtime
-        #   #   rocm-device-libs
-        #   # ];
-        #   patchPhase = "";
-        #   postFixup = let
-        #     rpath = lib.makeLibraryPath [
-        #       stdenv.cc.cc.lib
-        #       pkgs.rocm-runtime
-        #       pkgs.rocm-device-libs
-        #       pkgs.hip
-        #       # pkgs.rocfft
-        #       pkgs.rccl
-        #       # pkgs.rocsparse
-        #       # pkgs.rocprim
-        #       # pkgs.rocthrust
-        #       pkgs.rocblas
-        #       # pkgs.hipsparse
-        #     ];
-        #   in ''
-        #     find $out/${python.sitePackages}/torch/lib -type f \( -name '*.so' -or -name '*.so.*' \) | while read lib; do
-        #       echo "setting rpath for $lib..."
-        #       patchelf --set-rpath "${rpath}:$out/${python.sitePackages}/torch/lib" "$lib"
-        #       addOpenGLRunpath "$lib"
-        #     done
-        #   '';
-        # }); })
+      pkgs.nix-alien
+      pkgs.nix-index-update
+      pkgs.nix-index
+      comma.packages.${pkgs.system}.comma
+      # pkgs.openai-whisper
+      (pkgs.python310.withPackages (pythonPackages:
+        with pythonPackages; [
+          # (openai-whisper.override {
+          #   torch = torch-bin.overrideAttrs (old: {
+          #     src = pkgs.fetchurl {
+          #       name = "torch-1.13.1-cp310-cp310-linux_x86_64.whl";
+          #       url = "https://download.pytorch.org/whl/rocm5.2/torch-1.13.1%2Brocm5.2-cp310-cp310-linux_x86_64.whl";
+          #       hash = "sha256-82hdCKwNjJUcw2f5vUsskkxdRRdmnEdoB3SKvNlmE28=";
+          #     };
+          #     patches = [];
+          #     # buildInputs = with pkgs; old.buildInputs ++ [
+          #     #   rocm-runtime
+          #     #   rocm-device-libs
+          #     # ];
+          #     patchPhase = "";
+          #     postFixup = let
+          #       rpath = lib.makeLibraryPath [
+          #         stdenv.cc.cc.lib
+          #         pkgs.rocmPackages.rocm-runtime
+          #         pkgs.rocmPackages.rocm-device-libs
+          #         pkgs.rocmPackages.clr
+          #         # pkgs.rocfft
+          #         pkgs.rocmPackages.rccl
+          #         # pkgs.rocsparse
+          #         # pkgs.rocprim
+          #         # pkgs.rocthrust
+          #         pkgs.rocmPackages.rocblas
+          #         # pkgs.hipsparse
+          #       ];
+          #     in ''
+          #       find $out/${python.sitePackages}/torch/lib -type f \( -name '*.so' -or -name '*.so.*' \) | while read lib; do
+          #         echo "setting rpath for $lib..."
+          #         patchelf --set-rpath "${rpath}:$out/${python.sitePackages}/torch/lib" "$lib"
+          #         addOpenGLRunpath "$lib"
+          #       done
+          #     '';
+          #   });
+          # })
+          sounddevice
+          numpy
+          scipy
+          pyaudio
+          pkgs.yubikey-manager
+          yubico-client
+          pyscard
+          # (torchvision-bin.override { torch = torch-bin.overrideAttrs(old: {
+          #   src = pkgs.fetchurl {
+          #     name = "torch-1.13.1-cp310-cp310-linux_x86_64.whl";
+          #     url = "https://download.pytorch.org/whl/rocm5.2/torch-1.13.1%2Brocm5.2-cp310-cp310-linux_x86_64.whl";
+          #     hash = "sha256-82hdCKwNjJUcw2f5vUsskkxdRRdmnEdoB3SKvNlmE28=";
+          #   };
+          #   patches = [];
+          #   # buildInputs = with pkgs; old.buildInputs ++ [
+          #   #   rocm-runtime
+          #   #   rocm-device-libs
+          #   # ];
+          #   patchPhase = "";
+          #   postFixup = let
+          #     rpath = lib.makeLibraryPath [
+          #       stdenv.cc.cc.lib
+          #       pkgs.rocm-runtime
+          #       pkgs.rocm-device-libs
+          #       pkgs.hip
+          #       # pkgs.rocfft
+          #       pkgs.rccl
+          #       # pkgs.rocsparse
+          #       # pkgs.rocprim
+          #       # pkgs.rocthrust
+          #       pkgs.rocblas
+          #       # pkgs.hipsparse
+          #     ];
+          #   in ''
+          #     find $out/${python.sitePackages}/torch/lib -type f \( -name '*.so' -or -name '*.so.*' \) | while read lib; do
+          #       echo "setting rpath for $lib..."
+          #       patchelf --set-rpath "${rpath}:$out/${python.sitePackages}/torch/lib" "$lib"
+          #       addOpenGLRunpath "$lib"
+          #     done
+          #   '';
+          # }); })
 
-        python-lsp-server
-        openai
-        requests
-        python-socketio
-        grequests
-        tiktoken
+          python-lsp-server
+          openai
+          requests
+          python-socketio
+          grequests
+          tiktoken
 
-        onnxruntime
-        pillow
-        opencv4
-      ]))
+          onnxruntime
+          pillow
+          opencv4
+        ]))
 
-    (pkgs.rust-bin.stable.latest.default.override {
-      extensions = ["rust-src"];
-      targets = [
-        "wasm32-unknown-unknown"
-        "wasm32-wasi"
-        # "wasm32-unknown-emscripten"
-        # "x86_64-unknown-linux-musl"
-      ];
-    })
+      (pkgs.rust-bin.stable.latest.default.override {
+        extensions = ["rust-src"];
+        targets = [
+          "wasm32-unknown-unknown"
+          "wasm32-wasi"
+          # "wasm32-unknown-emscripten"
+          # "x86_64-unknown-linux-musl"
+        ];
+      })
 
-    pkgs.fastly
+      pkgs.fastly
 
-    pkgs.emscripten
+      pkgs.emscripten
 
-    pkgs.llvmPackages_latest.llvm
-    pkgs.llvmPackages_latest.lld
-    pkgs.llvmPackages_latest.clang
-    pkgs.bintools
-    pkgs.clang-tools
+      pkgs.llvmPackages_latest.llvm
+      pkgs.llvmPackages_latest.lld
+      pkgs.llvmPackages_latest.clang
+      pkgs.bintools
+      pkgs.clang-tools
 
-    pkgs.any-nix-shell
-    # pkgs.prismlauncher-alt
-    (prismlauncher.packages.${pkgs.system}.prismlauncher-qt5.override {
-      gamemodeSupport = true;
+      pkgs.any-nix-shell
+      # pkgs.prismlauncher-alt
+      (prismlauncher.packages.${pkgs.system}.prismlauncher-qt5.override {
+        gamemodeSupport = true;
 
-      glfw = pkgs.callPackage (import ./glfw/package.nix) {};
+        glfw = pkgs.callPackage (import ./glfw/package.nix) {};
 
-      additionalLibs = [pkgs.libva];
-    })
+        additionalLibs = [pkgs.libva];
+      })
 
-    pkgs.openrgb
+      pkgs.openrgb
 
-    # pkgs.cider
-    # pkgs.nordic
-    # pkgs.nordzy-icon-theme
-    # pkgs.nordzy-cursor-theme
+      # pkgs.cider
+      # pkgs.nordic
+      # pkgs.nordzy-icon-theme
+      # pkgs.nordzy-cursor-theme
 
-    pkgs.galaxy-buds-client
-    pkgs.libreoffice-qt
-    pkgs.optar
+      pkgs.galaxy-buds-client
+      pkgs.libreoffice-qt
+      pkgs.optar
 
-    # pkgs.latte-dock
+      # pkgs.latte-dock
 
-    pkgs.transmission-qt
-    pkgs.libsForQt5.ktorrent
-    # pkgs.jetbrains.clion
-    pkgs.gnumake
+      pkgs.transmission-qt
+      pkgs.libsForQt5.ktorrent
+      # pkgs.jetbrains.clion
+      pkgs.gnumake
 
-    pkgs.papirus-icon-theme
+      pkgs.papirus-icon-theme
 
-    # pkgs.fractal-next
+      # pkgs.fractal-next
 
-    # (override-exec (pkgs.callPackage ./godot.nix { }) "" "steam-run ")
+      # (override-exec (pkgs.callPackage ./godot.nix { }) "" "steam-run ")
 
-    # pkgs.libsForQt5.kmail
-    # pkgs.libsForQt5.kmailtransport
-    # pkgs.libsForQt5.kmail-account-wizard
+      # pkgs.libsForQt5.kmail
+      # pkgs.libsForQt5.kmailtransport
+      # pkgs.libsForQt5.kmail-account-wizard
 
-    # (powercord-overlay.lib.makeDiscordPlugged {
-    #   inherit pkgs;
-    #   withOpenAsar = true;
-    #   plugins = {
-    #     power-bottom = pkgs.fetchFromGitHub {
-    #       owner = "bottom-software-foundation";
-    #       repo = "power-bottom";
-    #       rev = "need_top";
-    #       sha256 = "sha256-42+bcIr5rMjMVqSsOc5hlm2SOUdYGrNybBLypFes6qs=";
-    #     };
-    #     emoji-utility = pkgs.fetchFromGitHub {
-    #       owner = "replugged-org";
-    #       repo = "emoji-utility";
-    #       rev = "master";
-    #       sha256 = "sha256-16V5Do7TehWR/rYmUuGzEk4EisYYBWSHI/u5iPsuqR0=";
-    #     };
-    #     better-codeblocks = pkgs.fetchFromGitHub {
-    #       owner = "replugged-org";
-    #       repo = "better-codeblocks";
-    #       rev = "master";
-    #       sha256 = "sha256-8coW01cbjL/RArw9fTO4Z+2Hf+sT48m8wCXUCqMj9LQ=";
-    #     };
-    #   };
-    # })
-    # (pkgs.discord.override {
-    #   withVencord = true;
-    #   withOpenASAR = true;
-    #   vencord = pkgs.callPackage  (import ./owo-vencord/default.nix) { };
-    # })
-    # pkgsUnstable.armcord
-    # powercord-overlay.packages.x86_64-linux.discord-plugged
-    pkgs.obs-studio
-    pkgs.appimage-run
-    pkgs.virt-manager
-    # pkgs.flutter
-    pkgs.jdk
+      # (powercord-overlay.lib.makeDiscordPlugged {
+      #   inherit pkgs;
+      #   withOpenAsar = true;
+      #   plugins = {
+      #     power-bottom = pkgs.fetchFromGitHub {
+      #       owner = "bottom-software-foundation";
+      #       repo = "power-bottom";
+      #       rev = "need_top";
+      #       sha256 = "sha256-42+bcIr5rMjMVqSsOc5hlm2SOUdYGrNybBLypFes6qs=";
+      #     };
+      #     emoji-utility = pkgs.fetchFromGitHub {
+      #       owner = "replugged-org";
+      #       repo = "emoji-utility";
+      #       rev = "master";
+      #       sha256 = "sha256-16V5Do7TehWR/rYmUuGzEk4EisYYBWSHI/u5iPsuqR0=";
+      #     };
+      #     better-codeblocks = pkgs.fetchFromGitHub {
+      #       owner = "replugged-org";
+      #       repo = "better-codeblocks";
+      #       rev = "master";
+      #       sha256 = "sha256-8coW01cbjL/RArw9fTO4Z+2Hf+sT48m8wCXUCqMj9LQ=";
+      #     };
+      #   };
+      # })
+      # (pkgs.discord.override {
+      #   withVencord = true;
+      #   withOpenASAR = true;
+      #   vencord = pkgs.callPackage  (import ./owo-vencord/default.nix) { };
+      # })
+      # pkgsUnstable.armcord
+      # powercord-overlay.packages.x86_64-linux.discord-plugged
+      pkgs.obs-studio
+      pkgs.appimage-run
+      pkgs.virt-manager
+      # pkgs.flutter
+      pkgs.jdk
 
-    # pkgs.cutechess
-    pkgs.stockfish
-    pkgs.chessx
-    # pkgs.xboard
+      # pkgs.cutechess
+      pkgs.stockfish
+      pkgs.chessx
+      # pkgs.xboard
 
-    pkgs.vesktop
+      pkgs.vesktop
 
-    pkgs.mold
-    # pkgs.cutter
-    # pkgs.rizin
+      pkgs.mold
+      # pkgs.cutter
+      # pkgs.rizin
 
-    pkgs.just
+      pkgs.just
 
-    pkgs.aseprite-unfree
+      pkgs.aseprite-unfree
 
-    pkgs.craftos-pc
-    (packwiz.packages.${pkgs.system}.default.override {
-      buildGoModule = args:
-        pkgs.buildGoModule (args
-          // rec {
-            vendorSha256 = "sha256-yL5pWbVqf6mEpgYsItLnv8nwSmoMP+SE0rX/s7u2vCg=";
-            patches = [
-              (pkgs.fetchpatch {
-                url = "https://patch-diff.githubusercontent.com/raw/packwiz/packwiz/pull/258.diff";
-                hash = "sha256-EzKymkZWihxbzZ9XiFQq6Aa0k2AKX7gh9YTIOmOUJ1o=";
-              })
-            ];
-          });
-    })
+      pkgs.craftos-pc
+      (packwiz.packages.${pkgs.system}.default.override {
+        buildGoModule = args:
+          pkgs.buildGoModule (args
+            // rec {
+              vendorSha256 = "sha256-yL5pWbVqf6mEpgYsItLnv8nwSmoMP+SE0rX/s7u2vCg=";
+              patches = [
+                (pkgs.fetchpatch {
+                  url = "https://patch-diff.githubusercontent.com/raw/packwiz/packwiz/pull/258.diff";
+                  hash = "sha256-EzKymkZWihxbzZ9XiFQq6Aa0k2AKX7gh9YTIOmOUJ1o=";
+                })
+              ];
+            });
+      })
 
-    pkgs.ragenix
+      pkgs.ragenix
 
-    pkgs.monaspace
-    pkgs.twitter-color-emoji
+      pkgs.monaspace
+      pkgs.twitter-color-emoji
 
-    pkgs.freecad
+      pkgs.freecad
 
-    pkgs.minisign
-    pkgs.rage
+      pkgs.minisign
+      pkgs.rage
 
-    (pkgs.callPackage ./nerd-font-symbols/package.nix {})
-  ] ++ (if pkgs.system == "x86_64-linux" then [
-    pkgs.lutris
-    pkgs.blender
-    pkgs.jetbrains.idea-ultimate
-  ] else [
-    pkgs.rnote
-    pkgs.maliit-keyboard
-    pkgs.maliit-framework
-    (pkgs.steam.override {
-      # steamn't
-      steam = null;
-      steam-runtime-wrapped = pkgs.steamPackages.steam-runtime-wrapped.override {
-        steamArch = "amd64";
-      };
-      steam-runtime-wrapped-i686 = null;
-      glxinfo-i686 = null;
-    }).run
-    pkgs.krita
-  ]);
+      (pkgs.callPackage ./nerd-font-symbols/package.nix {})
+    ]
+    ++ (
+      if pkgs.system == "x86_64-linux"
+      then [
+        pkgs.lutris
+        pkgs.blender
+        pkgs.jetbrains.idea-ultimate
+      ]
+      else [
+        pkgs.rnote
+        pkgs.maliit-keyboard
+        pkgs.maliit-framework
+        (pkgs.steam.override {
+          # steamn't
+          steam = null;
+          steam-runtime-wrapped = pkgs.steamPackages.steam-runtime-wrapped.override {
+            steamArch = "amd64";
+          };
+          steam-runtime-wrapped-i686 = null;
+          glxinfo-i686 = null;
+        })
+        .run
+        pkgs.krita
+      ]
+    );
 
   fonts.fontconfig.enable = true;
   xdg.configFile."fontconfig/conf.d/10-nerd-font-symbols.conf" = let
@@ -612,11 +642,11 @@ in {
 
   programs.mangohud.enable = true;
 
-  qt = {
-    enable = true;
-    platformTheme = "kde";
-    style.name = "kvantum-dark";
-  };
+  # qt = {
+  #   enable = true;
+  #   # platformTheme = "kde";
+  #   # style.name = "kvantum-dark";
+  # };
 
   home.pointerCursor = {
     package = pkgs.catppuccin-cursors."${config.catppuccin.flavour}${mkUpper catppuccinDarkness}";
@@ -829,7 +859,6 @@ in {
         matklad.rust-analyzer
         tamasfe.even-better-toml
 
-
         sumneko.lua
 
         redhat.vscode-yaml
@@ -849,18 +878,25 @@ in {
           version = "1.3.1";
           sha256 = "sha256-wJICDW8bEBjilhjhoaSddN63vVn6l6aepPtx8VKTdZA=";
         }
-      ] ++ (if pkgs.system == "x86_64-linux" then [
-        ms-python.python
-        ms-python.vscode-pylance
-      ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-        {
-          name = "pico-w-go";
-          publisher = "paulober";
-          version = "3.5.0";
-          arch = "linux-x64";
-          sha256 = "sha256-6cGcJaYTFWvmR1PKBymoHC8GnQ0AGOSsdoYKlbNE1U0=";
-        }
-      ] else []);
+      ]
+      ++ (
+        if pkgs.system == "x86_64-linux"
+        then
+          [
+            ms-python.python
+            ms-python.vscode-pylance
+          ]
+          ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+            {
+              name = "pico-w-go";
+              publisher = "paulober";
+              version = "3.5.0";
+              arch = "linux-x64";
+              sha256 = "sha256-6cGcJaYTFWvmR1PKBymoHC8GnQ0AGOSsdoYKlbNE1U0=";
+            }
+          ]
+        else []
+      );
   };
 
   programs.go.enable = true;
