@@ -136,6 +136,7 @@ in {
         then
           pkg //
           self.symlinkJoin {
+            name = pkg.name;
             paths = [pkg];
             buildInputs = [self.makeWrapper];
             postBuild = ''
