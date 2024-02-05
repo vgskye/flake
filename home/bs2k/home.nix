@@ -134,8 +134,10 @@ in {
       scale-electron = pkg: bin:
         if self.system == "aarch64-linux"
         then
+          pkg //
           self.symlinkJoin {
-            name = pkg.name;
+            name = pkg.name + "-wrapped";
+            pname = pkg.pname + "-wrapped";
             paths = [pkg];
             buildInputs = [self.makeWrapper];
             postBuild = ''
