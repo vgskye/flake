@@ -130,24 +130,24 @@ in {
         then self.callPackage (import ./stockfish.nix) {}
         else super.stockfish;
     })
-    (_: super:
-      if super.system == "aarch64-linux"
-      then let
-        scale-electron = pkg: bin:
-          super.symlinkJoin {
+    (self: super: let
+      scale-electron = pkg: bin:
+        if self.system == "aarch64-linux"
+        then
+          self.symlinkJoin {
             name = pkg.name;
             paths = [pkg];
-            buildInputs = [super.makeWrapper];
+            buildInputs = [self.makeWrapper];
             postBuild = ''
               wrapProgram $out/bin/${bin} \
                 --add-flags "--force-device-scale-factor=1.5"
             '';
-          };
-      in {
-        vesktop = scale-electron super.vesktop "vencorddesktop";
-        vscode = scale-electron super.vscode "code";
-      }
-      else {})
+          }
+        else pkg;
+    in {
+      vesktop = scale-electron super.vesktop "vencorddesktop";
+      vscode = scale-electron super.vscode "code";
+    })
   ];
 
   # home.files = {
