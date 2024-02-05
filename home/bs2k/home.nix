@@ -131,7 +131,7 @@ in {
         else super.stockfish;
     })
     (self: super:
-      if self.system == "aarch64-linux"
+      if super.system == "aarch64-linux"
       then let
         scale-electron = pkg: bin:
           self.symlinkJoin {
