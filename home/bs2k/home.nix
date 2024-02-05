@@ -598,7 +598,7 @@ in {
       <?xml version="1.0"?>
       <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
       <fontconfig>
-        <!--${overlays}-->
+        ${overlays}
       </fontconfig>
     '';
     onChange = "${pkgs.fontconfig}/bin/fc-cache -f";
