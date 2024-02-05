@@ -51,95 +51,93 @@ in {
   # };
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays =
-    [
-      rust-overlay.overlays.default
-      nix-alien.overlays.default
-      agenix.overlays.default
-      (self: super: {
-        monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
+  nixpkgs.overlays = [
+    rust-overlay.overlays.default
+    nix-alien.overlays.default
+    agenix.overlays.default
+    (self: super: {
+      monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
-        # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
-        vesktop = super.vesktop.override {
-          vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
-          # gcc13Stdenv = pkgsUnstable.gcc13Stdenv;
-          # electron = self.electron_27;
+      # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
+      vesktop = super.vesktop.override {
+        vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
+        # gcc13Stdenv = pkgsUnstable.gcc13Stdenv;
+        # electron = self.electron_27;
+      };
+
+      # openai-whisper = pkgsUnstable.python310Packages.openai-whisper.override {
+      #   torch = pkgsUnstable.python310Packages.torch-bin;
+      # };
+      discord-canary = super.discord-canary.override {nss = pkgs.nss_latest;};
+      discord = super.discord.override {
+        nss = pkgs.nss_latest;
+        withOpenASAR = true;
+      };
+
+      cutter = super.cutter.overrideAttrs (old: rec {
+        version = "2.3.0";
+        src = self.fetchFromGitHub {
+          owner = "rizinorg";
+          repo = "cutter";
+          rev = "v${version}";
+          hash = "sha256-oQ3sLIGKMEw3k27aSFcrJqo0TgGkkBNdzl6GSoOIYak=";
+          fetchSubmodules = true;
         };
+      });
 
-        # openai-whisper = pkgsUnstable.python310Packages.openai-whisper.override {
-        #   torch = pkgsUnstable.python310Packages.torch-bin;
-        # };
-        discord-canary = super.discord-canary.override {nss = pkgs.nss_latest;};
-        discord = super.discord.override {
-          nss = pkgs.nss_latest;
-          withOpenASAR = true;
+      aseprite-unfree = self.callPackage (import ./aseprite/default.nix) {};
+
+      rizin = super.rizin.overrideAttrs (old: rec {
+        version = "0.6.0";
+        src = self.fetchurl {
+          url = "https://github.com/rizinorg/rizin/releases/download/v${version}/rizin-src-v${version}.tar.xz";
+          hash = "sha256-apJJBu/fVHrFBGJ2f1rdU5AkNuekhi0sDiTKkbd2FQg=";
         };
+      });
+      godot_4 = pkgsUnstable.godot_4;
 
-        cutter = super.cutter.overrideAttrs (old: rec {
-          version = "2.3.0";
-          src = self.fetchFromGitHub {
-            owner = "rizinorg";
-            repo = "cutter";
+      libreoffice-qt = override-icon super.libreoffice-qt "" "libreoffice-";
+
+      # prismlauncher-alt = prismlauncher.packages.x86_64-linux.prismlauncher-qt5;
+      # override-icon prismlauncher.packages.x86_64-linux.prismlauncher-qt5
+      # "org.prismlauncher.PrismLauncher" "minecraft";
+
+      # nheko = override-icon super.nheko "nheko" "google-chat";
+
+      # galaxy-buds-client =
+      #   super.callPackage (import ./galaxy-buds-client.nix) {};
+
+      optar = super.optar.overrideAttrs (old: {patches = [./optar.patch];});
+
+      cutechess = with self;
+        stdenv.mkDerivation rec {
+          pname = "cutechess";
+          version = "1.3.1";
+
+          src = fetchFromGitHub {
+            owner = "cutechess";
+            repo = "cutechess";
             rev = "v${version}";
-            hash = "sha256-oQ3sLIGKMEw3k27aSFcrJqo0TgGkkBNdzl6GSoOIYak=";
-            fetchSubmodules = true;
-          };
-        });
-
-        aseprite-unfree = self.callPackage (import ./aseprite/default.nix) {};
-
-        rizin = super.rizin.overrideAttrs (old: rec {
-          version = "0.6.0";
-          src = self.fetchurl {
-            url = "https://github.com/rizinorg/rizin/releases/download/v${version}/rizin-src-v${version}.tar.xz";
-            hash = "sha256-apJJBu/fVHrFBGJ2f1rdU5AkNuekhi0sDiTKkbd2FQg=";
-          };
-        });
-        godot_4 = pkgsUnstable.godot_4;
-
-        libreoffice-qt = override-icon super.libreoffice-qt "" "libreoffice-";
-
-        # prismlauncher-alt = prismlauncher.packages.x86_64-linux.prismlauncher-qt5;
-        # override-icon prismlauncher.packages.x86_64-linux.prismlauncher-qt5
-        # "org.prismlauncher.PrismLauncher" "minecraft";
-
-        # nheko = override-icon super.nheko "nheko" "google-chat";
-
-        # galaxy-buds-client =
-        #   super.callPackage (import ./galaxy-buds-client.nix) {};
-
-        optar = super.optar.overrideAttrs (old: {patches = [./optar.patch];});
-
-        cutechess = with self;
-          stdenv.mkDerivation rec {
-            pname = "cutechess";
-            version = "1.3.1";
-
-            src = fetchFromGitHub {
-              owner = "cutechess";
-              repo = "cutechess";
-              rev = "v${version}";
-              hash = "sha256-P44Twbw2MGz+oTzPwMFCe73zPxAex6uYjSTtaUypfHw=";
-            };
-
-            buildInputs = [libsForQt5.qt5.qtbase];
-            nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
+            hash = "sha256-P44Twbw2MGz+oTzPwMFCe73zPxAex6uYjSTtaUypfHw=";
           };
 
-        stockfish =
-          if self.system == "x86_64-linux"
-          then self.callPackage (import ./stockfish.nix) {}
-          else super.stockfish;
-      })
-    ]
-    ++ (
-      if pkgs.system == "aarch64-linux"
-      then [(self: super: let
+          buildInputs = [libsForQt5.qt5.qtbase];
+          nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
+        };
+
+      stockfish =
+        if self.system == "x86_64-linux"
+        then self.callPackage (import ./stockfish.nix) {}
+        else super.stockfish;
+    })
+    (self: super:
+      if self.system == "aarch64-linux"
+      then let
         scale-electron = pkg: bin:
-          super.symlinkJoin {
+          self.symlinkJoin {
             name = pkg.name;
             paths = [pkg];
-            buildInputs = [super.makeWrapper];
+            buildInputs = [self.makeWrapper];
             postBuild = ''
               wrapProgram $out/bin/${bin} \
                 --add-flags "--force-device-scale-factor=1.5"
@@ -148,9 +146,9 @@ in {
       in {
         vesktop = scale-electron super.vesktop "vencorddesktop";
         vscode = scale-electron super.vscode "code";
-      })]
-      else []
-    );
+      }
+      else {})
+  ];
 
   # home.files = {
   #   catppuccin-kde = {
