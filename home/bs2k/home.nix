@@ -130,14 +130,14 @@ in {
         then self.callPackage (import ./stockfish.nix) {}
         else super.stockfish;
     })
-    (self: super:
+    (_: super:
       if super.system == "aarch64-linux"
       then let
         scale-electron = pkg: bin:
-          self.symlinkJoin {
+          super.symlinkJoin {
             name = pkg.name;
             paths = [pkg];
-            buildInputs = [self.makeWrapper];
+            buildInputs = [super.makeWrapper];
             postBuild = ''
               wrapProgram $out/bin/${bin} \
                 --add-flags "--force-device-scale-factor=1.5"
