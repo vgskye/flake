@@ -136,10 +136,10 @@ in {
       if pkgs.system == "aarch64-linux"
       then [(self: super: let
         scale-electron = pkg: bin:
-          self.symlinkJoin {
+          super.symlinkJoin {
             name = pkg.name;
             paths = [pkg];
-            buildInputs = [self.makeWrapper];
+            buildInputs = [super.makeWrapper];
             postBuild = ''
               wrapProgram $out/bin/${bin} \
                 --add-flags "--force-device-scale-factor=1.5"
