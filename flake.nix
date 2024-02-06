@@ -47,8 +47,6 @@
     };
     catppuccin = {
       url = "github:Stonks3141/ctp-nix";
-      inputs.home-manager.follows = "home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     quiclime = {
       url = "git+https://git.skye.vg/me/quiclime.git";
