@@ -686,11 +686,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1707199319,
-        "narHash": "sha256-+e7NHW1Sdj1CW+/AFrnVD81g4a+BPRpxUBoIFTgfcww=",
+        "lastModified": 1707201924,
+        "narHash": "sha256-jnx4s9U8BcFdVRUnCCMznwmczrK8yK86KsgQ8p/A+Fs=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "28a61f1b42334baba1fc179b632852845fb5a9c0",
+        "rev": "69c5afb84f142bdbe9079c048941d03aefad9d10",
         "type": "github"
       },
       "original": {
@@ -811,11 +811,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1707201246,
-        "narHash": "sha256-aTvouzcMKSgkFXQNpg71McK6SgB1mttV4ZI1Gnx7tRg=",
+        "lastModified": 1707203647,
+        "narHash": "sha256-bXL/pe0vmdFbpQ0tm2WjocFCKmaHNv+id4ZyLyHIKY0=",
         "ref": "refs/heads/kity",
-        "rev": "5d36e5a9bad258b7af00e06f4868c05223fa5968",
-        "revCount": 8,
+        "rev": "d6470c282710c2136def93778d810a215790b074",
+        "revCount": 9,
         "type": "git",
         "url": "https://git.skye.vg/me/quiclime.git"
       },
