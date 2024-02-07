@@ -543,6 +543,10 @@ in {
       pkgs.rage
 
       (pkgs.callPackage ./nerd-font-symbols/package.nix {})
+
+      (pkgs.callPackage ../../nome-manager/package.nix { path = config.programs.home-manager.path; })
+      (pkgs.callPackage ../../nomos-rebuild/package.nix {})
+      pkgs.nix-output-monitor 
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
