@@ -20,7 +20,11 @@ in {
   #     experimental-features = nix-command flakes ca-derivations
   #   '';
   # };
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+    substituters = ["https://cache.garnix.io"];
+    trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
+  };
 
   nix.nixPath = [
     "nixpkgs=${channelPath}"
@@ -74,13 +78,14 @@ in {
 
   services.flatpak.enable = true;
 
-  # services.beesd.filesystems = {
-  #   home = {
-  #     spec = "/home";
-  #     verbosity = "warning";
-  #     extraOptions = [ "--loadavg-target" "6.0" ];
-  #   };
-  # };
+  services.beesd.filesystems = {
+    home = {
+      spec = "/home";
+      verbosity = "warning";
+      extraOptions = [ "--loadavg-target" "6.0" ];
+      workDir = "persist/bees";
+    };
+  };
 
   programs.command-not-found.enable = false;
 
