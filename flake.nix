@@ -158,7 +158,7 @@
             quiclime.nixosModules.default
             (nixinateModule "remote")
             {
-              nipkgs.hostPlatform = system;
+              nixpkgs.hostPlatform = system;
             }
           ];
           specialArgs = {
