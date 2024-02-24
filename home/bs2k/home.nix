@@ -182,6 +182,7 @@ in {
     HSA_OVERRIDE_GFX_VERSION = "10.3.0";
     NIXOS_OZONE_WL = "1";
     QT_QUICK_CONTROLS_STYLE = "org.kde.desktop";
+    __RA_LSP_SERVER_DEBUG = "/home/bs2k/.nix-profile/bin/rust-analyzer";
     # CHROME_EXECUTABLE = "${pkgs.google-chrome}/bin/google-chrome-stable";
   };
 
@@ -405,16 +406,17 @@ in {
           onnxruntime
           pillow
           opencv4
+          cairosvg
         ]))
 
       (pkgs.rust-bin.stable.latest.default.override {
-        extensions = ["rust-src"];
+        extensions = ["rust-src" "rust-analyzer"];
         targets = [
           "wasm32-unknown-unknown"
           "wasm32-wasi"
           # "wasm32-unknown-emscripten"
           # "x86_64-unknown-linux-musl"
-        ];
+        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl"] else []);
       })
 
       pkgs.fastly
@@ -552,7 +554,7 @@ in {
       if pkgs.system == "x86_64-linux"
       then [
         pkgs.lutris
-        pkgs.blender
+        pkgsUnstable.blender-hip
         pkgs.jetbrains.idea-ultimate
       ]
       else [
@@ -866,7 +868,7 @@ in {
         jnoortheen.nix-ide
         skellock.just
 
-        matklad.rust-analyzer
+        (matklad.rust-analyzer.override { setDefaultServerPath = false; })
         tamasfe.even-better-toml
 
         sumneko.lua
@@ -874,6 +876,11 @@ in {
         redhat.vscode-yaml
         ms-azuretools.vscode-docker
         ms-vscode-remote.remote-ssh
+
+        vadimcn.vscode-lldb
+
+        ms-vscode.cpptools
+        ms-vscode.cmake-tools
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
@@ -887,6 +894,12 @@ in {
           publisher = "geequlim";
           version = "1.3.1";
           sha256 = "sha256-wJICDW8bEBjilhjhoaSddN63vVn6l6aepPtx8VKTdZA=";
+        }
+        {
+          name = "nrf-devicetree";
+          publisher = "nordic-semiconductor";
+          version = "2023.11.120";
+          sha256 = "sha256-kCXatZeRm3MBU41JtubX9ynUJVnzs8gaIhPdgeMmSVo=";
         }
       ]
       ++ (

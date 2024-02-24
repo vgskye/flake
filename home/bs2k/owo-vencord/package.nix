@@ -9,7 +9,7 @@
   nodejs,
   cacert,
 }: let
-  gitHash = "beaf164aa88d139ca4d998cbc447936f47b8e171";
+  gitHash = "20cf1eb6a20268cf2c71aea8adfc83cc9aab52ca";
 in
   stdenv.mkDerivation rec {
     pname = "owo-vencord";
@@ -18,7 +18,7 @@ in
     src = fetchgit {
       url = "https://git.skye.vg/me/owo-vencord.git";
       rev = gitHash;
-      sha256 = "sha256-smXQt+bRz0b+Dh+H1uy04SLUBddXJ4NTrqZ8K++Xn+s=";
+      sha256 = "sha256-NrzsRs2py68zWv7vn6FHDBY9g2X5EGC1WIjFCcAmp4g=";
     };
 
     pnpmPatch = builtins.toJSON {
@@ -64,7 +64,7 @@ in
       outputHash =
         if stdenv.hostPlatform.system == "x86_64-linux" then
         "sha256-mw8YhSHYAIVJQA4/zMyeXnhNus56k/dDv9MwqzClVNs=" else
-        "sha256-ofzh6OMBFuNpZYpGumd4+KlP1tQaT59xA6EyTgrPIC8=";
+        lib.fakeHash;
     };
 
     VENCORD_HASH = gitHash;

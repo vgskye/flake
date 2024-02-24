@@ -267,7 +267,7 @@ in {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.bs2k = {
     isNormalUser = true;
-    extraGroups = ["wheel" "adbusers" "docker" "dialout" "tss" "libvirtd"]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel" "adbusers" "docker" "dialout" "tss" "libvirtd" "video" "render"]; # Enable ‘sudo’ for the user.
     hashedPasswordFile = config.age.secrets.password.path;
   };
 

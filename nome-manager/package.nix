@@ -43,8 +43,8 @@ in runCommand "nome-manager" {
         nix-output-monitor
       ]
     }" \
-    --subst-var-by HOME_MANAGER_LIB '${pathStr}/lib/bash/home-manager.sh' \
-    --subst-var-by HOME_MANAGER_PATH '${pathStr}' \
+    --subst-var-by HOME_MANAGER_LIB "$out/share/bash/home-manager.sh" \
+    --subst-var-by HOME_MANAGER_PATH $HM_PATH \
     --subst-var-by OUT "$out"
 
   install -D -m755 $HM_PATH/home-manager/completion.bash \
