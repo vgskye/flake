@@ -157,6 +157,9 @@
             agenix.nixosModules.default
             quiclime.nixosModules.default
             (nixinateModule "remote")
+            {
+              nipkgs.hostPlatform = system;
+            }
           ];
           specialArgs = {
             inherit region;
