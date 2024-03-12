@@ -561,6 +561,7 @@ in {
         pkgs.rnote
         pkgs.maliit-keyboard
         pkgs.maliit-framework
+        pkgs.xournalpp
         (pkgs.steam.override {
           # steamn't
           steam = null;
