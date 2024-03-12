@@ -9,7 +9,7 @@
   nodejs,
   cacert,
 }: let
-  gitHash = "20cf1eb6a20268cf2c71aea8adfc83cc9aab52ca";
+  gitHash = "1807d6073136f63d3c19342682c193ae82d9b8ae";
 in
   stdenv.mkDerivation rec {
     pname = "owo-vencord";
@@ -18,26 +18,14 @@ in
     src = fetchgit {
       url = "https://git.skye.vg/me/owo-vencord.git";
       rev = gitHash;
-      sha256 = "sha256-NrzsRs2py68zWv7vn6FHDBY9g2X5EGC1WIjFCcAmp4g=";
+      sha256 = "sha256-yeZX8bv1+1H2w9G4R9UUlhOvardGNPUwVkD1t+a3yWo=";
     };
-
-    pnpmPatch = builtins.toJSON {
-      pnpm.supportedArchitectures = {
-        os = [ "linux" ];
-        cpu = [ "x64" "arm64" ];
-      };
-    };
-
-    postPatch = ''
-      mv package.json package.json.orig
-      jq --raw-output ". * $pnpmPatch" package.json.orig > package.json
-    '';
 
     pnpmDeps =
       assert lib.versionAtLeast nodePackages.pnpm.version "8.10.0";
       stdenvNoCC.mkDerivation {
       pname = "${pname}-pnpm-deps";
-      inherit src version pnpmPatch postPatch;
+      inherit src version;
 
       nativeBuildInputs = [
         jq
@@ -46,25 +34,30 @@ in
         cacert
       ];
 
-      # https://github.com/NixOS/nixpkgs/blob/763e59ffedb5c25774387bf99bc725df5df82d10/pkgs/applications/misc/pot/default.nix#L56
       installPhase = ''
+        runHook preInstall
         export HOME=$(mktemp -d)
         pnpm config set store-dir $out
-        pnpm install --frozen-lockfile --ignore-script
+        # pnpm is going to warn us about using --force
+        # --force allows us to fetch all dependencies including ones that aren't meant for our host platform
+        pnpm install --frozen-lockfile --ignore-script --force
+        runHook postInstall
+      '';
+
+      fixupPhase = ''
+        runHook preFixup
         rm -rf $out/v3/tmp
         for f in $(find $out -name "*.json"); do
           sed -i -E -e 's/"checkedAt":[0-9]+,//g' $f
           jq --sort-keys . $f | sponge $f
         done
+        runHook postFixup
       '';
 
+      dontConfigure = true;
       dontBuild = true;
-      dontFixup = true;
       outputHashMode = "recursive";
-      outputHash =
-        if stdenv.hostPlatform.system == "x86_64-linux" then
-        "sha256-mw8YhSHYAIVJQA4/zMyeXnhNus56k/dDv9MwqzClVNs=" else
-        "sha256-ofzh6OMBFuNpZYpGumd4+KlP1tQaT59xA6EyTgrPIC8=";
+      outputHash = "sha256-pQlc8iOMbRAfhGkUwPXdtz/ZyKsWRaDZXO8TWnmuv34=";
     };
 
     VENCORD_HASH = gitHash;

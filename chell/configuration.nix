@@ -275,7 +275,7 @@ in {
     enable = true;
     settings = {
       general = {
-        renice = 20;
+        renice = 10;
       };
 
       custom = {

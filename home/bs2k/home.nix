@@ -437,6 +437,11 @@ in {
         glfw = pkgs.callPackage (import ./glfw/package.nix) {};
 
         additionalLibs = [pkgs.libva];
+        jdks = with pkgs; [
+          jdk8
+          jdk17
+          jdk21
+        ];
       })
 
       pkgs.openrgb
@@ -549,6 +554,8 @@ in {
       (pkgs.callPackage ../../nome-manager/package.nix { path = config.programs.home-manager.path; })
       (pkgs.callPackage ../../nomos-rebuild/package.nix {})
       pkgs.nix-output-monitor 
+
+      pkgs.ripgrep
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
