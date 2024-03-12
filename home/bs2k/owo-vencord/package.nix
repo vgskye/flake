@@ -64,7 +64,7 @@ in
       outputHash =
         if stdenv.hostPlatform.system == "x86_64-linux" then
         "sha256-mw8YhSHYAIVJQA4/zMyeXnhNus56k/dDv9MwqzClVNs=" else
-        lib.fakeHash;
+        "sha256-ofzh6OMBFuNpZYpGumd4+KlP1tQaT59xA6EyTgrPIC8=";
     };
 
     VENCORD_HASH = gitHash;

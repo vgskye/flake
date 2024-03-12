@@ -878,10 +878,6 @@ in {
         ms-azuretools.vscode-docker
         ms-vscode-remote.remote-ssh
 
-        vadimcn.vscode-lldb
-
-        ms-vscode.cpptools
-        ms-vscode.cmake-tools
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
@@ -909,6 +905,10 @@ in {
           [
             ms-python.python
             ms-python.vscode-pylance
+            vadimcn.vscode-lldb
+
+            ms-vscode.cpptools
+            ms-vscode.cmake-tools
           ]
           ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
             {
