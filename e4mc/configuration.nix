@@ -25,6 +25,17 @@
     owner = "acme";
   };
 
+  nixpkgs.overlays = [
+    (self: super: {
+      lego = super.lego.overrideAttrs (old: {
+        patches = [
+          # Glauca Digital needs a small timeout before we start making DNS reqs
+          ./lego.patch
+        ];
+      });
+    })
+  ];
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "me@skye.vg";

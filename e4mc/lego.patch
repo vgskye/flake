@@ -1,0 +1,13 @@
+diff --git a/challenge/dns01/dns_challenge.go b/challenge/dns01/dns_challenge.go
+index e0947e6b..56cb8b26 100644
+--- a/challenge/dns01/dns_challenge.go
++++ b/challenge/dns01/dns_challenge.go
+@@ -127,6 +127,8 @@ func (c *Challenge) Solve(authz acme.Authorization) error {
+ 
+ 	log.Infof("[%s] acme: Checking DNS record propagation. [nameservers=%s]", domain, strings.Join(recursiveNameservers, ","))
+ 
++	time.Sleep(120 * time.Second)
++
+ 	time.Sleep(interval)
+ 
+ 	err = wait.For("propagation", timeout, interval, func() (bool, error) {
