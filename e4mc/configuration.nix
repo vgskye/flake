@@ -19,22 +19,11 @@
 
   age.identityPaths = ["/nix/agenix-key"];
 
-  age.secrets.e4mc-dns-key = {
-    file = ../secrets/e4mc-dns-key.age;
+  age.secrets.e4mc-cf-key = {
+    file = ../secrets/e4mc-cf-key.age;
     mode = "400";
     owner = "acme";
   };
-
-  nixpkgs.overlays = [
-    (self: super: {
-      lego = super.lego.overrideAttrs (old: {
-        patches = [
-          # Glauca Digital needs a small timeout before we start making DNS reqs
-          ./lego.patch
-        ];
-      });
-    })
-  ];
 
   security.acme = {
     acceptTerms = true;
@@ -44,8 +33,8 @@
         domain = "${region}.e4mc.link";
         extraDomainNames = ["*.${region}.e4mc.link"];
         dnsResolver = "1.1.1.1";
-        dnsProvider = "rfc2136";
-        credentialsFile = config.age.secrets.e4mc-dns-key.path;
+        dnsProvider = "cloudflare";
+        credentialsFile = config.age.secrets.e4mc-cf-key.path;
         postRun = ''
           ${pkgs.curl}/bin/curl -X POST http://127.0.0.1:25585/reload-certs
         '';

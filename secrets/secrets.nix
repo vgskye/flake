@@ -26,6 +26,7 @@ in {
   "longview-secondary.age".publicKeys = [bs2k secondary];
   "longview-primary.age".publicKeys = [bs2k];
   "e4mc-dns-key.age".publicKeys = [bs2k] ++ e4mc;
+  "e4mc-cf-key.age".publicKeys = [bs2k] ++ e4mc;
   "telegraf-key.age".publicKeys = [bs2k] ++ all;
   "restic-secrets.age".publicKeys = [bs2k bridget];
 }
