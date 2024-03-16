@@ -32,7 +32,6 @@
       e4mc = {
         domain = "${region}.e4mc.link";
         extraDomainNames = ["*.${region}.e4mc.link"];
-        dnsResolver = "1.1.1.1";
         dnsProvider = "cloudflare";
         credentialsFile = config.age.secrets.e4mc-cf-key.path;
         postRun = ''
