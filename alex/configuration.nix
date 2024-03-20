@@ -28,13 +28,20 @@
   services.tailscale.enable = true;
 
   networking.firewall.allowedTCPPorts = [80 443 25565];
-  networking.firewall.allowedUDPPorts = [443 25575];
+  networking.firewall.allowedUDPPorts = [443 25565 24454];
 
   programs.mosh.enable = true;
 
   environment.systemPackages = with pkgs; [
     git
   ];
+
+  services.packwiz-server = {
+    enable = true;
+    eula = true;
+    packUrl = "https://raw.githubusercontent.com/vgskye/htstempack/tessie/pack.toml";
+    jvmOpts = "-Xms8192M -Xmx8192M -XX:+UseZGC";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

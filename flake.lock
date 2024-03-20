@@ -52,6 +52,26 @@
         "type": "github"
       }
     },
+    "babysitter": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unwrapped"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710932506,
+        "narHash": "sha256-x4SAr2isTTb3lD9TVd9/iuhP0Wx2HpA3Beytxvr2l8M=",
+        "owner": "vgskye",
+        "repo": "babysitter",
+        "rev": "adef4d01a55f9db93132a2b7185f1863b5814e68",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vgskye",
+        "repo": "babysitter",
+        "type": "github"
+      }
+    },
     "catppuccin": {
       "locked": {
         "lastModified": 1710663401,
@@ -649,11 +669,11 @@
     },
     "nixpkgs-unwrapped": {
       "locked": {
-        "lastModified": 1710695816,
-        "narHash": "sha256-3Eh7fhEID17pv9ZxrPwCLfqXnYP006RKzSs0JptsN84=",
+        "lastModified": 1710838473,
+        "narHash": "sha256-RLvwdQSENKOaLdKhNie8XqHmTXzNm00/M/THj6zplQo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "614b4613980a522ba49f0d194531beddbb7220d3",
+        "rev": "fa9f817df522ac294016af3d40ccff82f5fd3a63",
         "type": "github"
       },
       "original": {
@@ -685,11 +705,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1710919093,
-        "narHash": "sha256-0A7NnR+kfsn9VSTkbZpkx5JAl7psNU5QKpEZk8wU/uU=",
+        "lastModified": 1710931549,
+        "narHash": "sha256-jyXyiUx5VVUtss0OzlLKt5OY/fLVkLRW6iEiQbeDP4g=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "14ecc0dbbc7f572a29fb177168c991379d5e44b9",
+        "rev": "35fbc48809c0251085ec8c90dd74e8679a98b20b",
         "type": "github"
       },
       "original": {
@@ -826,6 +846,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "babysitter": "babysitter",
         "catppuccin": "catppuccin",
         "catppuccin-vsc": "catppuccin-vsc",
         "comma": "comma",

@@ -52,6 +52,10 @@
       url = "git+https://git.skye.vg/me/quiclime.git";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
     };
+    babysitter = {
+      url = "github:vgskye/babysitter";
+      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+    };
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.3.0";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
@@ -91,6 +95,7 @@
     prismlauncher,
     catppuccin,
     quiclime,
+    babysitter,
     lanzaboote,
     nixinate,
     packwiz,
@@ -241,7 +246,7 @@
         modules = [
           ./alex/configuration.nix
           agenix.nixosModules.default
-          quiclime.nixosModules.default
+          babysitter.nixosModules.default
           telegrafModule
           tailscalepkgmodule
           (nixinateModule "remote")
