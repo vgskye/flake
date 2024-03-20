@@ -60,7 +60,28 @@ in {
       monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
-      vesktop = super.vesktop.override {
+      vesktop = (super.vesktop.overrideAttrs (old: {
+        version = "1.5.1";
+        src = old.src.override {
+          hash = "sha256-OyAGzlwwdEKBbJJ7h3glwx/THy2VvUn/kA/Df3arWQU=";
+        };
+        pnpmDeps = old.pnpmDeps.overrideAttrs (old: {
+          outputHash = "sha256-WGihYf/QFAJBVI6mBlTZE5z7axi1zrmKCSv7SHTkeYg=";
+        });
+        installPhase = builtins.replaceStrings ["vencorddesktop"] ["vesktop"] old.installPhase;
+        desktopItems = [
+          (pkgs.makeDesktopItem {
+            name = "vesktop";
+            desktopName = "Vesktop";
+            exec = "vesktop %U";
+            icon = "vesktop";
+            startupWMClass = "Vesktop";
+            genericName = "Internet Messenger";
+            keywords = [ "discord" "vencord" "electron" "chat" ];
+            categories = [ "Network" "InstantMessaging" "Chat" ];
+          })
+        ];
+      })).override {
         vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
         # gcc13Stdenv = pkgsUnstable.gcc13Stdenv;
         # electron = self.electron_27;
@@ -243,7 +264,7 @@ in {
       # pkgs.deploy-rs.deploy-rs
       pkgs.spotify-qt
       # pkgs.spotify-tui
-      pkgs.rnix-lsp
+      # pkgs.rnix-lsp
       pkgs.fusee-launcher
       # pkgs.nur.repos.jakobrs.libtasMulti
       pkgs.love
@@ -561,7 +582,7 @@ in {
       if pkgs.system == "x86_64-linux"
       then [
         pkgs.lutris
-        pkgsUnstable.blender-hip
+        pkgs.blender-hip
         pkgs.jetbrains.idea-ultimate
       ]
       else [
