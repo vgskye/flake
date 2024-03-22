@@ -1,9 +1,9 @@
-diff --git a/arch/arm64/configs/sc7180_cros_defconfig b/arch/arm64/configs/sc7180_cros_defconfig
+diff --git a/arch/arm64/configs/sc7180_defconfig b/arch/arm64/configs/sc7180_defconfig
 new file mode 100644
-index 000000000..c9d38293c
+index 000000000..db31fdbcc
 --- /dev/null
-+++ b/arch/arm64/configs/sc7180_cros_defconfig
-@@ -0,0 +1,7299 @@
++++ b/arch/arm64/configs/sc7180_defconfig
+@@ -0,0 +1,7301 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
 +# Linux/arm64 6.5.0 Kernel Configuration
@@ -2596,8 +2596,10 @@ index 000000000..c9d38293c
 +CONFIG_DEVMEM=y
 +CONFIG_DEVPORT=y
 +CONFIG_TCG_TPM=y
++CONFIG_TCG_TIS_CORE=y
 +# CONFIG_TCG_TIS is not set
-+# CONFIG_TCG_TIS_SPI is not set
++CONFIG_TCG_TIS_SPI=y
++CONFIG_TCG_TIS_SPI_CR50=y
 +# CONFIG_TCG_TIS_I2C is not set
 +CONFIG_TCG_TIS_I2C_CR50=y
 +# CONFIG_TCG_TIS_I2C_ATMEL is not set
@@ -7303,4 +7305,3 @@ index 000000000..c9d38293c
 +#
 +# end of Rust hacking
 +# end of Kernel hacking
-\ No newline at end of file

@@ -22,29 +22,41 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  boot.kernelPackages =
-  let
-    kernel = pkgs.callPackage ../mobile-nixos/devices/families/mainline-chromeos-sc7180/kernel {};
-    # lie to make the assertion not die
-    kernelLies = kernel.overrideAttrs (old: {
-      features = [];
-    });
-    # kernel = pkgs.callPackage ./kernel.nix {};
-  in pkgs.linuxPackagesFor kernelLies;
+  # boot.kernelPackages =
+  # let
+  #   kernel = pkgs.callPackage ../mobile-nixos/devices/families/mainline-chromeos-sc7180/kernel {};
+  #   # lie to make the assertion not die
+  #   kernelLies = kernel.overrideAttrs (old: {
+  #     features = [];
+  #   });
+  #   # kernel = pkgs.callPackage ./kernel.nix {};
+  # in pkgs.linuxPackagesFor kernelLies;
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_8.override {
+    argsOverride = {
+      defconfig = "sc7180_defconfig";
+    };
+  });
 
   networking.wireless.enable = lib.mkDefault true;
   networking.wireless.userControlled.enable = lib.mkDefault true;
 
   # All the required stuff's built-in thru the defconfig anyways
-  boot.initrd.includeDefaultModules = false;
+  # boot.initrd.includeDefaultModules = false;
 
-  # boot.kernelPatches = [
-  #   {
-  #     name = "qcm";
-  #     patch = null;
-  #     extraStructuredConfig = import ./qualcomm_cros.config pkgs;
-  #   }
-  # ];
+  boot.kernelPatches = [
+    {
+      name = "sc7180-defconfig";
+      patch = ./defconfig.patch;
+    }
+    {
+      name = "sc7180-dsi";
+      patch = pkgs.fetchpatch {
+        url = "https://github.com/torvalds/linux/commit/75ee2ff7b8427645f294098d9c6f005399f4ce94.patch";
+        hash = "sha256-VJnyQfwwjnfzMPZkfSVd99vKxGUvYNn1qwC3Kf6crJA=";
+      };
+      # extraStructuredConfig = import ./qualcomm_cros.nix pkgs;
+    }
+  ];
 
   mobile.kernel.structuredConfig = [
     (helpers:
