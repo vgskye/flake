@@ -577,6 +577,7 @@ in {
       pkgs.nix-output-monitor 
 
       pkgs.ripgrep
+      pkgs.solaar
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
