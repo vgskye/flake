@@ -94,10 +94,15 @@ in {
             sleep = "f11";
             backspace = "f12";
           };
+          global = {
+            overload_tap_timeout = 200;
+          };
         };
       };
     };
   };
+
+  virtualisation.docker.enable = true;
 
   networking.hostName = "thorley";
 
