@@ -40,8 +40,57 @@
   networking.wireless.enable = lib.mkDefault true;
   networking.wireless.userControlled.enable = lib.mkDefault true;
 
-  # All the required stuff's built-in thru the defconfig anyways
-  # boot.initrd.includeDefaultModules = false;
+  # The default's assuming incorrectly for a few of these, so specify our own
+  boot.initrd.includeDefaultModules = false;
+
+  boot.initrd.availableKernelModules = [
+    # Default had some SATA stuff here. We do not have SATA.
+    # Same but NVMe
+
+    # Standard SCSI stuff.
+    "sd_mod"
+    "sr_mod"
+
+    # SD cards and internal eMMC drives.
+    "mmc_block"
+
+    # USB input support, trimmed down since we only really need hammer.
+    "ehci_hcd"
+    "ohci_hcd"
+    "xhci_hcd"
+    "usbhid"
+    "hid_generic"
+    "hid_google_hammer"
+
+    # A whole bunch of CrOS EC drivers
+    "extcon_usbc_cros_ec"
+    "i2c_cros_ec_tunnel"
+    "cros_ec_lid_angle"
+    "cros_ec_sensors_core"
+    "cros_ec_sensors"
+    "cros_ec_keyb"
+    "cros_ec_dev"
+    "cros_ec_chardev"
+    "cros_ec_i2c"
+    "cros_ec"
+    "cros_ec_rpmsg"
+    "cros_ec_sensorhub"
+    "cros_ec_spi"
+    "cros_ec_sysfs"
+    "cros_ec_typec"
+    "cros_ec_vbc"
+    "cros_usbpd_notify"
+    "cros_usbpd_charger"
+    "pwm_cros_ec"
+    "cros_ec_regulator"
+    "rtc_cros_ec"
+    "snd_soc_cros_ec_codec"
+
+    # from nixos-mobile
+    "sbs-battery"
+    "sbs-charger"
+    "sbs-manager"
+  ];
 
   boot.kernelPatches = [
     {
@@ -100,31 +149,32 @@
   # That is... wrong, and we need to supply them.
   # However, /lib/firmware is still taken by the empty directory.
   # So we put them in /hacky-fw-links, and tell the kernel.
-  boot.initrd.extraFiles =
-    let
-      firmwares = [
-        "qcom/venus-5.4/venus.mdt"
-        "qcom/a630_sqe.fw"
-        "qca/crbtfw32.tlv"
-        "qca/crnv32.bin"
-        "regulatory.db"
-        "regulatory.db.p7s"
-      ];
-    in
+  boot.initrd.extraFiles = let
+    firmwares = [
+      "qcom/venus-5.4/venus.mdt"
+      "qcom/a630_sqe.fw"
+      "qca/crbtfw32.tlv"
+      "qca/crnv32.bin"
+      "regulatory.db"
+      "regulatory.db.p7s"
+    ];
+  in
     builtins.listToAttrs
-      (builtins.map (fw:
-      {
-        name = "/hacky-fw-links/${fw}.xz";
-        value = {
-          source = pkgs.runCommand "hacky-fw-links-${fw}" {
-            src = "${config.hardware.firmware}/lib/firmware/${fw}.xz";
-            preferLocalBuild = true;
-          } ''
-            cat $src > $out
-          '';
-        };
-      }
-      ) firmwares);
+    (builtins.map (
+        fw: {
+          name = "/hacky-fw-links/${fw}.xz";
+          value = {
+            source =
+              pkgs.runCommand "hacky-fw-links-${fw}" {
+                src = "${config.hardware.firmware}/lib/firmware/${fw}.xz";
+                preferLocalBuild = true;
+              } ''
+                cat $src > $out
+              '';
+          };
+        }
+      )
+      firmwares);
 
   hardware.sensor.iio.enable = true;
 
@@ -141,12 +191,6 @@
   };
 
   boot.swraid.enable = false;
-
-  boot.initrd.availableKernelModules = [
-    "sbs-battery"
-    "sbs-charger"
-    "sbs-manager"
-  ];
 
   # Ensure orientation match with keyboard.
   services.udev.extraHwdb = lib.mkBefore ''
