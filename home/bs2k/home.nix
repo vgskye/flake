@@ -64,29 +64,7 @@ in {
       kicad = override-exec pkgsUnstable.kicad "" "GTK_THEME=Breeze ";
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
-      vesktop = (super.vesktop.overrideAttrs (old: {
-        version = "1.5.1";
-        src = old.src.override {
-          hash = "sha256-OyAGzlwwdEKBbJJ7h3glwx/THy2VvUn/kA/Df3arWQU=";
-        };
-        pnpmDeps = old.pnpmDeps.overrideAttrs (old: {
-          outputHash = "sha256-WGihYf/QFAJBVI6mBlTZE5z7axi1zrmKCSv7SHTkeYg=";
-        });
-        installPhase = builtins.replaceStrings ["vencorddesktop"] ["vesktop"] old.installPhase;
-        patches = self.lib.lists.take 2 old.patches;
-        desktopItems = [
-          (pkgs.makeDesktopItem {
-            name = "vesktop";
-            desktopName = "Vesktop";
-            exec = "vesktop %U";
-            icon = "vesktop";
-            startupWMClass = "Vesktop";
-            genericName = "Internet Messenger";
-            keywords = [ "discord" "vencord" "electron" "chat" ];
-            categories = [ "Network" "InstantMessaging" "Chat" ];
-          })
-        ];
-      })).override {
+      vesktop = super.vesktop.override {
         vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
         # gcc13Stdenv = pkgsUnstable.gcc13Stdenv;
         # electron = self.electron_27;
@@ -100,6 +78,19 @@ in {
         nss = pkgs.nss_latest;
         withOpenASAR = true;
       };
+
+      # catppuccin-gtk = super.catppuccin-gtk.overrideAttrs (old: {
+      #   patches = [
+      #     (self.fetchpatch {
+      #       url = "https://github.com/catppuccin/gtk/commit/c577226e9c2df2aadb4aadf7d59bda2f194c0181.patch";
+      #       hash = "sha256-Mz5VAFEUB0qe1BOpxqXaEmJ3WDVEV9RqlixQbZChcuA=";
+      #     })
+      #     (self.fetchpatch {
+      #       url = "https://patch-diff.githubusercontent.com/raw/catppuccin/gtk/pull/159.patch";
+      #       hash = "sha256-4vgZbNeGMtsQEitIWDCVb5o4fAjhVu3iIUttUYqtHPc=";
+      #     })
+      #   ];
+      # });
 
       cutter = super.cutter.overrideAttrs (old: rec {
         version = "2.3.0";
@@ -265,7 +256,7 @@ in {
       # pkgs.polymc
       pkgs.thunderbird
       pkgs.ckan
-      pkgs.libsForQt5.ark
+      pkgs.kdePackages.ark
       pkgs.kicad
       # pkgs.eagle
       # pkgs.gcc
@@ -273,7 +264,7 @@ in {
       pkgs.godot_4
       # pkgs.godot-export-templates
       # pkgs.tiled
-      pkgs.thefuck
+      # pkgs.thefuck
       # pkgs.deploy-rs.deploy-rs
       pkgs.spotify-qt
       # pkgs.spotify-tui
@@ -304,7 +295,7 @@ in {
       # pkgs.onlykey
       pkgs.nheko
 
-      pkgs.libsForQt5.neochat
+      pkgs.kdePackages.neochat
 
       pkgs.vlc
       pkgs.yt-dlp
@@ -326,7 +317,7 @@ in {
       # pkgs.element-desktop
       pkgs.inter
       # pkgs.davinci-resolve
-      pkgs.libsForQt5.kdenlive
+      pkgs.kdePackages.kdenlive
       pkgs.wget
       pkgs.arduino
 
@@ -388,13 +379,13 @@ in {
           #     '';
           #   });
           # })
-          sounddevice
+          # sounddevice
           numpy
           scipy
-          pyaudio
-          pkgs.yubikey-manager
-          yubico-client
-          pyscard
+          # pyaudio
+          # pkgs.yubikey-manager
+          # yubico-client
+          # pyscard
           # (torchvision-bin.override { torch = torch-bin.overrideAttrs(old: {
           #   src = pkgs.fetchurl {
           #     name = "torch-1.13.1-cp310-cp310-linux_x86_64.whl";
@@ -430,17 +421,17 @@ in {
           #   '';
           # }); })
 
-          python-lsp-server
-          openai
+          # python-lsp-server
+          # openai
           requests
-          python-socketio
-          grequests
-          tiktoken
+          # python-s[ocketio
+          # grequests
+          # tiktoken]
 
-          onnxruntime
-          pillow
-          opencv4
-          cairosvg
+          # onnxruntime
+          # pillow
+          # opencv4
+          # cairosvg
         ]))
 
       (fenixStructured {
@@ -466,7 +457,7 @@ in {
 
       pkgs.any-nix-shell
       # pkgs.prismlauncher-alt
-      (prismlauncher.packages.${pkgs.system}.prismlauncher-qt5.override {
+      (prismlauncher.packages.${pkgs.system}.prismlauncher.override {
         gamemodeSupport = true;
 
         glfw = pkgs.callPackage (import ./glfw/package.nix) {};
@@ -493,7 +484,7 @@ in {
       # pkgs.latte-dock
 
       pkgs.transmission-qt
-      pkgs.libsForQt5.ktorrent
+      pkgs.kdePackages.ktorrent
       # pkgs.jetbrains.clion
       pkgs.gnumake
 
@@ -740,7 +731,7 @@ in {
     interactiveShellInit =
       ''
         any-nix-shell fish | source
-        thefuck --alias | source
+        # thefuck --alias | source
         sqlx completions fish | source
         # export LG_WEBOS_TV_SDK_HOME=/home/bs2k/webOS_TV_SDK/
         # export WEBOS_CLI_TV="$LG_WEBOS_TV_SDK_HOME/CLI/bin"
@@ -946,6 +937,12 @@ in {
           publisher = "nordic-semiconductor";
           version = "2023.11.120";
           sha256 = "sha256-kCXatZeRm3MBU41JtubX9ynUJVnzs8gaIhPdgeMmSVo=";
+        }
+        {
+          name = "shader";
+          publisher = "slevesque";
+          version = "1.1.5";
+          sha256 = "sha256-Pf37FeQMNlv74f7LMz9+CKscF6UjTZ7ZpcaZFKtX2ZM=";
         }
       ]
       ++ (

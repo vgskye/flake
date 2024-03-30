@@ -30,51 +30,51 @@ in {
     "nixpkgs=${channelPath}"
   ];
 
-  nixpkgs.overlays = [
-    (self: super: {
-      # systemd = super.systemd.overrideAttrs (old: {
-      #   patches = old.patches ++ [
-      #     ./0019-tpm2_context_init-fix-driver-name-checking.patch
-      #   ];
-      # });
-      steam = super.steam.override {
-        extraPkgs = pkgs:
-          with pkgs; [
-            portaudio
-            # ((pkgs.callPackage ../alvr.nix) { })
-            # binutils-unwrapped
-            # alsaLib
-            # openssl
-            # glib
-            # (ffmpeg-full.override { nonfreeLicensing = true; samba = null; })
-            # cairo
-            # pango
-            # atk
-            # gdk-pixbuf
-            # gtk3
-            # clang
-            # (pkgs.vulkan-tools-lunarg.overrideAttrs (oldAttrs: rec {
-            #   patches = [
-            #     (fetchurl {
-            #       url =
-            #         "https://gist.githubusercontent.com/ckiee/038809f55f658595107b2da41acff298/raw/6d8d0a91bfd335a25e88cc76eec5c22bf1ece611/vulkantools-log.patch";
-            #       sha256 = "14gji272r53pykaadkh6rswlzwhh9iqsy1y4q0gdp8ai4ycqd129";
-            #     })
-            #   ];
-            # }))
-            # vulkan-headers
-            # vulkan-loader
-            # vulkan-validation-layers
-            # xorg.libX11
-            # xorg.libXrandr
-            # libunwind
-            # python3 # for the xcb crate
-            # libxkbcommon
-            # jack2
-          ];
-      };
-    })
-  ];
+  # nixpkgs.overlays = [
+  #   (self: super: {
+  #     # systemd = super.systemd.overrideAttrs (old: {
+  #     #   patches = old.patches ++ [
+  #     #     ./0019-tpm2_context_init-fix-driver-name-checking.patch
+  #     #   ];
+  #     # });
+  #     steam = super.steam.override {
+  #       extraPkgs = pkgs:
+  #         with pkgs; [
+  #           portaudio
+  #           # ((pkgs.callPackage ../alvr.nix) { })
+  #           # binutils-unwrapped
+  #           # alsaLib
+  #           # openssl
+  #           # glib
+  #           # (ffmpeg-full.override { nonfreeLicensing = true; samba = null; })
+  #           # cairo
+  #           # pango
+  #           # atk
+  #           # gdk-pixbuf
+  #           # gtk3
+  #           # clang
+  #           # (pkgs.vulkan-tools-lunarg.overrideAttrs (oldAttrs: rec {
+  #           #   patches = [
+  #           #     (fetchurl {
+  #           #       url =
+  #           #         "https://gist.githubusercontent.com/ckiee/038809f55f658595107b2da41acff298/raw/6d8d0a91bfd335a25e88cc76eec5c22bf1ece611/vulkantools-log.patch";
+  #           #       sha256 = "14gji272r53pykaadkh6rswlzwhh9iqsy1y4q0gdp8ai4ycqd129";
+  #           #     })
+  #           #   ];
+  #           # }))
+  #           # vulkan-headers
+  #           # vulkan-loader
+  #           # vulkan-validation-layers
+  #           # xorg.libX11
+  #           # xorg.libXrandr
+  #           # libunwind
+  #           # python3 # for the xcb crate
+  #           # libxkbcommon
+  #           # jack2
+  #         ];
+  #     };
+  #   })
+  # ];
 
   services.flatpak.enable = true;
 
@@ -216,10 +216,10 @@ in {
     # ibus.engines = with pkgs.ibus-engines; [ hangul ];
   };
   # Enable the Plasma 5 Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.defaultSession = "plasmawayland";
-  services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.desktopManager.plasma5.runUsingSystemd = true;
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.displayManager.defaultSession = "plasmawayland";
+  services.xserver.desktopManager.plasma6.enable = true;
+  # services.xserver.desktopManager.plasma5.runUsingSystemd = true;
 
   # services.xserver.desktopManager.cinnamon.enable = true;
   # services.xserver.desktopManager.gnome.enable = true;
@@ -320,14 +320,19 @@ in {
     # nordic
     catppuccin-cursors.macchiatoDark
     # ((pkgs.callPackage ../alvr.nix) { })
-    ((pkgs.callPackage ../sddm-chili.nix) {})
+    # ((pkgs.callPackage ../sddm-chili.nix) {})
+    sddm-chili-theme
     rocmPackages.clr
   ];
 
   programs.dconf.enable = true;
 
-  services.xserver.displayManager.sddm.theme = "sddm-chili";
-  services.xserver.displayManager.sddm.settings.Theme.CursorTheme = "Catppuccin-Macchiato-Dark-Cursors";
+  services.xserver.displayManager.sddm = {
+    enable = true;
+    theme = "breeze";
+    settings.Theme.CursorTheme = "Catppuccin-Macchiato-Dark-Cursors";
+    wayland.enable = true;
+  };
 
   # boot.plymouth = {
   #   enable = true;

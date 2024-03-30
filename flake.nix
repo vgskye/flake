@@ -13,8 +13,8 @@
     };
     impermanence = {url = "github:nix-community/impermanence";};
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -42,7 +42,7 @@
     };
     prismlauncher = {
       url = "github:PrismLauncher/PrismLauncher";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     catppuccin = {
       url = "github:Stonks3141/ctp-nix";
@@ -184,7 +184,7 @@
       e4mc-oc = e4mcFn "oc" "linode" "x86_64";
       e4mc-eu = e4mcFn "eu" "hetzner" "aarch64";
       e4mc-us = e4mcFn "us" "hetzner-mbr" "x86_64";
-      chell = nixpkgs.lib.nixosSystem rec {
+      chell = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
           ./chell/configuration.nix
@@ -194,8 +194,11 @@
           lanzaboote.nixosModules.lanzaboote
           {
             nix.registry = {
-              nixpkgs.flake = nixpkgs-unwrapped;
-              nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
+              # nixpkgs.flake = nixpkgs-unwrapped;
+              # nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
+              n.flake = nixpkgs-unstable-unwrapped;
+              nS.flake = nixpkgs-unwrapped;
+              nU.flake = nixpkgs-unstable-unwrapped;
             };
           }
         ];
@@ -259,7 +262,7 @@
           pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
         };
       };
-      thorley = nixpkgs.lib.nixosSystem rec {
+      thorley = nixpkgs-unstable.lib.nixosSystem rec {
         system = "aarch64-linux";
         modules = [
           ./thorley/configuration.nix
@@ -267,8 +270,11 @@
           tailscalepkgmodule
           {
             nix.registry = {
-              nixpkgs.flake = nixpkgs-unwrapped;
-              nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
+              # nixpkgs.flake = nixpkgs-unwrapped;
+              # nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
+              n.flake = nixpkgs-unstable-unwrapped;
+              nS.flake = nixpkgs-unwrapped;
+              nU.flake = nixpkgs-unstable-unwrapped;
             };
           }
         ];
@@ -280,7 +286,7 @@
     homeConfigurations = let
       configFn = system:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = nixpkgs-unstable.legacyPackages.${system};
           modules = [
             ./home/bs2k/home.nix
             catppuccin.homeManagerModules.catppuccin
@@ -299,7 +305,7 @@
               fenix
               ;
             pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
-            pkgsAmd64 = nixpkgs.legacyPackages.x86_64-linux;
+            pkgsAmd64 = nixpkgs-unstable.legacyPackages.x86_64-linux;
           };
 
           # Optionally use extraSpecialArgs

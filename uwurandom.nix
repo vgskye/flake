@@ -7,13 +7,13 @@
 }:
 stdenv.mkDerivation rec {
   name = "uwurandom-${version}-${kernel.version}";
-  version = "55546c295d08746da01c6c817717181cd9c59504";
+  version = "fb9d5ff0e650b7240ab6b6033738d6309d417822";
 
   src = fetchFromGitHub {
     owner = "valadaptive";
     repo = "uwurandom";
     rev = "${version}";
-    sha256 = "sha256-RKLlzpiwigS+xfVoW8E0/79B45ziiP76nZPQoXoLtcM=";
+    sha256 = "sha256-1WGK1vEp/ZXB/o2QsMDi923rnR/9D7wK+CVlogjRZMk=";
   };
 
   sourceRoot = "source";
