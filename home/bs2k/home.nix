@@ -10,6 +10,7 @@
   agenix,
   packwiz,
   catppuccin-vsc,
+  fenix,
   ...
 }: let
   override-icon = pkg: oldPrefix: newPrefix:
@@ -53,11 +54,14 @@ in {
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.overlays = [
+    fenix.overlays.default
     rust-overlay.overlays.default
     nix-alien.overlays.default
     agenix.overlays.default
     (self: super: {
       monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
+
+      kicad = override-exec pkgsUnstable.kicad "" "GTK_THEME=Breeze ";
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
       vesktop = (super.vesktop.overrideAttrs (old: {
@@ -69,6 +73,7 @@ in {
           outputHash = "sha256-WGihYf/QFAJBVI6mBlTZE5z7axi1zrmKCSv7SHTkeYg=";
         });
         installPhase = builtins.replaceStrings ["vencorddesktop"] ["vesktop"] old.installPhase;
+        patches = self.lib.lists.take 2 old.patches;
         desktopItems = [
           (pkgs.makeDesktopItem {
             name = "vesktop";
@@ -225,6 +230,14 @@ in {
   # services.flameshot.enable = true;
 
   home.packages =
+  let
+    fenixStructured = structured: pkgs.fenix.combine (
+      [
+        pkgs.fenix.stable.defaultToolchain
+      ] ++ (map (x: pkgs.fenix.stable.${x}) structured.extensions)
+        ++ (map (x: pkgs.fenix.targets.${x}.stable.rust-std) structured.targets)
+    );
+  in
     [
       # pkgs.nerdfonts
       pkgs.nanum
@@ -430,7 +443,7 @@ in {
           cairosvg
         ]))
 
-      (pkgs.rust-bin.stable.latest.default.override {
+      (fenixStructured {
         extensions = ["rust-src" "rust-analyzer"];
         targets = [
           "wasm32-unknown-unknown"
@@ -560,7 +573,7 @@ in {
             });
       })
 
-      pkgs.ragenix
+      pkgs.agenix
 
       pkgs.monaspace
       pkgs.twitter-color-emoji
@@ -578,6 +591,8 @@ in {
 
       pkgs.ripgrep
       pkgs.solaar
+
+      pkgs.file
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -680,6 +695,9 @@ in {
       size = 10;
     };
     iconTheme.name = "Papirus-Dark";
+    gtk3.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+    };
   };
 
   programs.mangohud.enable = true;
@@ -906,6 +924,7 @@ in {
         redhat.vscode-yaml
         ms-azuretools.vscode-docker
         ms-vscode-remote.remote-ssh
+        github.vscode-github-actions
 
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [

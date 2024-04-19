@@ -36,10 +36,9 @@
       inputs.flake-utils.follows = "flake-utils";
     };
     agenix = {
-      url = "github:yaxitech/ragenix";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
-      inputs.rust-overlay.follows = "rust-overlay";
-      inputs.flake-utils.follows = "flake-utils";
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
     prismlauncher = {
       url = "github:PrismLauncher/PrismLauncher";
@@ -77,6 +76,10 @@
     flake-utils = {
       url = "github:numtide/flake-utils";
     };
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,
@@ -101,6 +104,7 @@
     packwiz,
     catppuccin-vsc,
     flake-utils,
+    fenix,
   }: let
     tailscalepkgmodule = {pkgsUnstable, ...}: {
       services.tailscale.package = pkgsUnstable.tailscale;
@@ -292,6 +296,7 @@
               agenix
               packwiz
               catppuccin-vsc
+              fenix
               ;
             pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
             pkgsAmd64 = nixpkgs.legacyPackages.x86_64-linux;
