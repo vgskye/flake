@@ -29,6 +29,7 @@
   zramSwap.enable = true;
 
   services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "both";
 
   hardware.enableRedistributableFirmware = true;
 
