@@ -57,7 +57,7 @@ in
       dontConfigure = true;
       dontBuild = true;
       outputHashMode = "recursive";
-      outputHash = "sha256-pQlc8iOMbRAfhGkUwPXdtz/ZyKsWRaDZXO8TWnmuv34=";
+      outputHash = if stdenv.isx86_64 then "sha256-pQlc8iOMbRAfhGkUwPXdtz/ZyKsWRaDZXO8TWnmuv34=" else "sha256-ZG8yaNwayC1FikNM1mYMw9Lw2SW7ItQfCTWkDglOVew=";
     };
 
     VENCORD_HASH = gitHash;
