@@ -21,8 +21,8 @@ in {
 
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
-    substituters = ["https://cache.garnix.io"];
-    trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
+    substituters = ["https://vgskye.cachix.org"];
+    trusted-public-keys = ["vgskye.cachix.org-1:DjgwQYRfjI1/w7exE54FCtfe4ZKCYEhWgJXmcHoo944="];
   };
 
   systemd.tmpfiles.rules = [
