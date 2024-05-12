@@ -171,7 +171,7 @@
           value = {
             source =
               pkgs.runCommand "hacky-fw-links-${fw}" {
-                src = "${config.hardware.firmware}/lib/firmware/${fw}.xz";
+                src = "${config.hardware.firmware}/lib/firmware/${fw}.zst";
                 preferLocalBuild = true;
               } ''
                 cat $src > $out
