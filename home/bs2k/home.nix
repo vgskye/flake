@@ -548,14 +548,14 @@ in {
 
       pkgs.just
 
-      pkgs.aseprite-unfree
+      pkgs.aseprite
 
       pkgs.craftos-pc
       (packwiz.packages.${pkgs.system}.default.override {
         buildGoModule = args:
           pkgs.buildGoModule (args
             // rec {
-              vendorSha256 = "sha256-yL5pWbVqf6mEpgYsItLnv8nwSmoMP+SE0rX/s7u2vCg=";
+              vendorHash = "sha256-yL5pWbVqf6mEpgYsItLnv8nwSmoMP+SE0rX/s7u2vCg=";
               patches = [
                 (pkgs.fetchpatch {
                   url = "https://patch-diff.githubusercontent.com/raw/packwiz/packwiz/pull/258.diff";
@@ -975,4 +975,6 @@ in {
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  xdg.enable = true;
 }

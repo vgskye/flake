@@ -16,7 +16,7 @@ let
 in runCommand "nome-manager" {
   preferLocalBuild = true;
   nativeBuildInputs = [ gettext ];
-  HM_PATH = /. + path;
+  HM_PATH = path;
   meta = with lib; {
     mainProgram = "nome-manager";
     description = "like home-manager, but wraps itself in nix-output-monitor";
