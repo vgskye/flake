@@ -90,6 +90,10 @@
     "sbs-battery"
     "sbs-charger"
     "sbs-manager"
+
+    # DRM
+    "msm"
+    "drm_exec"
   ];
 
   boot.kernelPatches = [
@@ -152,6 +156,7 @@
   boot.initrd.extraFiles = let
     firmwares = [
       "qcom/venus-5.4/venus.mdt"
+      "qcom/venus-5.4/venus.mbn"
       "qcom/a630_sqe.fw"
       "qca/crbtfw32.tlv"
       "qca/crnv32.bin"

@@ -41,6 +41,7 @@ in {
   };
 
   networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.backend = "iwd";
   networking.wireless.enable = false;
   networking.wireless.userControlled.enable = false;
 
@@ -115,6 +116,7 @@ in {
   };
 
   services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "both";
 
   environment.systemPackages = with pkgs; [
     git

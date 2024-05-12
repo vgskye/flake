@@ -164,7 +164,7 @@ in {
           }
         else pkg;
     in {
-      vesktop = scale-electron super.vesktop "vencorddesktop";
+      vesktop = scale-electron super.vesktop "vesktop";
       vscode = scale-electron super.vscode "code";
     })
   ];
@@ -257,7 +257,6 @@ in {
       pkgs.thunderbird
       pkgs.ckan
       pkgs.kdePackages.ark
-      pkgs.kicad
       # pkgs.eagle
       # pkgs.gcc
       # pkgs.openocd
@@ -319,7 +318,6 @@ in {
       # pkgs.davinci-resolve
       pkgs.kdePackages.kdenlive
       pkgs.wget
-      pkgs.arduino
 
       (pkgsUnstable.catppuccin-kde.override {
         flavour = [config.catppuccin.flavour];
@@ -457,18 +455,6 @@ in {
 
       pkgs.any-nix-shell
       # pkgs.prismlauncher-alt
-      (prismlauncher.packages.${pkgs.system}.prismlauncher.override {
-        gamemodeSupport = true;
-
-        glfw = pkgs.callPackage (import ./glfw/package.nix) {};
-
-        additionalLibs = [pkgs.libva];
-        jdks = with pkgs; [
-          jdk8
-          jdk17
-          jdk21
-        ];
-      })
 
       pkgs.openrgb
 
@@ -583,6 +569,7 @@ in {
 
       pkgs.ripgrep
       pkgs.solaar
+      pkgs.kicad
 
       pkgs.file
     ]
@@ -592,6 +579,20 @@ in {
         pkgs.lutris
         pkgs.blender-hip
         pkgs.jetbrains.idea-ultimate
+        pkgs.aseprite-unfree
+        pkgs.arduino
+        (prismlauncher.packages.${pkgs.system}.prismlauncher.override {
+          gamemodeSupport = true;
+
+          glfw = pkgs.callPackage (import ./glfw/package.nix) {};
+
+          additionalLibs = [pkgs.libva];
+          jdks = with pkgs; [
+            jdk8
+            jdk17
+            jdk21
+          ];
+        })
       ]
       else [
         pkgs.rnote
@@ -972,6 +973,30 @@ in {
   programs.go.enable = true;
   # programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
+
+  programs.chromium = {
+    enable = pkgs.system == "aarch64-linux";
+    commandLineArgs = ["--force-device-scale-factor=1.5"];
+    dictionaries = with pkgs.hunspellDictsChromium; [
+      en_US
+      en_GB
+    ];
+    extensions = [
+      { id = "nngceckbapebfimnlniiiahkandclblb"; } # bitwarden
+      { id = "clngdbkpkpeebahjckkjfobafhncgmne"; } # stylus
+      { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # uBO
+      {
+        id = "lkbebcjgcmobigpeffafkodonchffocl";
+        updateUrl = "https://gitlab.com/magnolia1234/bypass-paywalls-chrome-clean/-/raw/master/updates.xml";
+      }
+      { id = "icallnadddjmdinamnolclfjanhfoafe"; } # fastforward
+      { id = "mnjggcdmjocbbbhaepdhchncahnbgone"; } # sponsorblock
+      { id = "nblkbiljcjfemkfjnhoobnojjgjdmknf"; } # pronoundb
+      { id = "ijcpiojgefnkmcadacmacogglhjdjphj"; } # shinigami
+      { id = "jinjaccalgkegednnccohejagnlnfdag"; } # violentmonkey
+      { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; } # darkreader
+    ];
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
