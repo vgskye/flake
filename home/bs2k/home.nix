@@ -572,6 +572,18 @@ in {
       pkgs.kicad
 
       pkgs.file
+      (prismlauncher.packages.${pkgs.system}.prismlauncher.override {
+        gamemodeSupport = true;
+
+        glfw = pkgs.callPackage (import ./glfw/package.nix) {};
+
+        additionalLibs = [pkgs.libva];
+        jdks = with pkgs; [
+          jdk8
+          jdk17
+          jdk21
+        ];
+      })
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -579,20 +591,7 @@ in {
         pkgs.lutris
         pkgs.blender-hip
         pkgs.jetbrains.idea-ultimate
-        pkgs.aseprite-unfree
         pkgs.arduino
-        (prismlauncher.packages.${pkgs.system}.prismlauncher.override {
-          gamemodeSupport = true;
-
-          glfw = pkgs.callPackage (import ./glfw/package.nix) {};
-
-          additionalLibs = [pkgs.libva];
-          jdks = with pkgs; [
-            jdk8
-            jdk17
-            jdk21
-          ];
-        })
       ]
       else [
         pkgs.rnote
