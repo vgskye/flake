@@ -34,11 +34,9 @@ in {
   programs.dconf.enable = true;
 
   services.xserver.enable = true;
+  services.xserver.displayManager.setupCommands = "${pkgs.xorg.xrandr}/bin/xrandr --output DSI-1 --rotate left";
   services.desktopManager.plasma6.enable = true;
-  services.displayManager = {
-    sddm.enable = true;
-    setupCommands = "${pkgs.xorg.xrandr}/bin/xrandr --output DSI-1 --rotate left";
-  };
+  services.displayManager.sddm.enable = true;
 
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.backend = "iwd";
