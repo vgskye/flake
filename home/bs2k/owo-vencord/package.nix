@@ -9,7 +9,7 @@
   nodejs,
   cacert,
 }: let
-  gitHash = "1807d6073136f63d3c19342682c193ae82d9b8ae";
+  gitHash = "a3dcff732594b8d02160ea8b7718e9b29c68ed5f";
 in
   stdenv.mkDerivation rec {
     pname = "owo-vencord";
@@ -18,7 +18,7 @@ in
     src = fetchgit {
       url = "https://git.skye.vg/me/owo-vencord.git";
       rev = gitHash;
-      sha256 = "sha256-yeZX8bv1+1H2w9G4R9UUlhOvardGNPUwVkD1t+a3yWo=";
+      sha256 = "sha256-U+pGXfCAucHgPbA4BLKL2+m+b8Xj2zO4qqqilcbFVD8=";
     };
 
     pnpmDeps =
@@ -40,7 +40,7 @@ in
         pnpm config set store-dir $out
         # pnpm is going to warn us about using --force
         # --force allows us to fetch all dependencies including ones that aren't meant for our host platform
-        pnpm install --frozen-lockfile --ignore-script --force
+        pnpm install --no-frozen-lockfile --ignore-script --force
         runHook postInstall
       '';
 
@@ -57,7 +57,7 @@ in
       dontConfigure = true;
       dontBuild = true;
       outputHashMode = "recursive";
-      outputHash = if stdenv.isx86_64 then "sha256-pQlc8iOMbRAfhGkUwPXdtz/ZyKsWRaDZXO8TWnmuv34=" else "sha256-ZG8yaNwayC1FikNM1mYMw9Lw2SW7ItQfCTWkDglOVew=";
+      outputHash = lib.fakeHash;
     };
 
     VENCORD_HASH = gitHash;
@@ -77,7 +77,7 @@ in
       chmod -R +w "$STORE_PATH"
 
       pnpm config set store-dir "$STORE_PATH"
-      pnpm install --offline --frozen-lockfile --ignore-script
+      pnpm install --offline --no-frozen-lockfile --ignore-script
     '';
 
     postBuild = ''

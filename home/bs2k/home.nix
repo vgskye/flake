@@ -40,11 +40,11 @@
   mkUpper = str:
     (pkgs.lib.toUpper (pkgs.lib.substring 0 1 str)) + (pkgs.lib.substring 1 (pkgs.lib.stringLength str) str);
   catppuccinDarkness =
-    if config.catppuccin.flavour == "latte"
+    if config.catppuccin.flavor == "latte"
     then "light"
     else "dark";
 in {
-  catppuccin.flavour = "macchiato";
+  catppuccin.flavor = "macchiato";
   catppuccin.accent = "teal";
 
   # programs.btop = {
@@ -65,7 +65,8 @@ in {
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
       vesktop = super.vesktop.override {
-        vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
+        withSystemVencord = false;
+        # vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
         # gcc13Stdenv = pkgsUnstable.gcc13Stdenv;
         # electron = self.electron_27;
       };
@@ -101,6 +102,18 @@ in {
           hash = "sha256-oQ3sLIGKMEw3k27aSFcrJqo0TgGkkBNdzl6GSoOIYak=";
           fetchSubmodules = true;
         };
+      });
+
+      freecad = super.freecad.overrideAttrs (old: rec {
+        version = "3b4598c";
+        src = self.fetchFromGitHub {
+          owner = "FreeCAD";
+          repo = "FreeCAD";
+          rev = version;
+          hash = "sha256-16kLW5Cx2TtvmioXUjVxf4vv/pR48GAvnor82eT9sRI=";
+        };
+        patches = [./freecad.patch];
+        buildInputs = old.buildInputs ++ [self.yaml-cpp];
       });
 
       aseprite-unfree = self.callPackage (import ./aseprite/default.nix) {};
@@ -320,13 +333,13 @@ in {
       pkgs.wget
 
       (pkgsUnstable.catppuccin-kde.override {
-        flavour = [config.catppuccin.flavour];
+        flavour = [config.catppuccin.flavor];
         accents = [config.catppuccin.accent];
         winDecStyles = ["classic"];
       })
 
       (pkgs.catppuccin-kvantum.override {
-        variant = mkUpper config.catppuccin.flavour;
+        variant = mkUpper config.catppuccin.flavor;
         accent = mkUpper config.catppuccin.accent;
       })
 
@@ -339,8 +352,55 @@ in {
       pkgs.nix-index
       comma.packages.${pkgs.system}.comma
       # pkgs.openai-whisper
-      (pkgs.python310.withPackages (pythonPackages:
-        with pythonPackages; [
+      (pkgs.python3.withPackages (pythonPackages:
+        with pythonPackages;
+        let
+          torchRocm = torchWithRocm.overrideAttrs (old: {
+            version = "2.2.2";
+            src = pkgs.fetchFromGitHub {
+              owner = "pytorch";
+              repo = "pytorch";
+              rev = "refs/tags/v2.2.2";
+              fetchSubmodules = true;
+              hash = "sha256-la9wL9pOlgrSfq5V8aRKXt3hjW+Er/6484m0oUujlzk=";
+            };
+            # patches = old.patches ++ [
+            #   (pkgs.fetchpatch {
+            #     url = "https://patch-diff.githubusercontent.com/raw/pytorch/pytorch/pull/120551.patch";
+            #     hash = "sha256-pcDMC0+l7Ja8Kx4oFTmM9CUjmyzE7p3mikYgyioFwTI=";
+            #   })
+            #   (pkgs.substituteAll {
+            #     aotriton = pkgs.fetchFromGitHub {
+            #       owner = "ROCm";
+            #       repo = "aotriton";
+            #       rev = "24a3fe9cb57e5cda3c923df29743f9767194cc27";
+            #       hash = pkgs.lib.fakeHash;
+            #       fetchSubmodules = true;
+            #       leaveDotGit = true;
+            #     };
+            #     src = ./aotriton.patch;
+            #   })
+            # ];
+
+            # nativeBuildInputs = old.nativeBuildInputs ++ [
+            #   pkgs.git
+            # ];
+
+            # preConfigure = old.preConfigure + ''
+            # mkdir homeful-shelter
+            # export HOME=`pwd`/homeful-shelter
+            # git config --global --add safe.directory '*'
+            # '';
+          });
+        in
+        [
+          torchRocm
+          tiktoken
+          (fairscale.override {
+            torch = torchRocm;
+          })
+          fire
+          blobfile
           # (openai-whisper.override {
           #   torch = torch-bin.overrideAttrs (old: {
           #     src = pkgs.fetchurl {
@@ -556,7 +616,7 @@ in {
       pkgs.monaspace
       pkgs.twitter-color-emoji
 
-      pkgs.freecad
+      # pkgs.freecad
 
       pkgs.minisign
       pkgs.rage
@@ -584,6 +644,7 @@ in {
           jdk21
         ];
       })
+      pkgs.prusa-slicer
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -701,8 +762,8 @@ in {
   # };
 
   home.pointerCursor = {
-    package = pkgs.catppuccin-cursors."${config.catppuccin.flavour}${mkUpper catppuccinDarkness}";
-    name = "Catppuccin-${mkUpper config.catppuccin.flavour}-${mkUpper catppuccinDarkness}-Cursors";
+    package = pkgs.catppuccin-cursors."${config.catppuccin.flavor}${mkUpper catppuccinDarkness}";
+    name = "Catppuccin-${mkUpper config.catppuccin.flavor}-${mkUpper catppuccinDarkness}-Cursors";
     size = 24;
     gtk.enable = true;
   };
@@ -839,7 +900,7 @@ in {
   #   enable = true;
   #   package = helix.packages.x86_64-linux.default;
   #   settings = {
-  #     theme = "catppuccin_${config.catppuccin.flavour}";
+  #     theme = "catppuccin_${config.catppuccin.flavor}";
   #   };
   # };
 
@@ -882,7 +943,7 @@ in {
       "yaml.schemaStore.enable" = true;
       "redhat.telemetry.enabled" = false;
       "svelte.enable-ts-plugin" = true;
-      "workbench.colorTheme" = "Catppuccin ${mkUpper config.catppuccin.flavour}";
+      "workbench.colorTheme" = "Catppuccin ${mkUpper config.catppuccin.flavor}";
       "catppuccin.accentColor" = config.catppuccin.accent;
       "telemetry.telemetryLevel" = "off";
       "terminal.integrated.minimumContrastRatio" = 1;
@@ -908,7 +969,7 @@ in {
         jnoortheen.nix-ide
         skellock.just
 
-        (matklad.rust-analyzer.override { setDefaultServerPath = false; })
+        (rust-lang.rust-analyzer.override { setDefaultServerPath = false; })
         tamasfe.even-better-toml
 
         sumneko.lua

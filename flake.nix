@@ -1,7 +1,7 @@
 {
   description = "my nix configs";
   inputs = {
-    nixpkgs-unwrapped = {url = "github:NixOS/nixpkgs/nixos-23.11";};
+    nixpkgs-unwrapped = {url = "github:NixOS/nixpkgs/nixos-24.05";};
     nixpkgs = {
       url = "github:numtide/nixpkgs-unfree";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
@@ -13,7 +13,7 @@
     };
     impermanence = {url = "github:nix-community/impermanence";};
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     rust-overlay = {
@@ -184,7 +184,7 @@
       e4mc-oc = e4mcFn "oc" "linode" "x86_64";
       e4mc-eu = e4mcFn "eu" "hetzner" "aarch64";
       e4mc-us = e4mcFn "us" "hetzner-mbr" "x86_64";
-      chell = nixpkgs-unstable.lib.nixosSystem rec {
+      chell = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
           ./chell/configuration.nix
@@ -196,7 +196,7 @@
             nix.registry = {
               # nixpkgs.flake = nixpkgs-unwrapped;
               # nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
-              n.flake = nixpkgs-unstable-unwrapped;
+              n.flake = nixpkgs-unwrapped;
               nS.flake = nixpkgs-unwrapped;
               nU.flake = nixpkgs-unstable-unwrapped;
             };
@@ -262,7 +262,7 @@
           pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
         };
       };
-      thorley = nixpkgs-unstable.lib.nixosSystem rec {
+      thorley = nixpkgs.lib.nixosSystem rec {
         system = "aarch64-linux";
         modules = [
           ./thorley/configuration.nix
@@ -272,7 +272,7 @@
             nix.registry = {
               # nixpkgs.flake = nixpkgs-unwrapped;
               # nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
-              n.flake = nixpkgs-unstable-unwrapped;
+              n.flake = nixpkgs-unwrapped;
               nS.flake = nixpkgs-unwrapped;
               nU.flake = nixpkgs-unstable-unwrapped;
             };
