@@ -1,0 +1,16 @@
+steps:
+  - name: build
+    image: nixpkgs/cachix-flakes
+    commands:
+      - cachix use vgskye
+      - cachix watch-exec vgskye -- nix build .#nixosConfigurations.bridget.config.system.build.toplevel
+    environment:
+      CACHIX_AUTH_TOKEN:
+        from_secret: cachix_token
+    when:
+      branch: sanitary
+      event: push
+
+labels:
+  platform: linux/arm64
+  backend: docker
