@@ -3,7 +3,7 @@ steps:
     image: nixpkgs/cachix-flakes
     commands:
       - cachix use vgskye
-      - cachix watch-exec vgskye -- nix build .#nixosConfigurations.e4mc-jp.config.system.build.toplevel
+      - cachix watch-exec vgskye -- nix build .#homeConfigurations.bs2k-arm.activationPackage
     environment:
       CACHIX_AUTH_TOKEN:
         from_secret: cachix_token
@@ -12,5 +12,5 @@ steps:
       event: push
 
 labels:
-  platform: linux/amd64
+  platform: linux/aarch64
   backend: docker

@@ -1,9 +1,18 @@
+matrix:
+  SYSTEM:
+    - e4mc-jp
+    - e4mc-oc
+    - e4mc-us
+    - chell
+    - alex
+    - jenny
+
 steps:
   - name: build
     image: nixpkgs/cachix-flakes
     commands:
       - cachix use vgskye
-      - cachix watch-exec vgskye -- nix build .#nixosConfigurations.e4mc-eu.config.system.build.toplevel
+      - cachix watch-exec vgskye -- nix build .#nixosConfigurations.${SYSTEM}.config.system.build.toplevel
     environment:
       CACHIX_AUTH_TOKEN:
         from_secret: cachix_token
@@ -12,5 +21,5 @@ steps:
       event: push
 
 labels:
-  platform: linux/arm64
+  platform: linux/amd64
   backend: docker

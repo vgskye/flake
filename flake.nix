@@ -159,6 +159,7 @@
         nixpkgs.lib.nixosSystem rec {
           system = "${arch}-linux";
           modules = [
+            ./shared-caches.nix
             ./e4mc/configuration.nix
             ./e4mc/hardware-configuration-${provider}.nix
             tailscalepkgmodule
@@ -187,6 +188,7 @@
       chell = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
+          ./shared-caches.nix
           ./chell/configuration.nix
           impermanence.nixosModules.impermanence
           tailscalepkgmodule
@@ -209,6 +211,7 @@
       jenny = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
+          ./shared-caches.nix
           ./jenny/configuration.nix
           tailscalepkgmodule
           telegrafModule
@@ -234,6 +237,7 @@
       bridget = nixpkgs.lib.nixosSystem rec {
         system = "aarch64-linux";
         modules = [
+          ./shared-caches.nix
           ./bridget/configuration.nix
           tailscalepkgmodule
           telegrafModule
@@ -251,6 +255,7 @@
       alex = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
+          ./shared-caches.nix
           ./alex/configuration.nix
           agenix.nixosModules.default
           babysitter.nixosModules.default
@@ -265,6 +270,7 @@
       thorley = nixpkgs.lib.nixosSystem rec {
         system = "aarch64-linux";
         modules = [
+          ./shared-caches.nix
           ./thorley/configuration.nix
           agenix.nixosModules.default
           tailscalepkgmodule
