@@ -1,0 +1,11 @@
+steps:
+  - name: build
+    image: nixpkgs/cachix-flakes
+    commands:
+      - cachix use vgskye
+      - cachix watch-exec vgskye -- nix build .#nixosConfigurations.e4mc-eu.config.system.build.toplevel
+    environment:
+      CACHIX_AUTH_TOKEN:
+        from_secret: cachix_token
+labels:
+  platform: linux/arm64
