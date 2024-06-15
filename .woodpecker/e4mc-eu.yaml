@@ -10,5 +10,7 @@ steps:
     when:
       branch: sanitary
       event: push
+
 labels:
   platform: linux/arm64
+  backend: docker
