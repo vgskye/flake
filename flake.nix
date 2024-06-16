@@ -292,7 +292,7 @@
     homeConfigurations = let
       configFn = system:
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs-unstable.legacyPackages.${system};
+          pkgs = nixpkgs.legacyPackages.${system};
           modules = [
             ./home/bs2k/home.nix
             catppuccin.homeManagerModules.catppuccin
