@@ -979,6 +979,7 @@ in {
         ms-vscode-remote.remote-ssh
         github.vscode-github-actions
 
+        golang.go
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
