@@ -47,7 +47,7 @@
     cert = "/var/lib/acme/e4mc/fullchain.pem";
     key = "/var/lib/acme/e4mc/key.pem";
     group = "acme";
-    sentryDsn = "https://b3d233e4894648ce3e1b451bad2431e7@o4505708658884608.ingest.us.sentry.io/4505742084997120";
+    # sentryDsn = "https://b3d233e4894648ce3e1b451bad2431e7@o4505708658884608.ingest.us.sentry.io/4505742084997120";
   };
 
   services.caddy = {
