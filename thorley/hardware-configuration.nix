@@ -167,7 +167,7 @@
     builtins.listToAttrs
     (builtins.map (
         fw: {
-          name = "/hacky-fw-links/${fw}.xz";
+          name = "/hacky-fw-links/${fw}.zst";
           value = {
             source =
               pkgs.runCommand "hacky-fw-links-${fw}" {

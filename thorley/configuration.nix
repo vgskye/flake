@@ -39,7 +39,7 @@ in {
   services.displayManager.sddm.enable = true;
 
   networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.backend = "iwd";
+  # networking.networkmanager.wifi.backend = "iwd";
   networking.wireless.enable = false;
   networking.wireless.userControlled.enable = false;
 
@@ -55,6 +55,17 @@ in {
   hardware.bluetooth.enable = true;
 
   virtualisation.waydroid.enable = true;
+
+  services.flatpak.enable = true;
+  services.mullvad-vpn.enable = true;
+  services.mullvad-vpn.package = pkgs.mullvad-vpn;
+
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = [pkgs.fcitx5-hangul];
+    # uim.toolbar = "gtk-systray";
+    # ibus.engines = with pkgs.ibus-engines; [ hangul ];
+  };
 
   boot.binfmt.registrations.x86_64-linux = {
     interpreter = "${pkgs.box64}/bin/box64";
