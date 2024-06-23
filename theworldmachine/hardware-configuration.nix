@@ -22,6 +22,8 @@
     };
 
   swapDevices = [ ];
+
+  networking.hostId = "e4c9bd10";
   
   networking.useDHCP = lib.mkDefault true;
   systemd.network = {
