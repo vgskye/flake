@@ -26,7 +26,7 @@
   networking.hostId = "e4c9bd10";
   
   networking.useDHCP = lib.mkDefault true;
-  networking.interfaces.enp1s0.ipv6.addresses = [
+  networking.interfaces.enp5s0.ipv6.addresses = [
     {
       address = "2a01:4f9:3071:1ba7::1";
       prefixLength = 64;
@@ -34,7 +34,7 @@
   ];
   networking.defaultGateway6 = {
     address = "fe80::1";
-    interface = "enp1s0";
+    interface = "enp5s0";
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
