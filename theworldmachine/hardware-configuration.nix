@@ -26,19 +26,15 @@
   networking.hostId = "e4c9bd10";
   
   networking.useDHCP = lib.mkDefault true;
-  systemd.network = {
-    enable = true;
-    networks."30-wan" = {
-      matchConfig.Name = "enp1s0";
-      networkConfig.DHCP = "ipv4";
-      addresses = [
-        "2a01:4f9:3071:1ba7::1/64"
-      ];
-      gateway = [
-        "fe80::1"
-      ];
-      linkConfig.RequiredForOnline = "routable";
-    };
+  networking.interfaces.enp1s0.ipv6.addresses = [
+    {
+      address = "2a01:4f9:3071:1ba7::1";
+      prefixLength = 64;
+    }
+  ];
+  networking.defaultGateway6 = {
+    address = "fe80::1";
+    interface = "enp1s0";
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
