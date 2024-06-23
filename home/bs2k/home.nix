@@ -394,13 +394,6 @@ in {
           });
         in
         [
-          torchRocm
-          tiktoken
-          (fairscale.override {
-            torch = torchRocm;
-          })
-          fire
-          blobfile
           # (openai-whisper.override {
           #   torch = torch-bin.overrideAttrs (old: {
           #     src = pkgs.fetchurl {
@@ -490,7 +483,16 @@ in {
           # pillow
           # opencv4
           # cairosvg
-        ]))
+        ] ++ (if pkgs.system == "x86_64-linux" then [
+          # torchRocm
+          tiktoken
+          # (fairscale.override {
+          #   torch = torchRocm;
+          # })
+          fire
+          blobfile
+          hid
+        ] else [])))
 
       (fenixStructured {
         extensions = ["rust-src" "rust-analyzer"];
@@ -1005,6 +1007,12 @@ in {
           publisher = "slevesque";
           version = "1.1.5";
           sha256 = "sha256-Pf37FeQMNlv74f7LMz9+CKscF6UjTZ7ZpcaZFKtX2ZM=";
+        }
+        {
+          name = "slint";
+          publisher = "Slint";
+          version = "1.6.0";
+          sha256 = "sha256-Vion8XEjAbnTYg2ETqZTuTa83cZM7+/j8ng4uUPxz+Q=";
         }
       ]
       ++ (

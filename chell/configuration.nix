@@ -22,9 +22,13 @@ in {
   # };
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
-    substituters = ["https://cache.garnix.io"];
-    trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
+    # substituters = ["https://cache.garnix.io"];
+    # trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
   };
+
+  # boot.extraModprobeConfig = ''
+  #   options vfio-pci ids=10de:1f06,10de:10f9,10de:1ada,10de:1adb
+  # '';
 
   nix.nixPath = [
     "nixpkgs=${channelPath}"
@@ -126,7 +130,7 @@ in {
     })
   ];
   boot.kernelModules = ["uwurandom"];
-  # boot.kernelParams = [ "vfio-pci.ids=1002:73df,1002:ab28" ];
+  # boot.kernelParams = [ "vfio-pci.ids=10de:1f06,10de:10f9,10de:1ada,10de:1adb" ];
   # boot.initrd.kernelModules = [ "vfio-pci" ];
 
   nixpkgs.config.allowUnfree = true;
