@@ -181,6 +181,31 @@
         nixpkgs.pkgs = nixpkgs.legacyPackages.${system};
       };
     in {
+      theworldmachine = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        modules = [
+          ./shared-caches.nix
+          ./theworldmachine/configuration.nix
+          tailscalepkgmodule
+          telegrafModule
+          {
+            services.telegraf.extraConfig.inputs.docker.endpoint = "unix:///var/run/docker.sock";
+            users.users.telegraf.extraGroups = ["docker"];
+          }
+          agenix.nixosModules.default
+          (nixinateModule "remote")
+          {
+            nix.registry = {
+              n.flake = nixpkgs-unwrapped;
+              nS.flake = nixpkgs-unwrapped;
+              nU.flake = nixpkgs-unstable-unwrapped;
+            };
+          }
+        ];
+        specialArgs = {
+          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+        };
+      };
       e4mc-jp = e4mcFn "jp" "linode" "x86_64";
       e4mc-oc = e4mcFn "oc" "linode" "x86_64";
       e4mc-eu = e4mcFn "eu" "hetzner" "aarch64";
