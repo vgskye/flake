@@ -61,9 +61,13 @@ in {
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
+  nixpkgs.overlays = [
+    niri.overlays.niri
+  ];
+
   programs.niri = {
     enable = true;
-    package = niri.packages.aarch64-linux.niri-unstable;
+    package = pkgs.niri-unstable;
   };
 
   niri-flake.cache.enable = true;
