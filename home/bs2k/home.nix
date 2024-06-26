@@ -657,6 +657,7 @@ in {
         pkgs.arduino
       ]
       else [
+        pkgs.fuzzel
         pkgs.rnote
         pkgs.maliit-keyboard
         pkgs.maliit-framework
@@ -982,6 +983,8 @@ in {
         github.vscode-github-actions
 
         golang.go
+
+        vue.volar
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
@@ -1013,6 +1016,12 @@ in {
           publisher = "Slint";
           version = "1.6.0";
           sha256 = "sha256-Vion8XEjAbnTYg2ETqZTuTa83cZM7+/j8ng4uUPxz+Q=";
+        }
+        {
+          name = "kdl";
+          publisher = "kdl-org";
+          version = "1.3.1";
+          sha256 = "sha256-0Wbyh6yaGyj/fyTUERB5KQd668i0fx/XLc/i2YkXYKg=";
         }
       ]
       ++ (

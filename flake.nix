@@ -80,6 +80,11 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,
@@ -105,6 +110,7 @@
     catppuccin-vsc,
     flake-utils,
     fenix,
+    niri,
   }: let
     tailscalepkgmodule = {pkgsUnstable, ...}: {
       services.tailscale.package = pkgsUnstable.tailscale;
@@ -299,6 +305,7 @@
           ./thorley/configuration.nix
           agenix.nixosModules.default
           tailscalepkgmodule
+          niri.nixosModules.niri
           {
             nix.registry = {
               # nixpkgs.flake = nixpkgs-unwrapped;
@@ -311,6 +318,7 @@
         ];
         specialArgs = {
           pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          inherit niri;
         };
       };
     };

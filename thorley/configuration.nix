@@ -5,6 +5,7 @@
   config,
   pkgs,
   lib,
+  niri,
   ...
 }: let
   channelPath = "/etc/nix/channels/nixpkgs";
@@ -59,6 +60,13 @@ in {
   services.flatpak.enable = true;
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
+
+  programs.niri = {
+    enable = true;
+    package = niri.packages.aarch64-linux.niri-unstable;
+  };
+
+  niri-flake.cache.enable = true;
 
   i18n.inputMethod = {
     enabled = "fcitx5";
