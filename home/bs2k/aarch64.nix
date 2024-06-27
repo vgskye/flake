@@ -34,6 +34,8 @@
         ];
         modules-left = [
           "clock"
+          "custom/osk"
+          "custom/drun"
         ];
         modules-center = [
           "wlr/taskbar"
@@ -48,6 +50,15 @@
         "wlr/taskbar" = {
           icon-size = 24;
           on-click = "activate";
+        };
+        "custom/osk" = {
+          format = "󰌌";
+          on-click = "busctl call --user sm.puri.OSK0 /sm/puri/OSK0 sm.puri.OSK0 SetVisible b true";
+          on-click-right = "busctl call --user sm.puri.OSK0 /sm/puri/OSK0 sm.puri.OSK0 SetVisible b false";
+        };
+        "custom/drun" = {
+          format = "󰌧";
+          on-click = "rofi -show drun";
         };
         tray = {
           icon-size = 16;
@@ -124,6 +135,25 @@
 
   systemd.user.services.swayidle.Unit.After = "niri.service";
 
+  systemd.user.services.squeekboard = {
+    Unit = {
+      After = "niri.service";
+      Description = "Squeekboard";
+      PartOf = "graphical-session.target";
+    };
+
+    Install = {
+      WantedBy = 
+      ["graphical-session.target"];
+    };
+
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.squeekboard}/bin/squeekboard";
+      Restart = "on-failure";
+    };
+  };
+
   systemd.user.services.xwayland-satellite = {
     Unit = {
       After = "niri.service";
@@ -147,6 +177,8 @@
       Environment="PATH=${pkgs.xwayland}/bin/";
     };
   };
+
+  # systemd.user.services.switchblade.Service.environment = "XDG_DATA_DIRS=${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/gsettings-desktop-schemas-${pkgs.gsettings-desktop-schemas.version}";
 
   systemd.user.sessionVariables  = {
     DISPLAY = ":1";
@@ -195,8 +227,8 @@
         on = "systemctl suspend";
       };
       tablet_mode = {
-        on = "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true";
-        off = "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled false";
+        on = "XDG_DATA_DIRS=${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/gsettings-desktop-schemas-${pkgs.gsettings-desktop-schemas.version} gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true";
+        off = "XDG_DATA_DIRS=${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/gsettings-desktop-schemas-${pkgs.gsettings-desktop-schemas.version} gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled false";
       };
     };
   };
