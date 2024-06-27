@@ -156,16 +156,16 @@
     pkgs.loupe
     pkgs.evince
     pkgs.iwgtk
-    (pkgs.freecad.overrideAttrs (old: {
-      version = "0.22.0-3b304e5";
-      src = pkgs.fetchFromGitHub {
-        owner = "FreeCAD";
-        repo = "FreeCAD";
-        rev = "3b304e5b1a62f3119d7311aeb736dcb53cb4faad";
-        hash = "sha256-lLnwCi77ToPmiRnZ70VJ4MGTLaM7DNwIbGC5UkixO5c=";
-        fetchSubmodules = true;
-      };
-    }))
+    # (pkgs.freecad.overrideAttrs (old: {
+    #   version = "0.22.0-3b304e5";
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "FreeCAD";
+    #     repo = "FreeCAD";
+    #     rev = "3b304e5b1a62f3119d7311aeb736dcb53cb4faad";
+    #     hash = "sha256-lLnwCi77ToPmiRnZ70VJ4MGTLaM7DNwIbGC5UkixO5c=";
+    #     fetchSubmodules = true;
+    #   };
+    # }))
   ];
 
   programs.swaylock = {

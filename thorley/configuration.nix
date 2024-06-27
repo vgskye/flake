@@ -35,9 +35,20 @@ in {
   programs.dconf.enable = true;
 
   services.xserver.enable = true;
-  services.xserver.displayManager.setupCommands = "${pkgs.xorg.xrandr}/bin/xrandr --output DSI-1 --rotate left";
+  services.xserver.displayManager.setupCommands = ''
+    ${pkgs.xorg.xrandr}/bin/xrandr --output DSI-1 --rotate left
+    ${pkgs.xorg.xinput}/bin/xinput set-prop "hid-over-i2c 0603:604A" --type=float "Coordinate Transformation Matrix"  0 -1 1 1 0 0 0 0 1
+  '';
   # services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm.enable = true;
+  # services.displayManager.sddm.enable = true;
+  # services.xserver.displayManager.sddm.enable = true;
+
+  services.xserver.displayManager.sddm = {
+    enable = true;
+    theme = "chili";
+    settings.Theme.CursorTheme = "Catppuccin-Macchiato-Dark-Cursors";
+    # wayland.enable = true;
+  };
 
   # networking.networkmanager.enable = true;
   # networking.networkmanager.wifi.backend = "iwd";
@@ -75,7 +86,11 @@ in {
 
   i18n.inputMethod = {
     enabled = "fcitx5";
-    fcitx5.addons = [pkgs.fcitx5-hangul];
+    fcitx5 = {
+      waylandFrontend = true;
+      addons = [pkgs.fcitx5-hangul];
+    };
+
     # uim.toolbar = "gtk-systray";
     # ibus.engines = with pkgs.ibus-engines; [ hangul ];
   };
@@ -142,7 +157,13 @@ in {
 
   environment.systemPackages = with pkgs; [
     git
+    sddm-chili-theme
   ];
+
+  services.udev.extraHwdb = ''
+    evdev:name:hid-over-i2c 0603:604A Stylus:
+      LIBINPUT_CALIBRATION_MATRIX=0 -1 1 1 0 0
+  '';
 
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
