@@ -162,7 +162,8 @@
         owner = "FreeCAD";
         repo = "FreeCAD";
         rev = "3b304e5b1a62f3119d7311aeb736dcb53cb4faad";
-        hash = "sha256-ztJc+blJnaCWXflLqWx4YxPRwHRi1Ec7tuC9+YCb2Is=";
+        hash = "sha256-lLnwCi77ToPmiRnZ70VJ4MGTLaM7DNwIbGC5UkixO5c=";
+        fetchSubmodules = true;
       };
     }))
   ];
