@@ -1179,6 +1179,7 @@
         "prismlauncher": "prismlauncher",
         "quiclime": "quiclime",
         "rust-overlay": "rust-overlay",
+        "switchblade": "switchblade",
         "vscode-server": "vscode-server"
       }
     },
@@ -1216,6 +1217,26 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "switchblade": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1719485300,
+        "narHash": "sha256-ktz2Afno+7E/no5VXS+qboXLY/DiFh+hyUsap+KhXGA=",
+        "owner": "vgskye",
+        "repo": "switchblade",
+        "rev": "46fe100ee6fb3db4e0cd67e6e04bc1ee52889145",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vgskye",
+        "repo": "switchblade",
         "type": "github"
       }
     },

@@ -184,4 +184,17 @@
       { event = "unlock"; command = "${pkgs.procps}/bin/pkill -USR1 swaylock"; }
     ];
   };
+
+  services.switchblade = {
+    enable = true;
+    config = {
+      lid = {
+        on = "systemctl suspend";
+      };
+      tablet_mode = {
+        on = "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true";
+        off = "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled false";
+      };
+    };
+  };
 }

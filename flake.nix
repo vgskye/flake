@@ -85,6 +85,10 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.nixpkgs-stable.follows = "nixpkgs";
     };
+    switchblade = {
+      url = "github:vgskye/switchblade";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = {
     self,
@@ -111,6 +115,7 @@
     flake-utils,
     fenix,
     niri,
+    switchblade,
   }: let
     tailscalepkgmodule = {pkgsUnstable, ...}: {
       services.tailscale.package = pkgsUnstable.tailscale;
@@ -331,6 +336,7 @@
             catppuccin.homeManagerModules.catppuccin
           ] ++ (if system == "aarch64-linux" then [
             ./home/bs2k/aarch64.nix
+            switchblade.homeManagerModules.switchblade
           ] else []);
 
           extraSpecialArgs = {
