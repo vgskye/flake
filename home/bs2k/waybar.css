@@ -1,0 +1,23 @@
+/* window#waybar {
+    padding: 4px;
+    border-radius: 8px;
+} */
+
+* {
+    font-family: "Monaspace Neon Var", monospace;
+    font-size: 10pt;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+window#waybar > box {
+    background: @base;
+    border-radius: 1000px;
+    padding: 0 12px;
+}
+
+#wireplumber.muted {
+    color: @subtext0;
+}

@@ -329,7 +329,9 @@
           modules = [
             ./home/bs2k/home.nix
             catppuccin.homeManagerModules.catppuccin
-          ];
+          ] ++ (if system == "aarch64-linux" then [
+            ./home/bs2k/aarch64.nix
+          ] else []);
 
           extraSpecialArgs = {
             inherit

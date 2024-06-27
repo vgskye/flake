@@ -36,13 +36,14 @@ in {
 
   services.xserver.enable = true;
   services.xserver.displayManager.setupCommands = "${pkgs.xorg.xrandr}/bin/xrandr --output DSI-1 --rotate left";
-  services.desktopManager.plasma6.enable = true;
+  # services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.enable = true;
 
-  networking.networkmanager.enable = true;
+  # networking.networkmanager.enable = true;
   # networking.networkmanager.wifi.backend = "iwd";
   networking.wireless.enable = false;
-  networking.wireless.userControlled.enable = false;
+  # networking.wireless.userControlled.enable = false;
+  networking.wireless.iwd.enable = true;
 
   security.rtkit.enable = true;
   services.pipewire = {
@@ -145,6 +146,18 @@ in {
 
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
+
+  services.acpid = {
+    enable = true;
+    logEvents = true;
+    lidEventCommands = ''
+    	if echo "$3" | grep -iq "close"; then
+        systemctl suspend
+      fi
+    '';
+  };
+
+  security.pam.services.swaylock = {};
 
   system.stateVersion = "23.05";
 }

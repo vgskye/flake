@@ -160,8 +160,8 @@
       "qcom/a630_sqe.fw"
       "qca/crbtfw32.tlv"
       "qca/crnv32.bin"
-      "regulatory.db"
-      "regulatory.db.p7s"
+      # "regulatory.db"
+      # "regulatory.db.p7s"
     ];
   in
     builtins.listToAttrs
