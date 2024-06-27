@@ -122,6 +122,8 @@
   #   };
   # };
 
+  systemd.user.services.swayidle.Unit.After = "niri.service";
+
   systemd.user.services.xwayland-satellite = {
     Unit = {
       After = "niri.service";
@@ -156,6 +158,7 @@
     pkgs.loupe
     pkgs.evince
     pkgs.iwgtk
+    pkgs.glib
     # (pkgs.freecad.overrideAttrs (old: {
     #   version = "0.22.0-3b304e5";
     #   src = pkgs.fetchFromGitHub {

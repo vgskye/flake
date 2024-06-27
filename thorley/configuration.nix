@@ -148,8 +148,8 @@ in {
 
   users.users.bs2k = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "tss"];
-    password = "hunter2"; # CHANGEME
+    extraGroups = ["wheel" "networkmanager" "tss" "input"];
+    # password = "hunter2"; # CHANGEME
   };
 
   services.tailscale.enable = true;
@@ -168,15 +168,15 @@ in {
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
 
-  services.acpid = {
-    enable = true;
-    logEvents = true;
-    lidEventCommands = ''
-    	if echo "$3" | grep -iq "close"; then
-        systemctl suspend
-      fi
-    '';
-  };
+  # services.acpid = {
+  #   enable = true;
+  #   logEvents = true;
+  #   lidEventCommands = ''
+  #   	if echo "$3" | grep -iq "close"; then
+  #       systemctl suspend
+  #     fi
+  #   '';
+  # };
 
   security.pam.services.swaylock = {};
 
