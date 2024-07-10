@@ -70,7 +70,7 @@
       Group = "radiohead";
       ExecStart = "/radiohead";
     };
-};
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";

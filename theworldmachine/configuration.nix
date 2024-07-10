@@ -33,7 +33,7 @@ in {
 
   networking.hostName = "theworldmachine";
 
-  time.timeZone = "Europe/Berlin";
+  time.timeZone = "Europe/Helsinki";
 
   virtualisation.docker.enable = true;
 
@@ -48,6 +48,29 @@ in {
     file = ../secrets/mailer-cf-key.age;
     mode = "400";
     owner = "acme";
+  };
+
+  users.users.gaybox = {
+    group = "gaybox";
+    isSystemUser = true;
+  };
+
+  users.groups.gaybox = {
+  };
+
+  systemd.services.gaybox = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    serviceConfig = {
+      Type = "simple";
+      User = "gaybox";
+      Group = "gaybox";
+      ExecStart = "/gaybox/startserver.sh";
+    };
+    path = [
+      pkgs.jdk
+      pkgs.wget
+    ];
   };
 
   security.acme = {
@@ -72,7 +95,40 @@ in {
     };
   };
 
-  networking.firewall.allowedTCPPorts = [25 465 587 993];
+  systemd.timers.backups = {
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnCalendar = "*-*-* 00:00:00";
+      Unit = "backups.service";
+    };
+  };
+
+  age.secrets.restic-secrets = {
+    file = ../secrets/restic-secrets-twm.age;
+    mode = "400";
+    owner = "root";
+  };
+
+  systemd.services.backups = {
+    script = builtins.readFile ./backup.sh;
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+      EnvironmentFile = config.age.secrets.restic-secrets.path;
+    };
+    path = [
+      pkgs.curl
+      pkgs.sqlite
+      pkgs.docker
+      pkgs.restic
+      pkgs.openssh
+      pkgs.bash
+      pkgs.which
+    ];
+  };
+
+  networking.firewall.allowedTCPPorts = [80 443 25 465 587 993 25565 8100];
+  networking.firewall.allowedUDPPorts = [80 443 24454];
 
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "server";

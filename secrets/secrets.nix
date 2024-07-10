@@ -32,4 +32,5 @@ in {
   "telegraf-key.age".publicKeys = [bs2k] ++ all;
   "restic-secrets.age".publicKeys = [bs2k bridget];
   "mailer-cf-key.age".publicKeys = [bs2k theworldmachine];
+  "restic-secrets-twm.age".publicKeys = [bs2k theworldmachine];
 }
