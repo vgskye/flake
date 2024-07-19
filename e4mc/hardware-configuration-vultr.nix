@@ -8,7 +8,7 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.device = "/dev/vda";
 
   fileSystems."/" =
     { device = "/dev/vda1";
