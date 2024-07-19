@@ -61,7 +61,7 @@ in {
     (self: super: {
       monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
-      kicad = override-exec pkgsUnstable.kicad "" "GTK_THEME=Breeze ";
+      kicad = override-exec super.kicad "" "GTK_THEME=Breeze ";
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
       vesktop = super.vesktop.override {
@@ -160,6 +160,30 @@ in {
         if self.system == "x86_64-linux"
         then self.callPackage (import ./stockfish.nix) {}
         else super.stockfish;
+      
+
+      prusa-slicer = super.prusa-slicer.overrideAttrs (old: rec {
+        version = "2.8.0";
+        src = old.src.override {
+          hash = "sha256-A/uxNIEXCchLw3t5erWdhqFAeh6nudcMfASi+RoJkFg=";
+        };
+        patches = [
+          (self.fetchpatch {
+            url = "https://github.com/gentoo/gentoo/raw/master/media-gfx/prusaslicer/files/prusaslicer-2.8.0-fixed-linking.patch";
+            hash = "sha256-G1JNdVH+goBelag9aX0NctHFVqtoYFnqjwK/43FVgvM=";
+          })
+          (self.fetchpatch {
+            url = "https://github.com/gentoo/gentoo/raw/master/media-gfx/prusaslicer/files/prusaslicer-2.8.0-missing-includes.patch";
+            hash = "sha256-/R9jv9zSP1lDW6IltZ8V06xyLdxfaYrk3zD6JRFUxHg=";
+          })
+        ];
+
+        cmakeFlags = old.cmakeFlags ++ [
+          "-DSLIC3R_BUILD_TESTS=OFF"
+        ];
+
+        doCheck = false;
+      });
     })
     (self: super: let
       scale-electron = pkg: bin:
@@ -647,6 +671,7 @@ in {
         ];
       })
       pkgs.prusa-slicer
+      pkgs.klipper-estimator
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
