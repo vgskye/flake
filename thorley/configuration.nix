@@ -73,14 +73,20 @@ in {
   services.mullvad-vpn.enable = true;
   services.mullvad-vpn.package = pkgs.mullvad-vpn;
 
-  nixpkgs.overlays = [
-    niri.overlays.niri
-  ];
+  # nixpkgs.overlays = [
+  #   niri.overlays.niri
+  # ];
 
   programs.niri = {
     enable = true;
-    package = pkgs.niri-unstable;
+    package = pkgs.callPackage ./niri/package.nix {};
   };
+
+  services.gvfs.enable = true;
+
+  programs.kdeconnect.enable = true;
+
+  services.blueman.enable = true;
 
   niri-flake.cache.enable = true;
 
@@ -93,6 +99,22 @@ in {
 
     # uim.toolbar = "gtk-systray";
     # ibus.engines = with pkgs.ibus-engines; [ hangul ];
+  };
+
+  zramSwap.enable = true;
+
+  programs.gamemode = {
+    enable = true;
+    settings = {
+      general = {
+        desiredgov = "performance";
+      };
+
+      custom = {
+        start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
+        end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+      };
+    };
   };
 
   boot.binfmt.registrations.x86_64-linux = {

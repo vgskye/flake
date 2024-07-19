@@ -58,7 +58,7 @@
         };
         "custom/drun" = {
           format = "󰌧";
-          on-click = "rofi -show drun";
+          on-click = "nwg-drawer -ovl";
         };
         tray = {
           icon-size = 16;
@@ -191,6 +191,8 @@
     pkgs.evince
     pkgs.iwgtk
     pkgs.glib
+    pkgs.nwg-drawer
+    pkgs.blueberry
     # (pkgs.freecad.overrideAttrs (old: {
     #   version = "0.22.0-3b304e5";
     #   src = pkgs.fetchFromGitHub {
@@ -232,4 +234,21 @@
       };
     };
   };
+
+  programs.fuzzel = {
+    enable = true;
+    settings = {
+      colors = {
+        background = "24273add";
+        text = "cad3f5ff";
+        match = "ed8796ff";
+        selection = "5b6078ff";
+        selection-match = "ed8796ff";
+        selection-text = "cad3f5ff";
+        border = "b7bdf8ff";
+      };
+    };
+  };
+
+  services.swayosd.enable = true;
 }

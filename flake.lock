@@ -1227,11 +1227,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1719485700,
-        "narHash": "sha256-vBqmxfpZgLY/zhyxmtfXZzLc6W1pzERJc1LWuuN5T54=",
+        "lastModified": 1720768556,
+        "narHash": "sha256-gASzp9UqMu/oS0M2tJOuMA89btsYbA1A0UPtVpQ5cow=",
         "owner": "vgskye",
         "repo": "switchblade",
-        "rev": "eb538755a913f8acf4e19e333a6f4d5a36697579",
+        "rev": "aea2d319bb4d8dfbdcce51a1b8d0d895120cecb1",
         "type": "github"
       },
       "original": {

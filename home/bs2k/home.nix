@@ -1023,6 +1023,12 @@ in {
           version = "1.3.1";
           sha256 = "sha256-0Wbyh6yaGyj/fyTUERB5KQd668i0fx/XLc/i2YkXYKg=";
         }
+        {
+          name = "codespaces";
+          publisher = "github";
+          version = "1.17.1";
+          sha256 = "sha256-U1pjQFwip1UWSFOZgqUGceGQ9XMizcSOwtFTEgRLQrU=";
+        }
       ]
       ++ (
         if pkgs.system == "x86_64-linux"
