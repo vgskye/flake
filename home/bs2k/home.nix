@@ -680,6 +680,7 @@ in {
         pkgs.blender-hip
         pkgs.jetbrains.idea-ultimate
         pkgs.arduino
+        pkgs.love
       ]
       else [
         pkgs.fuzzel

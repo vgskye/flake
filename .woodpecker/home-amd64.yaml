@@ -2,11 +2,17 @@ steps:
   - name: build
     image: nixpkgs/cachix-flakes
     commands:
+      - nix profile install nixpkgs#attic-client
       - cachix use vgskye
-      - cachix watch-exec vgskye -- nix build .#homeConfigurations.bs2k.activationPackage
+      - attic login twm https://attic.is-quite.gay $ATTIC_TOKEN
+      - attic use skye
+      - nix build .#homeConfigurations.bs2k.activationPackage
+      - attic push skye ./result
     environment:
       CACHIX_AUTH_TOKEN:
         from_secret: cachix_token
+      ATTIC_TOKEN:
+        from_secret: attic_token
     when:
       branch: sanitary
       event: push

@@ -2,13 +2,21 @@ steps:
   - name: build
     image: nixpkgs/cachix-flakes
     commands:
+      - nix profile install nixpkgs#attic-client
       - cachix use vgskye
-      - cachix watch-exec vgskye -- nix build .#nixosConfigurations.e4mc-jp.config.system.build.toplevel
-      - cachix watch-exec vgskye -- nix build .#nixosConfigurations.e4mc-oc.config.system.build.toplevel
-      - cachix watch-exec vgskye -- nix build .#nixosConfigurations.e4mc-us.config.system.build.toplevel
+      - attic login twm https://attic.is-quite.gay $ATTIC_TOKEN
+      - attic use skye
+      - nix build .#nixosConfigurations.e4mc-jp.config.system.build.toplevel
+      - attic push skye ./result
+      - nix build .#nixosConfigurations.e4mc-oc.config.system.build.toplevel
+      - attic push skye ./result
+      - nix build .#nixosConfigurations.e4mc-us.config.system.build.toplevel
+      - attic push skye ./result
     environment:
       CACHIX_AUTH_TOKEN:
         from_secret: cachix_token
+      ATTIC_TOKEN:
+        from_secret: attic_token
     when:
       branch: sanitary
       event: push
