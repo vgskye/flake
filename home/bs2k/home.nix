@@ -990,7 +990,7 @@ in {
         eamodio.gitlens
         # catppuccin-vsc's output is architecture-agnostic
         # so just build this once
-        (catppuccin-vsc.packages.x86_64-linux.default.override {
+        (catppuccin-vsc.packages.${pkgs.system}.default.override {
           accent = config.catppuccin.accent;
         })
 
