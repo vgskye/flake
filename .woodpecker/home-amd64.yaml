@@ -3,6 +3,7 @@ steps:
     image: nixpkgs/cachix-flakes
     commands:
       - nix profile install nixpkgs#attic-client
+      - export PATH=$PATH:~/.nix-profile/bin
       - cachix use vgskye
       - attic login twm https://attic.is-quite.gay $ATTIC_TOKEN
       - attic use skye
