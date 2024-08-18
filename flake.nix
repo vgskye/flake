@@ -89,6 +89,10 @@
       url = "github:vgskye/switchblade";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    firefox = {
+      url = "github:nix-community/flake-firefox-nightly";
+      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+    };
   };
   outputs = {
     self,
@@ -116,6 +120,7 @@
     fenix,
     niri,
     switchblade,
+    firefox,
   }: let
     tailscalepkgmodule = {pkgsUnstable, ...}: {
       services.tailscale.package = pkgsUnstable.tailscale;
@@ -351,6 +356,7 @@
               packwiz
               catppuccin-vsc
               fenix
+              firefox
               ;
             pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
             pkgsAmd64 = nixpkgs-unstable.legacyPackages.x86_64-linux;

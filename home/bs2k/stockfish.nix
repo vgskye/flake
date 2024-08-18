@@ -15,36 +15,46 @@
   #        "unknown";
   arch = "x86-64-bmi2";
 
-  nnueFile = "nn-5af11540bbfe.nnue";
+  nnueFile = "nn-b1a57edbea57.nnue";
   nnue = fetchurl {
     name = nnueFile;
     url = "https://tests.stockfishchess.org/api/nn/${nnueFile}";
-    sha256 = "sha256-WvEVQLv+/LVOOMXdAAyrS0ad+nWZodVb5dJyLCCokps=";
+    sha256 = "sha256-saV+2+pXTKi4jWg3RzhFeRvrU9iF+H+G1czdVln787I=";
+  };
+  nnueFileSmall = "nn-baff1ede1f90.nnue";
+  nnueSmall = fetchurl {
+    name = nnueFileSmall;
+    url = "https://tests.stockfishchess.org/api/nn/${nnueFileSmall}";
+    sha256 = "sha256-uv8e3h+Qwd0bT3cvHv8phIghgB6BhjRdp/DrQSG9b2M=";
   };
 in
   stdenv.mkDerivation rec {
     pname = "stockfish";
-    version = "16";
+    version = "16.1";
 
     src = fetchFromGitHub {
       owner = "official-stockfish";
       repo = "Stockfish";
       rev = "sf_${version}";
-      sha256 = "sha256-ASy2vIP94lnSKgxixK1GoC84yAysaJpxeyuggV4MrP4=";
+      sha256 = "sha256-xTtjfJgEHF0SQT9Fw/9RLZA0Quh00jrIbihr7IYCm2U=";
     };
 
     # This addresses a linker issue with Darwin
     # https://github.com/NixOS/nixpkgs/issues/19098
     preBuild = lib.optionalString stdenv.isDarwin ''
       sed -i.orig '/^\#\#\# 3.*Link Time Optimization/,/^\#\#\# 3/d' Makefile
-      export CXXFLAGS='-march=native'
+      # export CXXFLAGS='-march=native'
     '';
 
     postUnpack = ''
       sourceRoot+=/src
       echo ${nnue}
       cp "${nnue}" "$sourceRoot/${nnueFile}"
+      echo ${nnueSmall}
+      cp "${nnueSmall}" "$sourceRoot/${nnueFileSmall}"
     '';
+
+    CXXFLAGS = "-march=native";
 
     makeFlags = ["PREFIX=$(out)" "ARCH=${arch}" "CXX=${stdenv.cc.targetPrefix}c++"];
     buildFlags = ["profile-build"];

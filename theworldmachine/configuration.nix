@@ -133,6 +133,8 @@ in {
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "server";
   programs.mosh.enable = true;
+
+  hardware.opengl.enable = true;
   
   system.stateVersion = "24.05";
 }

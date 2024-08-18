@@ -11,6 +11,7 @@
   packwiz,
   catppuccin-vsc,
   fenix,
+  firefox,
   ...
 }: let
   override-icon = pkg: oldPrefix: newPrefix:
@@ -140,21 +141,21 @@ in {
 
       optar = super.optar.overrideAttrs (old: {patches = [./optar.patch];});
 
-      cutechess = with self;
-        stdenv.mkDerivation rec {
-          pname = "cutechess";
-          version = "1.3.1";
+      # cutechess = with self;
+      #   stdenv.mkDerivation rec {
+      #     pname = "cutechess";
+      #     version = "1.3.1";
 
-          src = fetchFromGitHub {
-            owner = "cutechess";
-            repo = "cutechess";
-            rev = "v${version}";
-            hash = "sha256-P44Twbw2MGz+oTzPwMFCe73zPxAex6uYjSTtaUypfHw=";
-          };
+      #     src = fetchFromGitHub {
+      #       owner = "cutechess";
+      #       repo = "cutechess";
+      #       rev = "v${version}";
+      #       hash = "sha256-P44Twbw2MGz+oTzPwMFCe73zPxAex6uYjSTtaUypfHw=";
+      #     };
 
-          buildInputs = [libsForQt5.qt5.qtbase];
-          nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
-        };
+      #     buildInputs = [libsForQt5.qt5.qtbase];
+      #     nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
+      #   };
 
       stockfish =
         if self.system == "x86_64-linux"
@@ -607,7 +608,7 @@ in {
       # pkgs.flutter
       pkgs.jdk
 
-      # pkgs.cutechess
+      pkgs.cutechess
       pkgs.stockfish
       pkgs.chessx
       # pkgs.xboard
@@ -1016,8 +1017,8 @@ in {
         {
           name = "hex-casting";
           publisher = "object-Object";
-          version = "0.1.27";
-          sha256 = "sha256-CV2OloqE1P6/tVkIA7Ptb11alSSAK/5FyErQ5R5MhrI=";
+          version = "0.1.35";
+          sha256 = "sha256-Q+PeU8AGqVu99xQ2EirBjCAnoZIUi/+uefN5aC32uxQ=";
         }
         {
           name = "godot-tools";
@@ -1083,6 +1084,7 @@ in {
   programs.go.enable = true;
   # programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
+  # programs.firefox.package = firefox.packages.${pkgs.system}.firefox-nightly-bin;
 
   programs.chromium = {
     enable = pkgs.system == "aarch64-linux";
