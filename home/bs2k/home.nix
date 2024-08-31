@@ -1027,10 +1027,10 @@ in {
           sha256 = "sha256-wJICDW8bEBjilhjhoaSddN63vVn6l6aepPtx8VKTdZA=";
         }
         {
-          name = "nrf-devicetree";
-          publisher = "nordic-semiconductor";
-          version = "2023.11.120";
-          sha256 = "sha256-kCXatZeRm3MBU41JtubX9ynUJVnzs8gaIhPdgeMmSVo=";
+          name = "devicetree";
+          publisher = "plorefice";
+          version = "0.1.1";
+          sha256 = "sha256-udyeY8OuI9+c26WMR63NqElyJLxdMqgOXkkmWF8233k=";
         }
         {
           name = "shader";
