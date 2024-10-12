@@ -13,6 +13,8 @@ steps:
       - attic push skye ./result
       - nix build .#nixosConfigurations.e4mc-us.config.system.build.toplevel
       - attic push skye ./result
+      - nix build .#nixosConfigurations.e4mc-ap.config.system.build.toplevel
+      - attic push skye ./result
     environment:
       CACHIX_AUTH_TOKEN:
         from_secret: cachix_token

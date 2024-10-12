@@ -224,9 +224,9 @@
       };
       e4mc-jp = e4mcFn "jp" "linode" "x86_64";
       e4mc-oc = e4mcFn "oc" "linode" "x86_64";
+      e4mc-ap = e4mcFn "ap" "linode" "x86_64";
       e4mc-eu = e4mcFn "eu" "hetzner" "aarch64";
       e4mc-us = e4mcFn "us" "hetzner-mbr" "x86_64";
-      e4mc-sg = e4mcFn "sg" "hetzner-mbr" "x86_64";
       chell = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [

@@ -185,6 +185,7 @@ in {
 
         doCheck = false;
       });
+      # prusa-slicer = pkgsUnstable.prusa-slicer;
     })
     (self: super: let
       scale-electron = pkg: bin:
@@ -228,6 +229,7 @@ in {
         volume_normalisation = true;
         device_name = "dæmon";
         device_type = "computer";
+        cache_path = "/home/bs2k/.cache/spotifyd";
       };
     };
   };
@@ -330,12 +332,11 @@ in {
       pkgs.pinentry-qt
       pkgs.curl
       # pkgs.onlykey
-      pkgs.nheko
+      # pkgs.nheko
 
-      pkgs.kdePackages.neochat
+      # pkgs.kdePackages.neochat
 
       pkgs.vlc
-      pkgs.yt-dlp
       pkgs.ffmpeg
       pkgs.kolourpaint
       # (pkgsUnstable.lapce.overrideAttrs (old: rec {
@@ -379,82 +380,46 @@ in {
       # pkgs.openai-whisper
       (pkgs.python3.withPackages (pythonPackages:
         with pythonPackages;
-        let
-          torchRocm = torchWithRocm.overrideAttrs (old: {
-            version = "2.2.2";
-            src = pkgs.fetchFromGitHub {
-              owner = "pytorch";
-              repo = "pytorch";
-              rev = "refs/tags/v2.2.2";
-              fetchSubmodules = true;
-              hash = "sha256-la9wL9pOlgrSfq5V8aRKXt3hjW+Er/6484m0oUujlzk=";
-            };
-            # patches = old.patches ++ [
-            #   (pkgs.fetchpatch {
-            #     url = "https://patch-diff.githubusercontent.com/raw/pytorch/pytorch/pull/120551.patch";
-            #     hash = "sha256-pcDMC0+l7Ja8Kx4oFTmM9CUjmyzE7p3mikYgyioFwTI=";
-            #   })
-            #   (pkgs.substituteAll {
-            #     aotriton = pkgs.fetchFromGitHub {
-            #       owner = "ROCm";
-            #       repo = "aotriton";
-            #       rev = "24a3fe9cb57e5cda3c923df29743f9767194cc27";
-            #       hash = pkgs.lib.fakeHash;
-            #       fetchSubmodules = true;
-            #       leaveDotGit = true;
-            #     };
-            #     src = ./aotriton.patch;
-            #   })
-            # ];
+        # let
+        #   torchRocm = torchWithRocm.overrideAttrs (old: {
+        #     version = "2.2.2";
+        #     src = pkgs.fetchFromGitHub {
+        #       owner = "pytorch";
+        #       repo = "pytorch";
+        #       rev = "refs/tags/v2.2.2";
+        #       fetchSubmodules = true;
+        #       hash = "sha256-la9wL9pOlgrSfq5V8aRKXt3hjW+Er/6484m0oUujlzk=";
+        #     };
+        #     # patches = old.patches ++ [
+        #     #   (pkgs.fetchpatch {
+        #     #     url = "https://patch-diff.githubusercontent.com/raw/pytorch/pytorch/pull/120551.patch";
+        #     #     hash = "sha256-pcDMC0+l7Ja8Kx4oFTmM9CUjmyzE7p3mikYgyioFwTI=";
+        #     #   })
+        #     #   (pkgs.substituteAll {
+        #     #     aotriton = pkgs.fetchFromGitHub {
+        #     #       owner = "ROCm";
+        #     #       repo = "aotriton";
+        #     #       rev = "24a3fe9cb57e5cda3c923df29743f9767194cc27";
+        #     #       hash = pkgs.lib.fakeHash;
+        #     #       fetchSubmodules = true;
+        #     #       leaveDotGit = true;
+        #     #     };
+        #     #     src = ./aotriton.patch;
+        #     #   })
+        #     # ];
 
-            # nativeBuildInputs = old.nativeBuildInputs ++ [
-            #   pkgs.git
-            # ];
+        #     # nativeBuildInputs = old.nativeBuildInputs ++ [
+        #     #   pkgs.git
+        #     # ];
 
-            # preConfigure = old.preConfigure + ''
-            # mkdir homeful-shelter
-            # export HOME=`pwd`/homeful-shelter
-            # git config --global --add safe.directory '*'
-            # '';
-          });
-        in
+        #     # preConfigure = old.preConfigure + ''
+        #     # mkdir homeful-shelter
+        #     # export HOME=`pwd`/homeful-shelter
+        #     # git config --global --add safe.directory '*'
+        #     # '';
+        #   });
+        # in
         [
-          # (openai-whisper.override {
-          #   torch = torch-bin.overrideAttrs (old: {
-          #     src = pkgs.fetchurl {
-          #       name = "torch-1.13.1-cp310-cp310-linux_x86_64.whl";
-          #       url = "https://download.pytorch.org/whl/rocm5.2/torch-1.13.1%2Brocm5.2-cp310-cp310-linux_x86_64.whl";
-          #       hash = "sha256-82hdCKwNjJUcw2f5vUsskkxdRRdmnEdoB3SKvNlmE28=";
-          #     };
-          #     patches = [];
-          #     # buildInputs = with pkgs; old.buildInputs ++ [
-          #     #   rocm-runtime
-          #     #   rocm-device-libs
-          #     # ];
-          #     patchPhase = "";
-          #     postFixup = let
-          #       rpath = lib.makeLibraryPath [
-          #         stdenv.cc.cc.lib
-          #         pkgs.rocmPackages.rocm-runtime
-          #         pkgs.rocmPackages.rocm-device-libs
-          #         pkgs.rocmPackages.clr
-          #         # pkgs.rocfft
-          #         pkgs.rocmPackages.rccl
-          #         # pkgs.rocsparse
-          #         # pkgs.rocprim
-          #         # pkgs.rocthrust
-          #         pkgs.rocmPackages.rocblas
-          #         # pkgs.hipsparse
-          #       ];
-          #     in ''
-          #       find $out/${python.sitePackages}/torch/lib -type f \( -name '*.so' -or -name '*.so.*' \) | while read lib; do
-          #         echo "setting rpath for $lib..."
-          #         patchelf --set-rpath "${rpath}:$out/${python.sitePackages}/torch/lib" "$lib"
-          #         addOpenGLRunpath "$lib"
-          #       done
-          #     '';
-          #   });
-          # })
           # sounddevice
           numpy
           scipy
@@ -508,7 +473,45 @@ in {
           # pillow
           # opencv4
           # cairosvg
+          yt-dlp
+          ytmusicapi
         ] ++ (if pkgs.system == "x86_64-linux" then [
+          (openai-whisper.override {
+            torch = (torch-bin.override {
+              openai-triton = openai-triton;
+            }).overrideAttrs (old: {
+              src = pkgs.fetchurl {
+                name = "torch-2.4.1+rocm6.0-cp311-cp311-linux_x86_64.whl";
+                url = "https://download.pytorch.org/whl/rocm6.0/torch-2.4.1%2Brocm6.0-cp311-cp311-linux_x86_64.whl";
+                hash = "sha256-68jZM2IfkREysxRtT/wORWyJ2TwPcLogtJeQ0stloIw=";
+              };
+              patches = [];
+              # buildInputs = with pkgs; old.buildInputs ++ [
+              #   rocm-runtime
+              #   rocm-device-libs
+              # ];
+              patchPhase = "";
+              buildInputs = [
+                  stdenv.cc.cc.lib
+                  pkgs.rocmPackages.rocm-runtime
+                  pkgs.rocmPackages.rocm-device-libs
+                  pkgs.rocmPackages.clr
+                  # pkgs.rocfft
+                  pkgs.rocmPackages.rccl
+                  # pkgs.rocsparse
+                  # pkgs.rocprim
+                  # pkgs.rocthrust
+                  pkgs.rocmPackages.rocblas
+                  # pkgs.hipsparse
+                  pkgs.zstd
+                ];
+
+              autoPatchelfIgnoreMissingDeps = [
+                "libhipblaslt.so.0"
+              ];
+            });
+            openai-triton = openai-triton;
+          })
           # torchRocm
           tiktoken
           # (fairscale.override {
@@ -628,13 +631,7 @@ in {
         buildGoModule = args:
           pkgs.buildGoModule (args
             // rec {
-              vendorHash = "sha256-yL5pWbVqf6mEpgYsItLnv8nwSmoMP+SE0rX/s7u2vCg=";
-              patches = [
-                (pkgs.fetchpatch {
-                  url = "https://patch-diff.githubusercontent.com/raw/packwiz/packwiz/pull/258.diff";
-                  hash = "sha256-EzKymkZWihxbzZ9XiFQq6Aa0k2AKX7gh9YTIOmOUJ1o=";
-                })
-              ];
+              vendorHash = "sha256-krdrLQHM///dtdlfEhvSUDV2QljvxFc2ouMVQVhN7A0=";
             });
       })
 
@@ -673,6 +670,8 @@ in {
       })
       pkgs.prusa-slicer
       pkgs.klipper-estimator
+      pkgs.libnotify
+      pkgs.wl-clipboard-rs
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -1012,6 +1011,8 @@ in {
         golang.go
 
         vue.volar
+
+        antyos.openscad
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
