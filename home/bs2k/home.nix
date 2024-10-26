@@ -659,7 +659,7 @@ in {
       (prismlauncher.packages.${pkgs.system}.prismlauncher.override {
         gamemodeSupport = true;
 
-        glfw = pkgs.callPackage (import ./glfw/package.nix) {};
+        # glfw = pkgs.callPackage (import ./glfw/package.nix) {};
 
         additionalLibs = [pkgs.libva];
         jdks = with pkgs; [
