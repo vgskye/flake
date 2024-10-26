@@ -31,7 +31,7 @@
   #   });
   #   # kernel = pkgs.callPackage ./kernel.nix {};
   # in pkgs.linuxPackagesFor kernelLies;
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_8.override {
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_11.override {
     argsOverride = {
       defconfig = "sc7180_defconfig";
     };

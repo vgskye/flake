@@ -681,6 +681,7 @@ in {
         pkgs.jetbrains.idea-ultimate
         pkgs.arduino
         pkgs.love
+        pkgs.cmake
       ]
       else [
         pkgs.fuzzel
@@ -1083,7 +1084,7 @@ in {
   };
 
   programs.go.enable = true;
-  # programs.go.package = pkgsUnstable.go;
+  programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
   # programs.firefox.package = firefox.packages.${pkgs.system}.firefox-nightly-bin;
 
