@@ -42,7 +42,7 @@
     };
     prismlauncher = {
       url = "github:PrismLauncher/PrismLauncher";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin = {
       url = "github:Stonks3141/ctp-nix";
@@ -227,6 +227,7 @@
       e4mc-ap = e4mcFn "ap" "linode" "x86_64";
       e4mc-eu = e4mcFn "eu" "hetzner" "aarch64";
       e4mc-us = e4mcFn "us" "hetzner-mbr" "x86_64";
+      e4mc-na = e4mcFn "na" "hetzner-mbr" "x86_64";
       chell = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [

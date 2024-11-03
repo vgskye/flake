@@ -656,10 +656,12 @@ in {
       pkgs.kicad
 
       pkgs.file
-      (prismlauncher.packages.${pkgs.system}.prismlauncher.override {
+      (pkgs.prismlauncher.override {
         gamemodeSupport = true;
 
-        # glfw = pkgs.callPackage (import ./glfw/package.nix) {};
+        # glfw3-minecraft = pkgsUnstable.glfw3-minecraft;
+
+        glfw = pkgs.callPackage (import ./glfw/package.nix) {};
 
         additionalLibs = [pkgs.libva];
         jdks = with pkgs; [
@@ -1016,6 +1018,18 @@ in {
         antyos.openscad
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+        {
+          name = "vscode-deno";
+          publisher = "denoland";
+          version = "3.42.0";
+          sha256 = "sha256-bfhpIxqHeUph51VBMlKBvdBJIeSO9E1ZitrfVl/MqgQ=";
+        }
+        {
+          name = "figura";
+          publisher = "manuel-underscore";
+          version = "1.8.0";
+          sha256 = "sha256-qA1GDS+GyIqa17OrIk4A0u7z5AyknhwNOy0/tF8kaBU=";
+        }
         {
           name = "hex-casting";
           publisher = "object-Object";
