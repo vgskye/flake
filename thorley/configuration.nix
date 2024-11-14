@@ -22,8 +22,7 @@ in {
 
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
-    substituters = ["https://vgskye.cachix.org"];
-    trusted-public-keys = ["vgskye.cachix.org-1:DjgwQYRfjI1/w7exE54FCtfe4ZKCYEhWgJXmcHoo944="];
+    substituters = ["https://niko.cat-snares.ts.net:9443"];
   };
 
   systemd.tmpfiles.rules = [
