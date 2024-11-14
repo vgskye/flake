@@ -674,6 +674,7 @@ in {
       pkgs.klipper-estimator
       pkgs.libnotify
       pkgs.wl-clipboard-rs
+      pkgs.signal-desktop
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
