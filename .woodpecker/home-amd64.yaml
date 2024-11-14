@@ -5,8 +5,10 @@ steps:
       - nix profile install nixpkgs#attic-client
       - export PATH=$PATH:~/.nix-profile/bin
       - cachix use vgskye
-      - attic login twm https://attic.is-quite.gay $ATTIC_TOKEN
+      - attic login twm https://new-attic.is-quite.gay $ATTIC_TOKEN
       - attic use skye
+      - attic login twm-old https://attic.is-quite.gay $ATTIC_TOKEN
+      - attic use twm-old:skye
       - nix build .#homeConfigurations.bs2k.activationPackage
       - attic push skye ./result
     environment:
