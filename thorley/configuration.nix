@@ -22,7 +22,7 @@ in {
 
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
-    substituters = lib.mkBefore ["https://niko.cat-snares.ts.net:9443"];
+    substituters = lib.mkBefore ["https://niko.cat-snares.ts.net:9443/skye"];
   };
 
   systemd.tmpfiles.rules = [

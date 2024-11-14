@@ -23,7 +23,7 @@ in {
   # };
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
-    substituters = lib.mkBefore ["https://niko.cat-snares.ts.net:9443"];
+    substituters = lib.mkBefore ["https://niko.cat-snares.ts.net:9443/skye"];
     # trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
   };
 
