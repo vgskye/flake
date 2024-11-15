@@ -4,6 +4,7 @@
 {
   config,
   pkgs,
+  pkgsUnstable,
   lib,
   niri,
   ...
@@ -100,6 +101,11 @@ in {
     # ibus.engines = with pkgs.ibus-engines; [ hangul ];
   };
 
+  networking.nameservers = [
+    "8.8.8.8"
+    "8.8.4.4"
+  ];
+
   zramSwap.enable = true;
 
   programs.gamemode = {
@@ -124,9 +130,17 @@ in {
     mask = ''\xff\xff\xff\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff\xff\xff\xfe\xff\xff\xff'';
   };
 
+  boot.binfmt.registrations.i686-linux = {
+    interpreter = "${pkgsUnstable.box86}/bin/box86";
+    recognitionType = "magic";
+    wrapInterpreterInShell = false;
+    magicOrExtension = ''\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x03\x00'';
+    mask = ''\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff'';
+  };
+
   nix.settings = {
-    extra-platforms = "armv7l-linux";
-    extra-sandbox-paths = [ "/run/binfmt" "${pkgs.box64}" ];
+    extra-platforms = [ "armv7l-linux" "i686-linux" "x86_64-linux" ];
+    extra-sandbox-paths = [ "/run/binfmt" "${pkgs.box64}" "${pkgsUnstable.box86}" ];
   };
 
   services.keyd = {
