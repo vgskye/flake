@@ -240,8 +240,13 @@ in {
   services.printing.enable = true;
   services.printing.drivers = [pkgs.epson-201401w];
 
-  # hardware.sane.enable = true;
-  # hardware.sane.extraBackends = [ pkgs.utsushi ];
+  hardware.sane.enable = true;
+  hardware.sane.extraBackends = [
+    pkgs.utsushi
+    pkgs.epsonscan2
+    pkgs.epkowa
+    pkgs.epson-201401w
+  ];
   # hardware.sane.netConf = "100.64.0.5";
 
   programs.noisetorch.enable = true;

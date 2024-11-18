@@ -186,6 +186,11 @@ in {
         doCheck = false;
       });
       # prusa-slicer = pkgsUnstable.prusa-slicer;
+
+      ghostty = pkgs.callPackage ./ghostty/package.nix {
+        stdenv = pkgsUnstable.stdenv;
+        zig_0_13 = pkgsUnstable.zig_0_13;
+      };
     })
     (self: super: let
       scale-electron = pkg: bin:
@@ -675,6 +680,7 @@ in {
       pkgs.libnotify
       pkgs.wl-clipboard-rs
       pkgs.signal-desktop
+      pkgs.ghostty
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
