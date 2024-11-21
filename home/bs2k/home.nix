@@ -687,10 +687,10 @@ in {
       then [
         pkgs.lutris
         pkgs.blender-hip
-        pkgs.jetbrains.idea-ultimate
         pkgs.arduino
         pkgs.love
         pkgs.cmake
+        pkgs.jetbrains.idea-ultimate
       ]
       else [
         pkgs.fuzzel
@@ -715,6 +715,7 @@ in {
         })
         .run
         pkgs.krita
+        pkgsUnstable.jetbrains.idea-ultimate
       ]
     );
 
