@@ -143,6 +143,13 @@ in {
     extra-sandbox-paths = [ "/run/binfmt" "${pkgs.box64}" "${pkgsUnstable.box86}" ];
   };
 
+  boot.extraModulePackages = [
+    (pkgs.callPackage (import ../uwurandom.nix) {
+      kernel = config.boot.kernelPackages.kernel;
+    })
+  ];
+  boot.kernelModules = ["uwurandom"];
+
   services.keyd = {
     enable = true;
     keyboards = {
