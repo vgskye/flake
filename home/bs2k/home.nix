@@ -54,6 +54,7 @@ in {
   # };
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnsupportedSystem = true;
   nixpkgs.overlays = [
     fenix.overlays.default
     rust-overlay.overlays.default
@@ -472,7 +473,7 @@ in {
           # tiktoken]
 
           # onnxruntime
-          # pillow
+          pillow
           # opencv4
           # cairosvg
           yt-dlp
@@ -685,6 +686,8 @@ in {
       pkgs.ghc
       pkgs.haskell-language-server
       pkgs.cabal-install
+      pkgs.stack
+      pkgs.cmake
 
       pkgs.libqalculate
     ]
@@ -695,7 +698,6 @@ in {
         pkgs.blender-hip
         pkgs.arduino
         pkgs.love
-        pkgs.cmake
         pkgs.jetbrains.idea-ultimate
       ]
       else [
@@ -1031,6 +1033,9 @@ in {
 
         antyos.openscad
 
+        ms-python.python
+        ms-python.vscode-pylance
+
         haskell.haskell
         justusadam.language-haskell
       ]
@@ -1094,8 +1099,6 @@ in {
         if pkgs.system == "x86_64-linux"
         then
           [
-            ms-python.python
-            ms-python.vscode-pylance
             vadimcn.vscode-lldb
 
             ms-vscode.cpptools
