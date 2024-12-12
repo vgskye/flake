@@ -1,7 +1,7 @@
 {
   description = "my nix configs";
   inputs = {
-    nixpkgs-unwrapped = {url = "github:NixOS/nixpkgs/nixos-24.05";};
+    nixpkgs-unwrapped = {url = "github:NixOS/nixpkgs/nixos-24.11";};
     nixpkgs = {
       url = "github:numtide/nixpkgs-unfree";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
@@ -13,7 +13,7 @@
     };
     impermanence = {url = "github:nix-community/impermanence";};
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     rust-overlay = {

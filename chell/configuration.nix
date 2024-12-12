@@ -200,15 +200,14 @@ in {
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport = true;
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable = true;
+  # hardware.opengl.driSupport = true;
+  # hardware.opengl.driSupport32Bit = true;
 
   # services.xserver.videoDrivers = ["amdgpu" "nvidia"];
 
-  hardware.opengl.extraPackages = with pkgs; [
-    rocm-opencl-icd
-    rocm-opencl-runtime
+  hardware.graphics.extraPackages = with pkgs; [
+    rocmPackages.clr.icd
   ];
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
@@ -223,7 +222,7 @@ in {
   # Enable the Plasma 5 Desktop Environment.
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.displayManager.defaultSession = "plasmawayland";
-  services.xserver.desktopManager.plasma6.enable = true;
+  services.desktopManager.plasma6.enable = true;
   # services.xserver.desktopManager.plasma5.runUsingSystemd = true;
 
   # services.xserver.desktopManager.cinnamon.enable = true;
@@ -238,7 +237,10 @@ in {
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  services.printing.drivers = [pkgs.epson-201401w];
+  services.printing.drivers = [
+    pkgs.epson-201401w
+    (pkgs.callPackage ./sewoo.nix {})
+  ];
 
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [
@@ -337,7 +339,7 @@ in {
 
   programs.dconf.enable = true;
 
-  services.xserver.displayManager.sddm = {
+  services.displayManager.sddm = {
     enable = true;
     theme = "breeze";
     settings.Theme.CursorTheme = "Catppuccin-Macchiato-Dark-Cursors";

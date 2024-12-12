@@ -60,7 +60,7 @@ in {
     nix-alien.overlays.default
     agenix.overlays.default
     (self: super: {
-      monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
+      # monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
       kicad = override-exec super.kicad "" "GTK_THEME=Breeze ";
 
@@ -157,40 +157,37 @@ in {
       #     nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
       #   };
 
-      stockfish =
-        if self.system == "x86_64-linux"
-        then self.callPackage (import ./stockfish.nix) {}
-        else super.stockfish;
+      # stockfish =
+      #   if self.system == "x86_64-linux"
+      #   then self.callPackage (import ./stockfish.nix) {}
+      #   else super.stockfish;
       
 
-      prusa-slicer = super.prusa-slicer.overrideAttrs (old: rec {
-        version = "2.8.0";
-        src = old.src.override {
-          hash = "sha256-A/uxNIEXCchLw3t5erWdhqFAeh6nudcMfASi+RoJkFg=";
-        };
-        patches = [
-          (self.fetchpatch {
-            url = "https://github.com/gentoo/gentoo/raw/master/media-gfx/prusaslicer/files/prusaslicer-2.8.0-fixed-linking.patch";
-            hash = "sha256-G1JNdVH+goBelag9aX0NctHFVqtoYFnqjwK/43FVgvM=";
-          })
-          (self.fetchpatch {
-            url = "https://github.com/gentoo/gentoo/raw/master/media-gfx/prusaslicer/files/prusaslicer-2.8.0-missing-includes.patch";
-            hash = "sha256-/R9jv9zSP1lDW6IltZ8V06xyLdxfaYrk3zD6JRFUxHg=";
-          })
-        ];
+      # prusa-slicer = super.prusa-slicer.overrideAttrs (old: rec {
+      #   version = "2.8.0";
+      #   src = old.src.override {
+      #     hash = "sha256-A/uxNIEXCchLw3t5erWdhqFAeh6nudcMfASi+RoJkFg=";
+      #   };
+      #   patches = [
+      #     (self.fetchpatch {
+      #       url = "https://github.com/gentoo/gentoo/raw/master/media-gfx/prusaslicer/files/prusaslicer-2.8.0-fixed-linking.patch";
+      #       hash = "sha256-G1JNdVH+goBelag9aX0NctHFVqtoYFnqjwK/43FVgvM=";
+      #     })
+      #     (self.fetchpatch {
+      #       url = "https://github.com/gentoo/gentoo/raw/master/media-gfx/prusaslicer/files/prusaslicer-2.8.0-missing-includes.patch";
+      #       hash = "sha256-/R9jv9zSP1lDW6IltZ8V06xyLdxfaYrk3zD6JRFUxHg=";
+      #     })
+      #   ];
 
-        cmakeFlags = old.cmakeFlags ++ [
-          "-DSLIC3R_BUILD_TESTS=OFF"
-        ];
+      #   cmakeFlags = old.cmakeFlags ++ [
+      #     "-DSLIC3R_BUILD_TESTS=OFF"
+      #   ];
 
-        doCheck = false;
-      });
+      #   doCheck = false;
+      # });
       # prusa-slicer = pkgsUnstable.prusa-slicer;
 
-      ghostty = pkgs.callPackage ./ghostty/package.nix {
-        stdenv = pkgsUnstable.stdenv;
-        zig_0_13 = pkgsUnstable.zig_0_13;
-      };
+      ghostty = pkgs.callPackage ./ghostty/package.nix {};
     })
     (self: super: let
       scale-electron = pkg: bin:
@@ -370,8 +367,8 @@ in {
       })
 
       (pkgs.catppuccin-kvantum.override {
-        variant = mkUpper config.catppuccin.flavor;
-        accent = mkUpper config.catppuccin.accent;
+        variant = config.catppuccin.flavor;
+        accent = config.catppuccin.accent;
       })
 
       # pkgs.qtstyleplugin-kvantum-qt4
@@ -481,42 +478,45 @@ in {
           yt-dlp
           ytmusicapi
         ] ++ (if pkgs.system == "x86_64-linux" then [
-          (openai-whisper.override {
-            torch = (torch-bin.override {
-              openai-triton = openai-triton;
-            }).overrideAttrs (old: {
-              src = pkgs.fetchurl {
-                name = "torch-2.4.1+rocm6.0-cp311-cp311-linux_x86_64.whl";
-                url = "https://download.pytorch.org/whl/rocm6.0/torch-2.4.1%2Brocm6.0-cp311-cp311-linux_x86_64.whl";
-                hash = "sha256-68jZM2IfkREysxRtT/wORWyJ2TwPcLogtJeQ0stloIw=";
-              };
-              patches = [];
-              # buildInputs = with pkgs; old.buildInputs ++ [
-              #   rocm-runtime
-              #   rocm-device-libs
-              # ];
-              patchPhase = "";
-              buildInputs = [
-                  stdenv.cc.cc.lib
-                  pkgs.rocmPackages.rocm-runtime
-                  pkgs.rocmPackages.rocm-device-libs
-                  pkgs.rocmPackages.clr
-                  # pkgs.rocfft
-                  pkgs.rocmPackages.rccl
-                  # pkgs.rocsparse
-                  # pkgs.rocprim
-                  # pkgs.rocthrust
-                  pkgs.rocmPackages.rocblas
-                  # pkgs.hipsparse
-                  pkgs.zstd
-                ];
+          pyusb
+          python-escpos
+          pycups
+          # (openai-whisper.override {
+          #   torch = (torch-bin.override {
+          #     openai-triton = openai-triton;
+          #   }).overrideAttrs (old: {
+          #     src = pkgs.fetchurl {
+          #       name = "torch-2.4.1+rocm6.0-cp311-cp311-linux_x86_64.whl";
+          #       url = "https://download.pytorch.org/whl/rocm6.0/torch-2.4.1%2Brocm6.0-cp311-cp311-linux_x86_64.whl";
+          #       hash = "sha256-68jZM2IfkREysxRtT/wORWyJ2TwPcLogtJeQ0stloIw=";
+          #     };
+          #     patches = [];
+          #     # buildInputs = with pkgs; old.buildInputs ++ [
+          #     #   rocm-runtime
+          #     #   rocm-device-libs
+          #     # ];
+          #     patchPhase = "";
+          #     buildInputs = [
+          #         stdenv.cc.cc.lib
+          #         pkgs.rocmPackages.rocm-runtime
+          #         pkgs.rocmPackages.rocm-device-libs
+          #         pkgs.rocmPackages.clr
+          #         # pkgs.rocfft
+          #         pkgs.rocmPackages.rccl
+          #         # pkgs.rocsparse
+          #         # pkgs.rocprim
+          #         # pkgs.rocthrust
+          #         pkgs.rocmPackages.rocblas
+          #         # pkgs.hipsparse
+          #         pkgs.zstd
+          #       ];
 
-              autoPatchelfIgnoreMissingDeps = [
-                "libhipblaslt.so.0"
-              ];
-            });
-            openai-triton = openai-triton;
-          })
+          #     autoPatchelfIgnoreMissingDeps = [
+          #       "libhipblaslt.so.0"
+          #     ];
+          #   });
+          #   openai-triton = openai-triton;
+          # })
           # torchRocm
           tiktoken
           # (fairscale.override {
@@ -528,13 +528,14 @@ in {
         ] else [])))
 
       (fenixStructured {
-        extensions = ["rust-src" "rust-analyzer"];
+        extensions = ["rust-src" "rust-analyzer" "llvm-tools-preview"];
         targets = [
           "wasm32-unknown-unknown"
           "wasm32-wasi"
           "thumbv7em-none-eabihf"
           # "wasm32-unknown-emscripten"
           # "x86_64-unknown-linux-musl"
+          "riscv32i-unknown-none-elf"
         ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl"] else []);
       })
 
@@ -564,7 +565,7 @@ in {
 
       # pkgs.latte-dock
 
-      pkgs.transmission-qt
+      pkgs.transmission_4-qt6
       pkgs.kdePackages.ktorrent
       # pkgs.jetbrains.clion
       pkgs.gnumake
@@ -666,7 +667,7 @@ in {
 
         # glfw3-minecraft = pkgsUnstable.glfw3-minecraft;
 
-        glfw = pkgs.callPackage (import ./glfw/package.nix) {};
+        # glfw = pkgs.callPackage (import ./glfw/package.nix) {};
 
         additionalLibs = [pkgs.libva];
         jdks = with pkgs; [
@@ -681,6 +682,11 @@ in {
       pkgs.wl-clipboard-rs
       pkgs.signal-desktop
       pkgs.ghostty
+      pkgs.ghc
+      pkgs.haskell-language-server
+      pkgs.cabal-install
+
+      pkgs.libqalculate
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -979,7 +985,7 @@ in {
       "nix.enableLanguageServer" = true;
       "nix.serverPath" = "${pkgs.nil}/bin/nil";
       "editor.fontFamily" = "\"Monaspace Neon\", \"Symbols Nerd Font\", \"Twitter Color Emoji\"";
-      "editor.fontLigatures" = "'calt', 'liga', 'dlig', 'ss01', 'ss02', 'ss03', 'ss04', 'ss08'";
+      "editor.fontLigatures" = "'calt', 'ss03', 'liga'";
       "yaml.schemaStore.enable" = true;
       "redhat.telemetry.enabled" = false;
       "svelte.enable-ts-plugin" = true;
@@ -1024,6 +1030,9 @@ in {
         vue.volar
 
         antyos.openscad
+
+        haskell.haskell
+        justusadam.language-haskell
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
