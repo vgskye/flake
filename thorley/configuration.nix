@@ -79,7 +79,7 @@ in {
 
   programs.niri = {
     enable = true;
-    package = pkgs.callPackage ./niri/package.nix {};
+    package = pkgs.niri;
   };
 
   services.gvfs.enable = true;
