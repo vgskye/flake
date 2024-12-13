@@ -560,7 +560,6 @@ in {
       # pkgs.nordzy-icon-theme
       # pkgs.nordzy-cursor-theme
 
-      pkgs.galaxy-buds-client
       pkgs.libreoffice-qt
       pkgs.optar
 
@@ -694,6 +693,7 @@ in {
     ++ (
       if pkgs.system == "x86_64-linux"
       then [
+        pkgs.galaxy-buds-client
         pkgs.lutris
         pkgs.blender-hip
         pkgs.arduino
