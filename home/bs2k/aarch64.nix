@@ -186,7 +186,7 @@
 
   home.packages = [
     pkgs.brightnessctl
-    pkgs.gnome.nautilus
+    pkgs.nautilus
     pkgs.loupe
     pkgs.evince
     pkgs.iwgtk

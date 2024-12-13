@@ -706,22 +706,22 @@ in {
         pkgs.maliit-keyboard
         pkgs.maliit-framework
         pkgs.xournalpp
-        (pkgs.steam.override {
-          # steamn't
-          steam = null;
-          steam-runtime-wrapped = pkgs.steamPackages.steam-runtime-wrapped.override {
-            steamArch = "amd64";
-          };
-          steam-runtime-wrapped-i686 = null;
-          glxinfo-i686 = null;
-          extraPkgs = _: with pkgsAmd64; [
-            mbedtls_2
-            libgcc.lib
-            libunwind
-            libpng12
-          ];
-        })
-        .run
+        # (pkgs.steam.override {
+        #   # steamn't
+        #   steam-unwrapped = null;
+        #   # steam-runtime-wrapped = pkgs.steamPackages.steam-runtime-wrapped.override {
+        #   #   steamArch = "amd64";
+        #   # };
+        #   # steam-runtime-wrapped-i686 = null;
+        #   # glxinfo-i686 = null;
+        #   # extraPkgs = _: with pkgsAmd64; [
+        #   #   mbedtls_2
+        #   #   libgcc.lib
+        #   #   libunwind
+        #   #   libpng12
+        #   # ];
+        # })
+        # .run
         pkgs.krita
         pkgsUnstable.jetbrains.idea-ultimate
       ]
