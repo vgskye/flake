@@ -14,7 +14,7 @@
         name = "netrc";
         outputHashMode = "flat";
         outputHashAlgo = "sha256";
-        outputHash = "dd610199ead191c54f0dc1ed8de9871e3d01a3f8323076b40651492061f9da4e";
+        outputHash = "0cb68202b9b24fc46dbfeba7c8a287f2f37f3b5c079a7a6654d067899bb62039";
 
         unpackPhase = ''
           echo :3c
