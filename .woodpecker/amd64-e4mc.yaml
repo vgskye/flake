@@ -3,17 +3,14 @@ steps:
     image: nixpkgs/cachix-flakes
     commands:
       - nix profile install nixpkgs#attic-client
+      - nix profile install nixpkgs#nix-fast-build
       - export PATH=$PATH:~/.nix-profile/bin
       - attic login twm https://new-attic.is-quite.gay $ATTIC_TOKEN
       - attic use skye
-      - nix build .#nixosConfigurations.e4mc-jp.config.system.build.toplevel
-      - attic push skye ./result
-      - nix build .#nixosConfigurations.e4mc-oc.config.system.build.toplevel
-      - attic push skye ./result
-      - nix build .#nixosConfigurations.e4mc-us.config.system.build.toplevel
-      - attic push skye ./result
-      - nix build .#nixosConfigurations.e4mc-ap.config.system.build.toplevel
-      - attic push skye ./result
+      - nix-fast-build --attic-cache skye --no-nom --flake .#nixosConfigurations.e4mc-jp.config.system.build.toplevel
+      - nix-fast-build --attic-cache skye --no-nom --flake .#nixosConfigurations.e4mc-oc.config.system.build.toplevel
+      - nix-fast-build --attic-cache skye --no-nom --flake .#nixosConfigurations.e4mc-us.config.system.build.toplevel
+      - nix-fast-build --attic-cache skye --no-nom --flake .#nixosConfigurations.e4mc-ap.config.system.build.toplevel
     environment:
       CACHIX_AUTH_TOKEN:
         from_secret: cachix_token
