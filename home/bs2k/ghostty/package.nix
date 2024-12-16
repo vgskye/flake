@@ -24,7 +24,7 @@
   pkg-config,
   zig_0_13,
   pandoc,
-  revision ? "86c601f136ba202ccb01bfa7e443371a0db3b75a",
+  revision ? "50cee999887c1c1f9ad32caf7e705c05db3efc18",
   optimize ? "ReleaseFast",
   requireFile,
 }: let
@@ -48,7 +48,7 @@
     name = "ghostty-main.tar.gz";
     outputHashMode = "flat";
     outputHashAlgo = "sha256";
-    outputHash = "c89d935063cae665f68a2756d7b2ea3335601079156dc782c3d0917de3318be3";
+    outputHash = "fb746222a9479e91805cdbe93f57079a11d49e2a4a302d51472d08785e21daa0";
 
     buildPhase = ''
       runHook preBuild
@@ -72,7 +72,7 @@
   # (It's also possible that you might see a hash mismatch - without the
   # network errors - if you don't have a previous instance of the cache
   # derivation in your store already. If so, just update the value as above.)
-  zigCacheHash = "sha256-D1SQIlmdP9x1PDgRVOy1qJGmu9osDbuyxGOcFj646N4=";
+  zigCacheHash = "sha256-q9UDVryP50HfeeafgnrOd+D6K+cEy33/05K2TB5qiqw=";
 
   zigCache = stdenv.mkDerivation {
     inherit src;
