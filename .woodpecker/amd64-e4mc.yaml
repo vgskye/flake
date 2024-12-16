@@ -5,7 +5,7 @@ steps:
       - nix profile install nixpkgs#attic-client
       - nix profile install .#nix-fast-build
       - export PATH=$PATH:~/.nix-profile/bin
-      - attic login fly https://skyettic.fly.dev $ATTIC_TOKEN
+      - attic login fly https://attic.is-quite.gay $ATTIC_TOKEN
       - attic use fly-skye
       - nix-fast-build --eval-workers 1 --attic-cache fly-skye --skip-cached --no-nom --flake .#nixosConfigurations.e4mc-jp.config.system.build.toplevel
       - nix-fast-build --eval-workers 1 --attic-cache fly-skye --skip-cached --no-nom --flake .#nixosConfigurations.e4mc-oc.config.system.build.toplevel
