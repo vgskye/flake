@@ -168,7 +168,7 @@
 
     Service =
     let
-      xwayland-satellite = pkgs.callPackage ./xwayland-satellite.nix {};
+      xwayland-satellite = pkgs.xwayland-satellite;
     in
     {
       Type = "simple";
