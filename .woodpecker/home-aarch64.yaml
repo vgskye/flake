@@ -5,9 +5,9 @@ steps:
       - nix profile install nixpkgs#attic-client
       - nix profile install .#nix-fast-build
       - export PATH=$PATH:~/.nix-profile/bin
-      - attic login twm https://new-attic.is-quite.gay $ATTIC_TOKEN
-      - attic use skye
-      - nix-fast-build --eval-workers 1 --attic-cache skye --skip-cached --no-nom --flake .#homeConfigurations.bs2k-arm.activationPackage
+      - attic login fly https://skyettic.fly.dev $ATTIC_TOKEN
+      - attic use fly-skye
+      - nix-fast-build --eval-workers 1 --attic-cache fly-skye --skip-cached --no-nom --flake .#homeConfigurations.bs2k-arm.activationPackage
     environment:
       CACHIX_AUTH_TOKEN:
         from_secret: cachix_token

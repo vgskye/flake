@@ -724,6 +724,7 @@ in {
         # .run
         pkgs.krita
         pkgsUnstable.jetbrains.idea-ultimate
+        pkgs.spot
       ]
     );
 
