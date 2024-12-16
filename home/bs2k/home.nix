@@ -106,17 +106,17 @@ in {
         };
       });
 
-      freecad = super.freecad.overrideAttrs (old: rec {
-        version = "3b4598c";
-        src = self.fetchFromGitHub {
-          owner = "FreeCAD";
-          repo = "FreeCAD";
-          rev = version;
-          hash = "sha256-16kLW5Cx2TtvmioXUjVxf4vv/pR48GAvnor82eT9sRI=";
-        };
-        patches = [./freecad.patch];
-        buildInputs = old.buildInputs ++ [self.yaml-cpp];
-      });
+      # freecad = super.freecad.overrideAttrs (old: rec {
+      #   version = "3b4598c";
+      #   src = self.fetchFromGitHub {
+      #     owner = "FreeCAD";
+      #     repo = "FreeCAD";
+      #     rev = version;
+      #     hash = "sha256-16kLW5Cx2TtvmioXUjVxf4vv/pR48GAvnor82eT9sRI=";
+      #   };
+      #   patches = [./freecad.patch];
+      #   buildInputs = old.buildInputs ++ [self.yaml-cpp];
+      # });
 
       aseprite-unfree = self.callPackage (import ./aseprite/default.nix) {};
 
@@ -646,7 +646,7 @@ in {
       pkgs.monaspace
       pkgs.twitter-color-emoji
 
-      # pkgs.freecad
+      pkgs.freecad-wayland
 
       pkgs.minisign
       pkgs.rage
