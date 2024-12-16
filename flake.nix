@@ -93,6 +93,10 @@
       url = "github:nix-community/flake-firefox-nightly";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
     };
+    nix-fast-build = {
+      url = "github:Mic92/nix-fast-build";
+      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+    };
   };
   outputs = {
     self,
@@ -121,6 +125,7 @@
     niri,
     switchblade,
     firefox,
+    nix-fast-build,
   }: let
     tailscalepkgmodule = {pkgsUnstable, ...}: {
       services.tailscale.package = pkgsUnstable.tailscale;
@@ -169,6 +174,7 @@
       };
     };
   in {
+    packages = nix-fast-build.packages;
     apps = nixinate.nixinate.x86_64-linux self;
     nixosConfigurations = let
       e4mcFn = region: provider: arch:
