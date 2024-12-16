@@ -12,7 +12,7 @@ steps:
       - export PATH=$PATH:~/.nix-profile/bin
       - attic login twm https://new-attic.is-quite.gay $ATTIC_TOKEN
       - attic use skye
-      - nix-fast-build --attic-cache skye --no-nom --flake .#nixosConfigurations.${SYSTEM}.config.system.build.toplevel
+      - nix-fast-build --attic-cache skye --skip-cached --no-nom --flake .#nixosConfigurations.${SYSTEM}.config.system.build.toplevel
     environment:
       CACHIX_AUTH_TOKEN:
         from_secret: cachix_token
