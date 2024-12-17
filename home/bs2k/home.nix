@@ -724,17 +724,7 @@ in {
         # .run
         pkgs.krita
         pkgsUnstable.jetbrains.idea-ultimate
-        (pkgs.spot.overrideAttrs (old: rec {
-          version = "0.5.0";
-          src = old.src.overrideAttrs {
-            rev = "refs/tags/${version}";
-            hash = "sha256-7zWK0wkh53ojnoznv4T/X//JeyKJVKOrfYF0IkvciIY=";
-          };
-          cargoDeps = old.cargoDeps.overrideAttrs {
-            inherit version src;
-            hash = "sha256-AaRmTOgFmBi0s1zdIVHc6bLjrUopy9YuB3GJOCnbjU4=";
-          };
-        }))
+        (pkgs.callPackage ./spot.nix {})
       ]
     );
 
