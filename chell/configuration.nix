@@ -204,6 +204,7 @@ in {
   # hardware.opengl.driSupport = true;
   # hardware.opengl.driSupport32Bit = true;
 
+  # hardware.nvidia.open = true;
   # services.xserver.videoDrivers = ["amdgpu" "nvidia"];
 
   hardware.graphics.extraPackages = with pkgs; [
@@ -388,6 +389,9 @@ in {
     "wasm32-wasi"
     "aarch64-linux"
   ];
+
+  services.wivrn.enable = true;
+  services.wivrn.package = pkgs.callPackage ./wivrn.nix {};
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

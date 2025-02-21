@@ -376,56 +376,109 @@ in {
       pkgs.libsForQt5.qtstyleplugin-kvantum
       pkgs.qt6Packages.qtstyleplugin-kvantum
 
-      pkgs.nix-alien
+      # pkgs.nix-alien
       pkgs.nix-index-update
       pkgs.nix-index
       comma.packages.${pkgs.system}.comma
       # pkgs.openai-whisper
       (pkgs.python3.withPackages (pythonPackages:
         with pythonPackages;
-        # let
-        #   torchRocm = torchWithRocm.overrideAttrs (old: {
-        #     version = "2.2.2";
-        #     src = pkgs.fetchFromGitHub {
-        #       owner = "pytorch";
-        #       repo = "pytorch";
-        #       rev = "refs/tags/v2.2.2";
-        #       fetchSubmodules = true;
-        #       hash = "sha256-la9wL9pOlgrSfq5V8aRKXt3hjW+Er/6484m0oUujlzk=";
-        #     };
-        #     # patches = old.patches ++ [
-        #     #   (pkgs.fetchpatch {
-        #     #     url = "https://patch-diff.githubusercontent.com/raw/pytorch/pytorch/pull/120551.patch";
-        #     #     hash = "sha256-pcDMC0+l7Ja8Kx4oFTmM9CUjmyzE7p3mikYgyioFwTI=";
-        #     #   })
-        #     #   (pkgs.substituteAll {
-        #     #     aotriton = pkgs.fetchFromGitHub {
-        #     #       owner = "ROCm";
-        #     #       repo = "aotriton";
-        #     #       rev = "24a3fe9cb57e5cda3c923df29743f9767194cc27";
-        #     #       hash = pkgs.lib.fakeHash;
-        #     #       fetchSubmodules = true;
-        #     #       leaveDotGit = true;
-        #     #     };
-        #     #     src = ./aotriton.patch;
-        #     #   })
-        #     # ];
+        let
+          torchRocm = torchWithRocm.overrideAttrs (old: {
+            version = "2.3.1";
+            src = pkgs.fetchFromGitHub {
+              owner = "pytorch";
+              repo = "pytorch";
+              rev = "refs/tags/v2.3.1";
+              fetchSubmodules = true;
+              hash = "sha256-vpgtOqzIDKgRuqdT8lB/g6j+oMIH1RPxdbjtlzZFjV8=";
+            };
+            patches = old.patches ++ [
+              (pkgs.fetchpatch {
+                url = "https://patch-diff.githubusercontent.com/raw/pytorch/pytorch/pull/120551.patch";
+                hash = "sha256-pcDMC0+l7Ja8Kx4oFTmM9CUjmyzE7p3mikYgyioFwTI=";
+              })
+              # (pkgs.substituteAll {
+              #   aotriton = pkgs.fetchFromGitHub {
+              #     owner = "ROCm";
+              #     repo = "aotriton";
+              #     rev = "24a3fe9cb57e5cda3c923df29743f9767194cc27";
+              #     hash = pkgs.lib.fakeHash;
+              #     fetchSubmodules = true;
+              #     leaveDotGit = true;
+              #   };
+              #   src = ./aotriton.patch;
+              # })
+              ./passthrough-python-lib-rel-path.patch
+              ./0001-cmake.py-propagate-cmakeFlags-from-environment.patch
+            ];
 
-        #     # nativeBuildInputs = old.nativeBuildInputs ++ [
-        #     #   pkgs.git
-        #     # ];
+            # nativeBuildInputs = old.nativeBuildInputs ++ [
+            #   pkgs.git
+            # ];
 
-        #     # preConfigure = old.preConfigure + ''
-        #     # mkdir homeful-shelter
-        #     # export HOME=`pwd`/homeful-shelter
-        #     # git config --global --add safe.directory '*'
-        #     # '';
-        #   });
-        # in
+            # preConfigure = old.preConfigure + ''
+            # mkdir homeful-shelter
+            # export HOME=`pwd`/homeful-shelter
+            # git config --global --add safe.directory '*'
+            # '';
+
+            meta = {
+              changelog = "https://github.com/pytorch/pytorch/releases/tag/v${version}";
+              # keep PyTorch in the description so the package can be found under that name on search.nixos.org
+              description = "PyTorch: Tensors and Dynamic neural networks in Python with strong GPU acceleration";
+              homepage = "https://pytorch.org/";
+              license = lib.licenses.bsd3;
+              maintainers = with lib.maintainers; [
+                teh
+                thoughtpolice
+                tscholak
+              ]; # tscholak esp. for darwin-related builds
+              platforms =
+                lib.platforms.linux
+                ++ lib.optionals (!cudaSupport && !rocmSupport) lib.platforms.darwin;
+            };
+          });
+          # torchRocmBin = torch-bin.overrideAttrs (old: {
+          #   src = {
+          #     name = "torch-2.5.1-cp312-cp312-linux_x86_64.whl";
+          #     url = "https://download.pytorch.org/whl/rocm6.2.4/torch-2.6.0%2Brocm6.2.4-cp312-cp312-manylinux_2_28_x86_64.whl";
+          #     hash = pkgs.lib.fakeHash;
+          #   };
+          #   buildInputs = with pkgs.rocmPackages; [
+          #     rocm-core
+          #     clr
+          #     rccl
+          #     miopen
+          #     miopengemm
+          #     rocrand
+          #     rocblas
+          #     rocsparse
+          #     hipsparse
+          #     rocthrust
+          #     rocprim
+          #     hipcub
+          #     roctracer
+          #     rocfft
+          #     rocsolver
+          #     hipfft
+          #     hipsolver
+          #     hipblas
+          #     rocminfo
+          #     rocm-thunk
+          #     rocm-comgr
+          #     rocm-device-libs
+          #     rocm-runtime
+          #     clr.icd
+          #     hipify
+          #   ];
+          # });
+        in
         [
           # sounddevice
           numpy
           scipy
+          sentence-transformers
           # pyaudio
           # pkgs.yubikey-manager
           # yubico-client
@@ -478,7 +531,9 @@ in {
           # cairosvg
           yt-dlp
           ytmusicapi
+          matplotlib
         ] ++ (if pkgs.system == "x86_64-linux" then [
+          manim
           pyusb
           python-escpos
           pycups
@@ -526,13 +581,17 @@ in {
           fire
           blobfile
           hid
+          # torchWithCuda
+
+          chromadb
         ] else [])))
 
       (fenixStructured {
         extensions = ["rust-src" "rust-analyzer" "llvm-tools-preview"];
         targets = [
           "wasm32-unknown-unknown"
-          "wasm32-wasi"
+          "wasm32-wasip1"
+          "wasm32-wasip2"
           "thumbv7em-none-eabihf"
           # "wasm32-unknown-emscripten"
           # "x86_64-unknown-linux-musl"
@@ -669,7 +728,7 @@ in {
 
         # glfw = pkgs.callPackage (import ./glfw/package.nix) {};
 
-        additionalLibs = [pkgs.libva];
+        additionalLibs = [pkgs.libva pkgs.libuuid];
         jdks = with pkgs; [
           jdk8
           jdk17
@@ -699,6 +758,7 @@ in {
         pkgs.arduino
         pkgs.love
         pkgs.jetbrains.idea-ultimate
+        pkgs.ollama-rocm
       ]
       else [
         pkgs.fuzzel
@@ -981,7 +1041,7 @@ in {
   programs.vscode = {
     enable = true;
     # package = pkgs.vscodium;
-    mutableExtensionsDir = false;
+    mutableExtensionsDir = true;
     userSettings = {
       "update.mode" = "none";
       "rust-analyzer.check.command" = "clippy";
@@ -1008,11 +1068,12 @@ in {
         dbaeumer.vscode-eslint
 
         eamodio.gitlens
-        # catppuccin-vsc's output is architecture-agnostic
-        # so just build this once
-        (catppuccin-vsc.packages.${pkgs.system}.default.override {
-          accent = config.catppuccin.accent;
-        })
+        # # catppuccin-vsc's output is architecture-agnostic
+        # # so just build this once
+        # (catppuccin-vsc.packages.${pkgs.system}.default.override {
+        #   accent = config.catppuccin.accent;
+        # })
+        catppuccin.catppuccin-vsc
 
         mkhl.direnv
         jnoortheen.nix-ide
@@ -1039,6 +1100,8 @@ in {
 
         haskell.haskell
         justusadam.language-haskell
+
+        unifiedjs.vscode-mdx
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
         {
