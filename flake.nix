@@ -232,6 +232,7 @@
       e4mc-oc = e4mcFn "oc" "linode" "x86_64";
       e4mc-ap = e4mcFn "ap" "linode" "x86_64";
       e4mc-eu = e4mcFn "eu" "hetzner" "aarch64";
+      e4mc-de = e4mcFn "de" "hetzner" "aarch64";
       e4mc-us = e4mcFn "us" "hetzner-mbr" "x86_64";
       e4mc-na = e4mcFn "na" "hetzner-mbr" "x86_64";
       chell = nixpkgs.lib.nixosSystem rec {
