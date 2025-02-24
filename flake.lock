@@ -957,11 +957,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1740386607,
-        "narHash": "sha256-gKwP0dcRcG6xRT99jUs3lj03QpyDt+LSZ6mXxAXGA7E=",
+        "lastModified": 1740390557,
+        "narHash": "sha256-Q9ve0C/5cFtfGWZqdqRKy6/TDVMQAtjQiXlXByL/QvQ=",
         "ref": "refs/heads/kity",
-        "rev": "236f8386623132c47ee57f77fcb0d7b3ae5092c3",
-        "revCount": 22,
+        "rev": "998b210463beaabebf8ab9d3327e291334867a62",
+        "revCount": 24,
         "type": "git",
         "url": "https://git.skye.vg/me/quiclime.git"
       },
