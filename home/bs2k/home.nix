@@ -596,6 +596,13 @@ in {
           # "wasm32-unknown-emscripten"
           # "x86_64-unknown-linux-musl"
           "riscv32i-unknown-none-elf"
+
+          "thumbv7em-none-eabi"
+          "thumbv7m-none-eabi"
+          "thumbv6m-none-eabi"
+          "thumbv8m.main-none-eabihf"
+          "riscv32imac-unknown-none-elf"
+          "wasm32-unknown-unknown"
         ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl"] else []);
       })
 
