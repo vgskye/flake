@@ -80,10 +80,10 @@ stdenv.mkDerivation (finalAttrs: {
   version = "0.23.2";
 
   src = fetchFromGitHub {
-    owner = "wivrn";
+    owner = "notpeelz";
     repo = "wivrn";
-    rev = "v${finalAttrs.version}";
-    hash = "sha256-KpsS0XssSnE2Fj5rrXq1h+yNHhF7BzfPxwRUhZUZEaw=";
+    rev = "3e2820ef585c57191ffa57969371de19f836171a";
+    hash = "sha256-bbZqUxkPH8vGGnYTW/4T5nWWZCzeAYATgWzOWrTyZRU=";
   };
 
   monado = applyPatches {
@@ -212,6 +212,7 @@ stdenv.mkDerivation (finalAttrs: {
       (lib.cmakeBool "WIVRN_BUILD_CLIENT" false)
       (lib.cmakeBool "WIVRN_BUILD_DASHBOARD" true)
       (lib.cmakeBool "WIVRN_CHECK_CAPSYSNICE" false)
+      (lib.cmakeBool "WIVRN_FEATURE_SOLARXR" true)
       (lib.cmakeBool "FETCHCONTENT_FULLY_DISCONNECTED" true)
       (lib.cmakeFeature "WIVRN_OPENXR_MANIFEST_TYPE" "absolute")
       (lib.cmakeFeature "OPENCOMPOSITE_SEARCH_PATH" "${opencomposite}/lib/opencomposite")

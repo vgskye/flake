@@ -1,0 +1,13 @@
+diff --git a/gui/src-tauri/src/main.rs b/gui/src-tauri/src/main.rs
+index f40da30a..3e7df870 100644
+--- a/gui/src-tauri/src/main.rs
++++ b/gui/src-tauri/src/main.rs
+@@ -78,7 +78,7 @@ fn main() -> Result<()> {
+ 	setup_webview2()?;
+ 
+ 	// Check for environment variables that can affect the server, and if so, warn in log and GUI
+-	check_environment_variables();
++	// check_environment_variables();
+ 
+ 	// Spawn server process
+ 	let exit_flag = Arc::new(AtomicBool::new(false));

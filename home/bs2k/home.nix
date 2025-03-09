@@ -188,7 +188,9 @@ in {
       # });
       # prusa-slicer = pkgsUnstable.prusa-slicer;
 
-      ghostty = pkgs.callPackage ./ghostty/package.nix {};
+      # ghostty = pkgs.callPackage ./ghostty/package.nix {};
+      slimevr-server = pkgs.callPackage ./slimevr-server/package.nix {};
+      slimevr = pkgs.callPackage ./slimevr/package.nix {};
     })
     (self: super: let
       scale-electron = pkg: bin:
@@ -759,6 +761,8 @@ in {
     ++ (
       if pkgs.system == "x86_64-linux"
       then [
+        pkgs.slimevr
+        pkgs.slimevr-server # .mitmCache.updateScript
         pkgs.galaxy-buds-client
         pkgs.lutris
         pkgs.blender-hip
@@ -794,7 +798,8 @@ in {
         (pkgs.callPackage ./spot.nix {})
       ]
     );
-
+  # xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgsUnstable.callPackage ./xrizer.nix {}}/lib/xrizer"]}'';
+  xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgs.opencomposite}/lib/opencomposite"]}'';
   fonts.fontconfig.enable = true;
   xdg.configFile."fontconfig/conf.d/10-nerd-font-symbols.conf" = let
     genOverlay = font: ''
