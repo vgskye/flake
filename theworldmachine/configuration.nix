@@ -76,7 +76,7 @@ in {
   age.secrets.geoipupdate = {
     file = ../secrets/geoipupdate.age;
     mode = "444";
-    owner = "geoip";
+    owner = "root";
   };
 
   services.geoipupdate = {
