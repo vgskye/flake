@@ -73,6 +73,24 @@ in {
     ];
   };
 
+  age.secrets.geoipupdate = {
+    file = ../secrets/geoipupdate.age;
+    mode = "400";
+    owner = "geoip";
+  };
+
+  services.geoipupdate = {
+    settings = {
+      AccountID = 723138;
+      LicenseKey = { _secret = config.age.secrets.geoipupdate.path; };
+      EditionIDs = [
+        "GeoLite2-ASN"
+        "GeoLite2-City"
+        "GeoLite2-Country"
+      ];
+    };
+  };
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "me@skye.vg";
