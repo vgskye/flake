@@ -768,7 +768,8 @@ in {
         pkgs.blender-hip
         pkgs.arduino
         pkgs.love
-        pkgs.jetbrains.idea-ultimate
+        pkgs.jetbrains.idea-community # edu license means I can't use Ultimate for contracts
+        pkgs.jetbrains.rider
         pkgs.ollama-rocm
       ]
       else [
@@ -798,8 +799,8 @@ in {
         (pkgs.callPackage ./spot.nix {})
       ]
     );
-  # xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgsUnstable.callPackage ./xrizer.nix {}}/lib/xrizer"]}'';
-  xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgs.opencomposite}/lib/opencomposite"]}'';
+  xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgsUnstable.callPackage ./xrizer.nix {}}/lib/xrizer"]}'';
+  # xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgs.opencomposite}/lib/opencomposite"]}'';
   fonts.fontconfig.enable = true;
   xdg.configFile."fontconfig/conf.d/10-nerd-font-symbols.conf" = let
     genOverlay = font: ''

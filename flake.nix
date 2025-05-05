@@ -231,6 +231,7 @@
       e4mc-jp = e4mcFn "jp" "linode" "x86_64";
       e4mc-oc = e4mcFn "oc" "linode" "x86_64";
       e4mc-ap = e4mcFn "ap" "linode" "x86_64";
+      e4mc-sg = e4mcFn "sg" "linode" "x86_64";
       e4mc-eu = e4mcFn "eu" "hetzner-mbr-new" "x86_64";
       e4mc-de = e4mcFn "de" "hetzner-mbr-new" "x86_64";
       e4mc-us = e4mcFn "us" "hetzner-mbr" "x86_64";

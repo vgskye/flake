@@ -367,6 +367,8 @@ in {
   security.pam.u2f.enable = true;
   security.pam.u2f.control = "required";
 
+  security.pki.certificateFiles = [ ./dn42.crt ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
