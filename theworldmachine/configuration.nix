@@ -80,6 +80,7 @@ in {
   };
 
   services.geoipupdate = {
+    enable = true;
     settings = {
       AccountID = 723138;
       LicenseKey = { _secret = config.age.secrets.geoipupdate.path; };
