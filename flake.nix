@@ -322,7 +322,7 @@
         system = "x86_64-linux";
         modules = [
           ./shared-caches.nix
-          ./alex/configuration.nix
+          ./allay/configuration.nix
           agenix.nixosModules.default
           telegrafModule
           tailscalepkgmodule
