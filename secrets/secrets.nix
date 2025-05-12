@@ -20,7 +20,8 @@ let
   bridget = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHmdvjJ9WkP1bbL965gt8d+d/RUK8TZLwnk+eEMhbaVZ";
   jenny = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPbyhPgceZnlXr5RIgY0TRplK+5/ZaejMDP2oDYAsab3";
   theworldmachine = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBFseK1tVmweXcvELo/2N4Ws+Pyk6lOi+PTk9382x2u1";
-  all = [bridget jenny theworldmachine] ++ e4mc;
+  allay = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEViKAQz1Z5352D4QNU5pM04bgU24PRTWSvbx6HiJb+O";
+  all = [bridget jenny theworldmachine allay] ++ e4mc;
 in {
   "cf-api-key.age".publicKeys = [bs2k secondary alpha bridget];
   "email-password.age".publicKeys = [bs2k secondary];

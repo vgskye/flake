@@ -189,8 +189,8 @@ in {
       # prusa-slicer = pkgsUnstable.prusa-slicer;
 
       # ghostty = pkgs.callPackage ./ghostty/package.nix {};
-      slimevr-server = pkgs.callPackage ./slimevr-server/package.nix {};
-      slimevr = pkgs.callPackage ./slimevr/package.nix {};
+      slimevr-server = pkgsUnstable.slimevr-server; # pkgs.callPackage ./slimevr-server/package.nix {};
+      slimevr = pkgsUnstable.slimevr; # pkgs.callPackage ./slimevr/package.nix {};
     })
     (self: super: let
       scale-electron = pkg: bin:
@@ -223,7 +223,7 @@ in {
     enable = true;
     package = pkgs.spotifyd.override {
       withMpris = true;
-      withKeyring = true;
+      # withKeyring = true;
     };
     settings = {
       global = {
@@ -771,6 +771,10 @@ in {
         pkgs.jetbrains.idea-community # edu license means I can't use Ultimate for contracts
         pkgs.jetbrains.rider
         pkgs.ollama-rocm
+
+        (pkgs.wlx-overlay-s.override {
+          rustPlatform = pkgsUnstable.rustPlatform;
+        })
       ]
       else [
         pkgs.fuzzel

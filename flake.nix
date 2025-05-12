@@ -318,6 +318,20 @@
           pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
         };
       };
+      allay = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        modules = [
+          ./shared-caches.nix
+          ./alex/configuration.nix
+          agenix.nixosModules.default
+          telegrafModule
+          tailscalepkgmodule
+          (nixinateModule "remote")
+        ];
+        specialArgs = {
+          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+        };
+      };
       thorley = nixpkgs.lib.nixosSystem rec {
         system = "aarch64-linux";
         modules = [
