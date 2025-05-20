@@ -82,6 +82,10 @@ in {
     package = pkgs.niri;
   };
 
+  services.xserver.desktopManager.phosh.enable = true;
+  services.xserver.desktopManager.phosh.user = "bs2k";
+  services.xserver.desktopManager.phosh.group = "users";
+
   services.gvfs.enable = true;
 
   programs.kdeconnect.enable = true;

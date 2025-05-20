@@ -133,7 +133,7 @@
   #   };
   # };
 
-  systemd.user.services.swayidle.Unit.After = "niri.service";
+  # systemd.user.services.swayidle.Unit.After = "niri.service";
 
   systemd.user.services.squeekboard = {
     Unit = {
@@ -226,7 +226,7 @@
     enable = true;
     config = {
       lid = {
-        on = "systemctl suspend";
+        # on = "systemctl suspend";
       };
       tablet_mode = {
         on = "XDG_DATA_DIRS=${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/gsettings-desktop-schemas-${pkgs.gsettings-desktop-schemas.version} gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true";
