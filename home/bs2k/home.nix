@@ -799,8 +799,9 @@ in {
         # })
         # .run
         pkgs.krita
-        pkgsUnstable.jetbrains.idea-ultimate
+        # pkgsUnstable.jetbrains.idea-ultimate
         (pkgs.callPackage ./spot.nix {})
+        (pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {})
       ]
     );
   xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgsUnstable.callPackage ./xrizer.nix {}}/lib/xrizer"]}'';
@@ -889,8 +890,8 @@ in {
 
   home.pointerCursor = {
     package = pkgs.catppuccin-cursors."${config.catppuccin.flavor}${mkUpper catppuccinDarkness}";
-    name = "Catppuccin-${mkUpper config.catppuccin.flavor}-${mkUpper catppuccinDarkness}-Cursors";
-    size = 24;
+    name = "catppuccin-${config.catppuccin.flavor}-${catppuccinDarkness}-cursors";
+    # size = 24;
     gtk.enable = true;
   };
 
