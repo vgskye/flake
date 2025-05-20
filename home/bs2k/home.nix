@@ -804,7 +804,10 @@ in {
         (pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {})
       ]
     );
-  xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgsUnstable.callPackage ./xrizer.nix {}}/lib/xrizer"]}'';
+  xdg.configFile."openvr/openvrpaths.vrpath".text = if pkgs.system == "x86_64-linux"
+      then
+        ''{"version":1,"runtime":["${pkgsUnstable.callPackage ./xrizer.nix {}}/lib/xrizer"]}''
+      else "";
   # xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgs.opencomposite}/lib/opencomposite"]}'';
   fonts.fontconfig.enable = true;
   xdg.configFile."fontconfig/conf.d/10-nerd-font-symbols.conf" = let
