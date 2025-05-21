@@ -31,7 +31,7 @@
   #   });
   #   # kernel = pkgs.callPackage ./kernel.nix {};
   # in pkgs.linuxPackagesFor kernelLies;
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_6.override {
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_12.override {
     argsOverride = {
       defconfig = "sc7180_defconfig";
     };
@@ -191,7 +191,7 @@
 
   hardware.deviceTree = {
     enable = true;
-    filter = "*sc7180*.dtb";
+    filter = "*sc7180-trogdor-wormdingler*.dtb";
     name = "qcom/sc7180-trogdor-wormdingler-rev1-boe.dtb";
   };
 

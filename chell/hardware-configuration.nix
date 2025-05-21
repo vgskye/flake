@@ -15,6 +15,8 @@
   boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = [];
 
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_12;
+
   boot.initrd.luks.devices.luksroot = {
     device = "/dev/disk/by-uuid/8d1325f2-bf42-4b2e-a6bb-68850f2edb97";
     allowDiscards = true;
