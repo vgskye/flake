@@ -79,10 +79,10 @@ in {
 
   programs.niri = {
     enable = true;
-    package = pkgs.niri;
+    package = pkgs.callPackage ./niri/package.nix {};
   };
 
-  services.xserver.desktopManager.phosh.enable = true;
+  services.xserver.desktopManager.phosh.enable = false;
   services.xserver.desktopManager.phosh.user = "bs2k";
   services.xserver.desktopManager.phosh.group = "users";
 

@@ -727,7 +727,6 @@ in {
 
       pkgs.ripgrep
       pkgs.solaar
-      pkgs.kicad
 
       pkgs.file
       (pkgs.prismlauncher.override {
@@ -761,6 +760,7 @@ in {
     ++ (
       if pkgs.system == "x86_64-linux"
       then [
+        pkgs.kicad
         pkgs.slimevr
         pkgs.slimevr-server # .mitmCache.updateScript
         pkgs.galaxy-buds-client
