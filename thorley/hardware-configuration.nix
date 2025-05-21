@@ -101,14 +101,14 @@
       name = "sc7180-defconfig";
       patch = ./defconfig.patch;
     }
-    {
-      name = "sc7180-dsi";
-      patch = pkgs.fetchpatch {
-        url = "https://github.com/torvalds/linux/commit/75ee2ff7b8427645f294098d9c6f005399f4ce94.patch";
-        hash = "sha256-VJnyQfwwjnfzMPZkfSVd99vKxGUvYNn1qwC3Kf6crJA=";
-      };
-      # extraStructuredConfig = import ./qualcomm_cros.nix pkgs;
-    }
+    # {
+    #   name = "sc7180-dsi";
+    #   patch = pkgs.fetchpatch {
+    #     url = "https://github.com/torvalds/linux/commit/75ee2ff7b8427645f294098d9c6f005399f4ce94.patch";
+    #     hash = "sha256-VJnyQfwwjnfzMPZkfSVd99vKxGUvYNn1qwC3Kf6crJA=";
+    #   };
+    #   # extraStructuredConfig = import ./qualcomm_cros.nix pkgs;
+    # }
   ];
 
   mobile.kernel.structuredConfig = [
