@@ -16,9 +16,14 @@
   ];
 
   boot.loader.grub.enable = false;
-  boot.loader.generic-extlinux-compatible = {
+  boot.loader.external = {
     enable = true;
+    installHook = "${pkgs.mkdepthcharge}/bin/mkdepthcharge";
   };
+
+  environment.systemPackages = with pkgs; [
+    depthchargectl
+  ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -218,6 +223,8 @@
   mobile.quirks.qualcomm.sc7180-modem.enable = true;
   nixpkgs.overlays = [
     (final: super: {
+      depthchargectl = final.callPackage ./depthcharge/depthchargectl.nix {};
+      mkdepthcharge = final.callPackage ./depthcharge/mkdepthcharge.nix {};
       chromeos-sc7180-unredistributable-firmware = final.callPackage ../mobile-nixos/devices/families/mainline-chromeos-sc7180/firmware/non-redistributable.nix {};
     })
     (import ../mobile-nixos/overlay/overlay.nix)
