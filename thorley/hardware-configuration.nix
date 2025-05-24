@@ -230,9 +230,11 @@
     (import ../mobile-nixos/overlay/overlay.nix)
   ];
 
+  boot.supportedFilesystems = [ "bcachefs" ];
+
   fileSystems."/" = {
-    device = "/dev/disk/by-label/thorley";
-    fsType = "ext4";
+    device = "/dev/mmcblk1p2";
+    fsType = "bcachefs";
   };
 
   networking.useDHCP = lib.mkDefault true;
