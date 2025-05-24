@@ -51,13 +51,13 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "wivrn";
-  version = "0.24.1";
+  version = "next";
 
   src = fetchFromGitHub {
-    owner = "wivrn";
+    owner = "notpeelz";
     repo = "wivrn";
-    rev = "f86b5c7da00e4269b4b0767cb890e2a398096387";
-    hash = "sha256-bAf8RR52Vg2o/U/iZHhnNaYtUdo79eu3dhzkjfG5yUI=";
+    rev = "415bb70fd881e60a6bcaf95aaebc04eff0901e44";
+    hash = "sha256-v38v3cyix5A7HM88ryJmvDOo0ycZqqBZwO+hqgxoSIA=";
   };
 
   monado = applyPatches {
@@ -65,13 +65,9 @@ stdenv.mkDerivation (finalAttrs: {
       domain = "gitlab.freedesktop.org";
       owner = "monado";
       repo = "monado";
-      rev = "c80de9e7cacf2bf9579f8ae8c621d8bf16e85d6c";
-      hash = "sha256-ciH26Hyr8FumB2rQB5sFcXqtcQ1R84XOlphkkLBjzvA=";
+      rev = "2a6932d46dad9aa957205e8a47ec2baa33041076";
+      hash = "sha256-Bus9GTNC4+nOSwN8pUsMaFsiXjlpHYioQfBLxbQEF+0=";
     };
-
-    patches = [
-      ./force-enable-steamvr_lh.patch
-    ];
 
     postPatch = ''
       ${finalAttrs.src}/patches/apply.sh ${finalAttrs.src}/patches/monado/*
@@ -79,18 +75,6 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   strictDeps = true;
-
-  # Let's make sure our monado source revision matches what is used by WiVRn upstream
-  postUnpack = ''
-    ourMonadoRev="${finalAttrs.monado.src.rev}"
-    theirMonadoRev=$(sed -n '/FetchContent_Declare(monado/,/)/p' ${finalAttrs.src.name}/CMakeLists.txt | grep "GIT_TAG" | awk '{print $2}')
-    if [ ! "$theirMonadoRev" == "$ourMonadoRev" ]; then
-      echo "Our Monado source revision doesn't match CMakeLists.txt." >&2
-      echo "  theirs: $theirMonadoRev" >&2
-      echo "    ours: $ourMonadoRev" >&2
-      return 1
-    fi
-  '';
 
   nativeBuildInputs =
     [

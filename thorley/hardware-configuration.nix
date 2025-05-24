@@ -15,6 +15,21 @@
     ../mobile-nixos/devices/families/mainline-chromeos-sc7180/sound.nix
   ];
 
+  system.build.recovery_shell = pkgs.symlinkJoin {
+    name = "recovery_shell";
+    paths = [
+      pkgs.coreutils
+      pkgs.fish
+      pkgs.util-linux
+      pkgs.vboot_reference
+      pkgs.zstd
+      pkgs.pv
+      (pkgs.bcachefs-tools.override {
+        fuseSupport = true;
+      })
+    ];
+  };
+
   boot.loader.grub.enable = false;
   boot.loader.external = {
     enable = true;
@@ -36,7 +51,7 @@
   #   });
   #   # kernel = pkgs.callPackage ./kernel.nix {};
   # in pkgs.linuxPackagesFor kernelLies;
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_12.override {
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest.override {
     argsOverride = {
       defconfig = "sc7180_defconfig";
     };

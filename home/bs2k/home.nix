@@ -289,10 +289,10 @@ in {
 
       pkgs.mosh
 
-      pkgs.kate
+      pkgs.kdePackages.kate
       pkgs.git
       pkgs.onlykey-cli
-      pkgs.yubikey-manager-qt
+      # pkgs.yubikey-manager-qt
       pkgs.yubioath-flutter
 
       # pkgsUnstable.android-studio
@@ -343,7 +343,7 @@ in {
 
       pkgs.vlc
       pkgs.ffmpeg
-      pkgs.kolourpaint
+      pkgs.kdePackages.kolourpaint
       # (pkgsUnstable.lapce.overrideAttrs (old: rec {
       #   version = "v0.2.5";
       #   src = pkgs.fetchFromGitHub {
