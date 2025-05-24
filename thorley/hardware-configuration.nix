@@ -51,11 +51,7 @@
   #   });
   #   # kernel = pkgs.callPackage ./kernel.nix {};
   # in pkgs.linuxPackagesFor kernelLies;
-  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_latest.override {
-    argsOverride = {
-      defconfig = "sc7180_defconfig";
-    };
-  });
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.wireless.enable = lib.mkDefault true;
   networking.wireless.userControlled.enable = lib.mkDefault true;
@@ -117,10 +113,10 @@
   ];
 
   boot.kernelPatches = [
-    {
-      name = "sc7180-defconfig";
-      patch = ./defconfig.patch;
-    }
+    # {
+    #   name = "sc7180-defconfig";
+    #   patch = ./defconfig.patch;
+    # }
     # {
     #   name = "sc7180-dsi";
     #   patch = pkgs.fetchpatch {

@@ -79,7 +79,7 @@ in {
 
   programs.niri = {
     enable = true;
-    package = pkgs.callPackage ./niri/package.nix {};
+    package = pkgs.niri;
   };
 
   services.xserver.desktopManager.phosh.enable = false;
@@ -135,7 +135,7 @@ in {
   };
 
   boot.binfmt.registrations.i686-linux = {
-    interpreter = "${pkgsUnstable.box86}/bin/box86";
+    interpreter = "${pkgs.box86}/bin/box86";
     recognitionType = "magic";
     wrapInterpreterInShell = false;
     magicOrExtension = ''\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x03\x00'';
@@ -144,7 +144,7 @@ in {
 
   nix.settings = {
     extra-platforms = [ "armv7l-linux" "i686-linux" "x86_64-linux" ];
-    extra-sandbox-paths = [ "/run/binfmt" "${pkgs.box64}" "${pkgsUnstable.box86}" ];
+    extra-sandbox-paths = [ "/run/binfmt" "${pkgs.box64}" "${pkgs.box86}" ];
   };
 
   boot.extraModulePackages = [
