@@ -11,13 +11,13 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "xrizer";
-  version = "0.1.0-2d095a51723ea569571ed8127416930d854fdeff";
+  version = "0.2.0-f491eddd0d9839d85dbb773f61bd1096d5b004ef";
 
   src = fetchFromGitHub {
     owner = "RinLovesYou";
     repo = "xrizer";
-    rev = "2d095a51723ea569571ed8127416930d854fdeff";
-    hash = "sha256-yWrJuIcHsQ7654r6B6NlKzDhIiPnm37/m0fsvNP9RFo=";
+    rev = "f491eddd0d9839d85dbb773f61bd1096d5b004ef";
+    hash = "sha256-12M7rkTMbIwNY56Jc36nC08owVSPOr1eBu0xpJxikdw=";
   };
 
   useFetchCargoVendor = true;

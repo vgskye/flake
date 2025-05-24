@@ -700,7 +700,11 @@ in {
 
       pkgs.aseprite
 
-      pkgs.craftos-pc
+      (pkgs.craftos-pc.overrideAttrs (old: {
+        buildInputs = old.buildInputs ++ [
+          pkgs.xorg.libX11
+        ];
+      }))
       (packwiz.packages.${pkgs.system}.default.override {
         buildGoModule = args:
           pkgs.buildGoModule (args
@@ -800,7 +804,7 @@ in {
         # .run
         pkgs.krita
         # pkgsUnstable.jetbrains.idea-ultimate
-        (pkgs.callPackage ./spot.nix {})
+        pkgs.spot
         (pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {})
       ]
     );
