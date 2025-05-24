@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-oXPX3WfJDzy5LU5GW8Poas3DH+MxMhCsmrgVs5krmj0=";
   };
 
-  cargoHash = "sha256-c4T5kL8JEEwG1nOoeQxfAe+KUv5ryRsuu02IjRQJaoE=";
+  cargoHash = "sha256-5X0HHy0fWqArRueQAEtMhnGjxfTu8jd2ZRENaXFHbys=";
 
   meta = with lib; {
     description = "like cgpt but worse";
