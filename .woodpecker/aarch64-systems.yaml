@@ -1,6 +1,5 @@
 matrix:
   SYSTEM:
-    - e4mc-eu
     - thorley
 
 steps:

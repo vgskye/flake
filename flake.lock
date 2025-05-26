@@ -882,11 +882,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1748232432,
-        "narHash": "sha256-Hoh9wiA97UdGzkUf7zgB85CVluI7dswYarB+sMhzai4=",
+        "lastModified": 1748248742,
+        "narHash": "sha256-tbjvDJfH8nQv7rMJTXyAxsvNil3rGviYGK3rRxw0/+c=",
         "ref": "glory-to-arstotzka",
-        "rev": "70bdcef3e784c9a2a930b3704ee224418d54d3b2",
-        "revCount": 27,
+        "rev": "23ce1f80a5d3485751c11166bd191af47b1e5655",
+        "revCount": 28,
         "type": "git",
         "url": "https://git.skye.vg/me/quiclime.git"
       },

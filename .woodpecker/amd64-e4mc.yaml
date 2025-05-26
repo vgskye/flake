@@ -10,7 +10,9 @@ steps:
       - nix-fast-build --eval-workers 1 --attic-cache fly-skye --skip-cached --no-nom --flake .#nixosConfigurations.e4mc-jp.config.system.build.toplevel
       - nix-fast-build --eval-workers 1 --attic-cache fly-skye --skip-cached --no-nom --flake .#nixosConfigurations.e4mc-oc.config.system.build.toplevel
       - nix-fast-build --eval-workers 1 --attic-cache fly-skye --skip-cached --no-nom --flake .#nixosConfigurations.e4mc-us.config.system.build.toplevel
+      - nix-fast-build --eval-workers 1 --attic-cache fly-skye --skip-cached --no-nom --flake .#nixosConfigurations.e4mc-na.config.system.build.toplevel
       - nix-fast-build --eval-workers 1 --attic-cache fly-skye --skip-cached --no-nom --flake .#nixosConfigurations.e4mc-ap.config.system.build.toplevel
+      - nix-fast-build --eval-workers 1 --attic-cache fly-skye --skip-cached --no-nom --flake .#nixosConfigurations.e4mc-sg.config.system.build.toplevel
     environment:
       CACHIX_AUTH_TOKEN:
         from_secret: cachix_token
