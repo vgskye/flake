@@ -16,7 +16,7 @@ deploy hostname:
 
 e4mc hostname: (deploy "e4mc-"+hostname)
 
-e4mc-all: (e4mc "us") (e4mc "eu") (e4mc "oc") (e4mc "jp")
+e4mc-all: (e4mc "us") (e4mc "na") (e4mc "eu") (e4mc "de") (e4mc "oc") (e4mc "jp") (e4mc "sg") (e4mc "ap")
 deploy-all: e4mc-all (deploy "bridget") (deploy "jenny")
 
 bump:
