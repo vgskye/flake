@@ -27,7 +27,7 @@
 
   age.secrets.clickhouse-pwd = {
     file = ../secrets/clickhouse-pwd.age;
-    mode = "400";
+    mode = "040";
     owner = "acme";
   };
 
