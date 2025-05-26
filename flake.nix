@@ -46,7 +46,7 @@
       url = "github:Stonks3141/ctp-nix";
     };
     quiclime = {
-      url = "git+https://git.skye.vg/me/quiclime.git";
+      url = "git+https://git.skye.vg/me/quiclime.git?ref=glory-to-arstotzka";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
     };
     babysitter = {

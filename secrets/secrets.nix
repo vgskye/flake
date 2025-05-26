@@ -1,5 +1,6 @@
 let
   bs2k = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBS7egIeC7rCo9RumuBUmKa/2gJ9aHjuOZ9OSWL+1ISt";
+  bs2k_thorley = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJNDvRbtHRpFIVw9lE0GIEDm9G30EQWH6U9eWLT0konn";
   secondary = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILMND02AdGLP0cSTCjXqqjOWxfKlEKxhgZnugxwUFLQt";
   chell = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOJ+kd1bkPvYO3uZfvnRsYCjOR1H1FdRnLmdNvC4mEZY";
   # primary =
@@ -36,4 +37,5 @@ in {
   "mailer-cf-key.age".publicKeys = [bs2k theworldmachine];
   "restic-secrets-twm.age".publicKeys = [bs2k theworldmachine];
   "geoipupdate.age".publicKeys = [bs2k theworldmachine];
+  "clickhouse-pwd.age".publicKeys = [bs2k bs2k_thorley] ++ e4mc;
 }

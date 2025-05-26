@@ -25,6 +25,12 @@
     owner = "acme";
   };
 
+  age.secrets.clickhouse-pwd = {
+    file = ../secrets/clickhouse-pwd.age;
+    mode = "400";
+    owner = "acme";
+  };
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "me@skye.vg";
@@ -47,6 +53,11 @@
     cert = "/var/lib/acme/e4mc/fullchain.pem";
     key = "/var/lib/acme/e4mc/key.pem";
     group = "acme";
+    clickhouseUrl = "http://theworldmachine.cat-snares.ts.net:8123";
+    clickhouseUser = "quiclime";
+    clickhousePasswordPath = config.age.secrets.clickhouse-pwd.path;
+    clickhouseDatabase = "default";
+    clickhouseTable = "mc_connections";
     # sentryDsn = "https://b3d233e4894648ce3e1b451bad2431e7@o4505708658884608.ingest.us.sentry.io/4505742084997120";
   };
 
