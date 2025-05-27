@@ -57,7 +57,8 @@
     clickhouseUser = "quiclime";
     clickhousePasswordPath = config.age.secrets.clickhouse-pwd.path;
     clickhouseDatabase = "default";
-    clickhouseTable = "mc_connections_v2";
+    clickhouseTable = "mc_connections_v3";
+    blocklistUrl = "https://theworldmachine.cat-snares.ts.net:10443/blacklist.json";
     # sentryDsn = "https://b3d233e4894648ce3e1b451bad2431e7@o4505708658884608.ingest.us.sentry.io/4505742084997120";
   };
 
