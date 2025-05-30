@@ -214,6 +214,11 @@ in {
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
 
+  # boot.plymouth = {
+  #   enable = true;
+  #   theme = "spinner";
+  # };
+
   # services.acpid = {
   #   enable = true;
   #   logEvents = true;

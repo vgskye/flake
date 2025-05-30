@@ -57,25 +57,9 @@
   networking.wireless.userControlled.enable = lib.mkDefault true;
 
   # The default's assuming incorrectly for a few of these, so specify our own
-  boot.initrd.includeDefaultModules = false;
+  boot.initrd.includeDefaultModules = true;
 
   boot.initrd.availableKernelModules = [
-    # Default had some SATA stuff here. We do not have SATA.
-    # Same but NVMe
-
-    # Standard SCSI stuff.
-    "sd_mod"
-    "sr_mod"
-
-    # SD cards and internal eMMC drives.
-    "mmc_block"
-
-    # USB input support, trimmed down since we only really need hammer.
-    "ehci_hcd"
-    "ohci_hcd"
-    "xhci_hcd"
-    "usbhid"
-    "hid_generic"
     "hid_google_hammer"
 
     # A whole bunch of CrOS EC drivers
@@ -110,6 +94,8 @@
     # DRM
     "msm"
     "drm_exec"
+
+    "panel_boe_tv101wum_nl6"
   ];
 
   boot.kernelPatches = [
@@ -169,33 +155,36 @@
   # That is... wrong, and we need to supply them.
   # However, /lib/firmware is still taken by the empty directory.
   # So we put them in /hacky-fw-links, and tell the kernel.
-  boot.initrd.extraFiles = let
-    firmwares = [
-      "qcom/venus-5.4/venus.mdt"
-      "qcom/venus-5.4/venus.mbn"
-      "qcom/a630_sqe.fw"
-      "qca/crbtfw32.tlv"
-      "qca/crnv32.bin"
-      # "regulatory.db"
-      # "regulatory.db.p7s"
-    ];
-  in
-    builtins.listToAttrs
-    (builtins.map (
-        fw: {
-          name = "/hacky-fw-links/${fw}.zst";
-          value = {
-            source =
-              pkgs.runCommand "hacky-fw-links-${fw}" {
-                src = "${config.hardware.firmware}/lib/firmware/${fw}.zst";
-                preferLocalBuild = true;
-              } ''
-                cat $src > $out
-              '';
-          };
-        }
-      )
-      firmwares);
+  # boot.initrd.extraFiles = let
+  #   firmwares = [
+  #     "qcom/venus-5.4/venus.mdt"
+  #     "qcom/venus-5.4/venus.mbn"
+  #     "qcom/a630_sqe.fw"
+  #     "qca/crbtfw32.tlv"
+  #     "qca/crnv32.bin"
+  #     # "regulatory.db"
+  #     # "regulatory.db.p7s"
+  #   ];
+  # in
+    # builtins.listToAttrs
+    # (builtins.map (
+    #     fw: {
+    #       name = "/hacky-fw-links/${fw}.zst";
+    #       value = {
+    #         source =
+    #           pkgs.runCommand "hacky-fw-links-${fw}" {
+    #             src = "${config.hardware.firmware}/lib/firmware/${fw}.zst";
+    #             preferLocalBuild = true;
+    #           } ''
+    #             cat $src > $out
+    #           '';
+    #       };
+    #     }
+    #   )
+    #   firmwares);
+
+  hardware.wirelessRegulatoryDatabase = true;
+  hardware.enableRedistributableFirmware = true;
 
   hardware.sensor.iio.enable = true;
 
@@ -221,10 +210,13 @@
 
   boot.kernelParams = lib.mkBefore [
     "console=ttyMSM0,115200n8"
+    "console=tty1"
 
     # Tell the kernel to look for firmwares in our links
-    "firmware_class.path=/hacky-fw-links"
+    # "firmware_class.path=/hacky-fw-links"
   ];
+
+  boot.initrd.systemd.enable = true;
 
   systemd.services."serial-getty@ttyMSM0" = {
     enable = true;
