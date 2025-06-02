@@ -199,8 +199,8 @@ in {
 
 
     ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="27dd", MODE="0666", GROUP="plugdev", TAG+="uaccess"
-    ATTRS{idVendor}=="1209", ATTRS{idProduct}=="0001", MODE="0666", GROUP="plugdev", TAG+="uaccess"
-    ATTRS{idVendor}=="1209", ATTRS{idProduct}=="0002", MODE="0666", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1209", ATTRS{idProduct}=="6970", MODE="0666", GROUP="plugdev", TAG+="uaccess"
+    ATTRS{idVendor}=="1209", ATTRS{idProduct}=="6971", MODE="0666", GROUP="plugdev", TAG+="uaccess"
   '';
 
   # Enable the X11 windowing system.

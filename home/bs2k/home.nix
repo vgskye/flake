@@ -605,7 +605,7 @@ in {
           "thumbv8m.main-none-eabihf"
           "riscv32imac-unknown-none-elf"
           "wasm32-unknown-unknown"
-        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl"] else []);
+        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl" "aarch64-unknown-linux-gnu"] else []);
       })
 
       pkgs.fastly
