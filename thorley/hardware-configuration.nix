@@ -96,6 +96,14 @@
     "drm_exec"
 
     "panel_boe_tv101wum_nl6"
+
+    "snd_soc_sc7180"
+    "dispcc_sc7180"
+    "camcc_sc7180"
+    "videocc_sc7180"
+    "snd_soc_lpass_sc7180"
+    "lpasscorecc_sc7180"
+    "gpucc_sc7180"
   ];
 
   boot.kernelPatches = [

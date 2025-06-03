@@ -147,6 +147,8 @@ in {
     extra-sandbox-paths = [ "/run/binfmt" "${pkgs.box64}" "${pkgs.box86}" ];
   };
 
+  programs.nix-ld.enable = true;
+
   boot.extraModulePackages = [
     (pkgs.callPackage (import ../uwurandom.nix) {
       kernel = config.boot.kernelPackages.kernel;

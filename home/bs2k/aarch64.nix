@@ -11,6 +11,7 @@
   packwiz,
   catppuccin-vsc,
   fenix,
+  firefox,
   ...
 }: {
   services.mako = {
@@ -253,15 +254,20 @@
 
   services.swayosd.enable = true;
 
-  programs.firefox.package = pkgs.wrapFirefox.override {
-    ffmpeg = pkgs.ffmpeg.overrideAttrs (oldAttrs: {
-      patches = oldAttrs.patches ++ [
-        (pkgs.fetchpatch {
-          url = "https://raw.githubusercontent.com/LibreELEC/LibreELEC.tv/9c99ad0f0bdad077176be4250e64e9deda70c062/packages/multimedia/ffmpeg/patches/rpi/ffmpeg-001-rpi.patch";
-          hash = "sha256-IZsRZ25UUTvuSeXGGNJ8TODU51EO8rmAfjdsRPA9O5M=";
-        })
-      ];
-      doCheck = false;
-    });
-  } pkgs.firefox.unwrapped {};
+  programs.firefox.package = 
+    let
+      wrapFirefox = pkgs.wrapFirefox.override {
+        ffmpeg = pkgs.ffmpeg.overrideAttrs (oldAttrs: {
+          patches = oldAttrs.patches ++ [
+            (pkgs.fetchpatch {
+              url = "https://raw.githubusercontent.com/LibreELEC/LibreELEC.tv/9c99ad0f0bdad077176be4250e64e9deda70c062/packages/multimedia/ffmpeg/patches/rpi/ffmpeg-001-rpi.patch";
+              hash = "sha256-IZsRZ25UUTvuSeXGGNJ8TODU51EO8rmAfjdsRPA9O5M=";
+            })
+          ];
+          doCheck = false;
+        });
+      };
+    in
+    wrapFirefox (firefox.overlays.default pkgs pkgs).firefox-nightly-bin.unwrapped
+      { pname = "firefox-nightly-bin"; };
 }
