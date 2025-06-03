@@ -254,14 +254,14 @@
 
   services.swayosd.enable = true;
 
-  programs.firefox.package = 
+  programs.firefox.package =
     let
       wrapFirefox = pkgs.wrapFirefox.override {
         ffmpeg = pkgs.ffmpeg.overrideAttrs (oldAttrs: {
           patches = oldAttrs.patches ++ [
             (pkgs.fetchpatch {
-              url = "https://raw.githubusercontent.com/LibreELEC/LibreELEC.tv/9c99ad0f0bdad077176be4250e64e9deda70c062/packages/multimedia/ffmpeg/patches/rpi/ffmpeg-001-rpi.patch";
-              hash = "sha256-IZsRZ25UUTvuSeXGGNJ8TODU51EO8rmAfjdsRPA9O5M=";
+              url = "https://raw.githubusercontent.com/LibreELEC/LibreELEC.tv/9c99ad0f0bdad077176be4250e64e9deda70c062/packages/multimedia/ffmpeg/patches/v4l2-drmprime/ffmpeg-001-v4l2-drmprime.patch";
+              hash = "sha256-7pd8M5mADYVjuXoJZ7gNJs6JSi6yFgpZq93YlWNlmck=";
             })
           ];
           doCheck = false;
