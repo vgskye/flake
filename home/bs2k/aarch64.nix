@@ -260,8 +260,8 @@
         ffmpeg = pkgs.ffmpeg.overrideAttrs (oldAttrs: {
           patches = oldAttrs.patches ++ [
             (pkgs.fetchpatch {
-              url = "https://github.com/jc-kynesim/rpi-ffmpeg/commit/7f8ee2091b5a3b804ace137180e61c95c304c779.patch";
-              hash = "sha256-XocQ6Y1b6vKz69cnUgHmfZRbP7Yrh8rS6WKVSGwiV3E=";
+              url = "https://raw.githubusercontent.com/LibreELEC/LibreELEC.tv/9c99ad0f0bdad077176be4250e64e9deda70c062/packages/multimedia/ffmpeg/patches/rpi/ffmpeg-001-rpi.patch";
+              hash = "sha256-IZsRZ25UUTvuSeXGGNJ8TODU51EO8rmAfjdsRPA9O5M=";
             })
           ];
           doCheck = false;
