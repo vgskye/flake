@@ -54,6 +54,7 @@ in {
   # };
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.segger-jlink.acceptLicense = true;
   nixpkgs.config.allowUnsupportedSystem = true;
   nixpkgs.overlays = [
     fenix.overlays.default
@@ -63,7 +64,7 @@ in {
     (self: super: {
       # monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
-      kicad = override-exec super.kicad "" "GTK_THEME=Breeze ";
+      kicad = override-exec super.kicad "" "GDK_BACKEND=x11 GTK_THEME=Breeze ";
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
       vesktop = super.vesktop.override {
@@ -189,8 +190,13 @@ in {
       # prusa-slicer = pkgsUnstable.prusa-slicer;
 
       # ghostty = pkgs.callPackage ./ghostty/package.nix {};
-      slimevr-server = pkgsUnstable.slimevr-server; # pkgs.callPackage ./slimevr-server/package.nix {};
-      slimevr = pkgsUnstable.slimevr; # pkgs.callPackage ./slimevr/package.nix {};
+      # slimevr-server = pkgsUnstable.slimevr-server; # pkgs.callPackage ./slimevr-server/package.nix {};
+      # slimevr = pkgsUnstable.slimevr; # pkgs.callPackage ./slimevr/package.nix {};
+
+      segger-jlink-headless = self.callPackage ./segger-jlink/package.nix {
+        headless = true;
+      };
+      nrfconnect = self.callPackage ./nrfconnect.nix {};
     })
     (self: super: let
       scale-electron = pkg: bin:
@@ -605,7 +611,7 @@ in {
           "thumbv8m.main-none-eabihf"
           "riscv32imac-unknown-none-elf"
           "wasm32-unknown-unknown"
-        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl" "aarch64-unknown-linux-gnu"] else []);
+        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl" "aarch64-unknown-linux-gnu" "arm-unknown-linux-musleabihf" "arm-unknown-linux-gnueabihf"] else []);
       })
 
       pkgs.fastly
@@ -775,6 +781,7 @@ in {
         pkgs.jetbrains.idea-community # edu license means I can't use Ultimate for contracts
         pkgs.jetbrains.rider
         pkgs.ollama-rocm
+        pkgs.nrfconnect
 
         (pkgs.wlx-overlay-s.override {
           rustPlatform = pkgsUnstable.rustPlatform;

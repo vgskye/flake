@@ -56,8 +56,8 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "notpeelz";
     repo = "wivrn";
-    rev = "415bb70fd881e60a6bcaf95aaebc04eff0901e44";
-    hash = "sha256-v38v3cyix5A7HM88ryJmvDOo0ycZqqBZwO+hqgxoSIA=";
+    rev = "074259769e6d9d9f4ab164bd5b608b9432a71f1c";
+    hash = "sha256-LcKd4LHH+xkFEXuM4w7tU7Q2zZTQ6CWduuI2uJsqiGE=";
   };
 
   monado = applyPatches {
@@ -65,8 +65,8 @@ stdenv.mkDerivation (finalAttrs: {
       domain = "gitlab.freedesktop.org";
       owner = "monado";
       repo = "monado";
-      rev = "2a6932d46dad9aa957205e8a47ec2baa33041076";
-      hash = "sha256-Bus9GTNC4+nOSwN8pUsMaFsiXjlpHYioQfBLxbQEF+0=";
+      rev = "bb9bcee2a3be75592de819d9e3fb2c8ed27bb7dc";
+      hash = "sha256-+PiWxnvMXaSFc+67r17GBRXo7kbjikSElawNMJCydrk=";
     };
 
     postPatch = ''
