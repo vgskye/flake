@@ -190,8 +190,8 @@ in {
       # prusa-slicer = pkgsUnstable.prusa-slicer;
 
       # ghostty = pkgs.callPackage ./ghostty/package.nix {};
-      # slimevr-server = pkgsUnstable.slimevr-server; # pkgs.callPackage ./slimevr-server/package.nix {};
-      # slimevr = pkgsUnstable.slimevr; # pkgs.callPackage ./slimevr/package.nix {};
+      slimevr-server = pkgs.callPackage ./slimevr-server/package.nix {};
+      slimevr = pkgs.callPackage ./slimevr/package.nix {};
 
       segger-jlink-headless = self.callPackage ./segger-jlink/package.nix {
         headless = true;
@@ -780,7 +780,13 @@ in {
         pkgs.love
         pkgs.jetbrains.idea-community # edu license means I can't use Ultimate for contracts
         pkgs.jetbrains.rider
-        pkgs.ollama-rocm
+        (pkgs.ollama-rocm.overrideAttrs (old: {
+          version = "0.9.3";
+          src = old.src.override {
+            hash = "sha256-bAxvlFeCxrxE8PuLbsjAwJYDeZfKb8BDuGBgX8uMgr8=";
+          };
+          vendorHash = "sha256-oHTo8EQGfrKOwg6SRPrL23qSH+p+clBxxiXsuO1auLk=";
+        }))
         pkgs.nrfconnect
 
         (pkgs.wlx-overlay-s.override {
