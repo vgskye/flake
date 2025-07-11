@@ -91,9 +91,8 @@
     "sbs-charger"
     "sbs-manager"
 
-    # DRM
     "msm"
-    "drm_exec"
+    "coreboot_table"
 
     "panel_boe_tv101wum_nl6"
 
@@ -217,9 +216,9 @@
   '';
 
   boot.kernelParams = lib.mkBefore [
-    "console=ttyMSM0,115200n8"
-    "console=tty1"
-
+    # "console=ttyMSM0,115200n8"
+    # "console=tty1"
+    
     # Tell the kernel to look for firmwares in our links
     # "firmware_class.path=/hacky-fw-links"
   ];

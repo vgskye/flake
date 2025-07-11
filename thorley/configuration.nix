@@ -153,6 +153,9 @@ in {
     (pkgs.callPackage (import ../uwurandom.nix) {
       kernel = config.boot.kernelPackages.kernel;
     })
+    # (pkgs.callPackage (import ./ath10k.nix) {
+    #   kernel = config.boot.kernelPackages.kernel;
+    # })
   ];
   boot.kernelModules = ["uwurandom"];
 
@@ -218,7 +221,7 @@ in {
 
   # boot.plymouth = {
   #   enable = true;
-  #   theme = "spinner";
+  #   theme = "breeze";
   # };
 
   # services.acpid = {
