@@ -64,7 +64,8 @@ in {
     (self: super: {
       # monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
-      kicad = override-exec super.kicad "" "GDK_BACKEND=x11 GTK_THEME=Breeze ";
+      kicad = override-exec super.kicad "" "GDK_BACKEND=x11 ";
+      prusa-slicer = override-exec super.prusa-slicer "" "GDK_BACKEND=x11 ";
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
       vesktop = super.vesktop.override {
@@ -540,6 +541,7 @@ in {
           yt-dlp
           ytmusicapi
           matplotlib
+          skyfield
         ] ++ (if pkgs.system == "x86_64-linux" then [
           manim
           pyusb
@@ -611,7 +613,7 @@ in {
           "thumbv8m.main-none-eabihf"
           "riscv32imac-unknown-none-elf"
           "wasm32-unknown-unknown"
-        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl" "aarch64-unknown-linux-gnu" "arm-unknown-linux-musleabihf" "arm-unknown-linux-gnueabihf"] else []);
+        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl" "x86_64-pc-windows-msvc" "aarch64-unknown-linux-gnu" "arm-unknown-linux-musleabihf" "arm-unknown-linux-gnueabihf"] else []);
       })
 
       pkgs.fastly
@@ -766,6 +768,9 @@ in {
       pkgs.cmake
 
       pkgs.libqalculate
+      pkgs.gradience
+      pkgs.adw-gtk3
+      (pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {})
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -792,6 +797,8 @@ in {
         (pkgs.wlx-overlay-s.override {
           rustPlatform = pkgsUnstable.rustPlatform;
         })
+
+        pkgs.gamescope
       ]
       else [
         pkgs.fuzzel
@@ -818,7 +825,6 @@ in {
         pkgs.krita
         # pkgsUnstable.jetbrains.idea-ultimate
         pkgs.spot
-        (pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {})
       ]
     );
   xdg.configFile."openvr/openvrpaths.vrpath".text = if pkgs.system == "x86_64-linux"
@@ -887,16 +893,13 @@ in {
 
   gtk = {
     enable = true;
-    catppuccin = {
-      enable = true;
-    };
     font = {
       name = "Inter Variable Medium";
       size = 10;
     };
     iconTheme.name = "Papirus-Dark";
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
+    gtk3 = {
+      extraConfig.gtk-application-prefer-dark-theme = 1;
     };
   };
 
@@ -1222,7 +1225,7 @@ in {
   programs.go.enable = true;
   programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
-  # programs.firefox.package = firefox.packages.${pkgs.system}.firefox-nightly-bin;
+  programs.firefox.package = pkgs.lib.mkDefault firefox.packages.${pkgs.system}.firefox-nightly-bin;
 
   programs.chromium = {
     enable = pkgs.system == "aarch64-linux";

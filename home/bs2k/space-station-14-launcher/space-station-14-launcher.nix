@@ -1,42 +1,43 @@
-{ lib
-, buildDotnetModule
-, dotnetCorePackages
-, fetchFromGitHub
-, wrapGAppsHook4
-, iconConvTools
-, copyDesktopItems
-, makeDesktopItem
-, libX11
-, libICE
-, libSM
-, libXi
-, libXcursor
-, libXext
-, libXrandr
-, fontconfig
-, glew
-, SDL2
-, glfw
-, glibc
-, libGL
-, freetype
-, openal
-, fluidsynth
-, gtk3
-, pango
-, atk
-, cairo
-, zlib
-, glib
-, gdk-pixbuf
-, soundfont-fluid
+{
+  lib,
+  buildDotnetModule,
+  dotnetCorePackages,
+  fetchFromGitHub,
+  wrapGAppsHook4,
+  iconConvTools,
+  copyDesktopItems,
+  makeDesktopItem,
+  libX11,
+  libICE,
+  libSM,
+  libXi,
+  libXcursor,
+  libXext,
+  libXrandr,
+  fontconfig,
+  glew,
+  SDL2,
+  glfw,
+  glibc,
+  libGL,
+  freetype,
+  openal,
+  fluidsynth,
+  gtk3,
+  pango,
+  atk,
+  cairo,
+  zlib,
+  glib,
+  gdk-pixbuf,
+  soundfont-fluid,
+  stdenv,
 
-# Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
-, soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
-
+  # Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
+  soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2",
 }:
 let
-  version = "0.30.2";
+  version = "0.33.0-rocksdb";
   pname = "space-station-14-launcher";
 in
 buildDotnetModule rec {
@@ -45,15 +46,16 @@ buildDotnetModule rec {
   # Workaround to prevent buildDotnetModule from overriding assembly versions.
   name = "${pname}-${version}";
 
+  # A bit redundant but I don't trust this package to be maintained by anyone else.
   src = fetchFromGitHub {
-    owner = "space-wizards";
+    owner = "vgskye";
     repo = "SS14.Launcher";
-    rev = "v${version}";
-    hash = "sha256-Rx39FuDPh5sGVjcKjCo4mTQ8Z/x9PD1CvBQh5ICES9Q=";
+    rev = "6531fb61c5f0673dc749fbd6571803f2706df079";
+    hash = "sha256-I6IWfW6Z0ceOiN+RB3VQcoipnGm+BOTlNKX5UGAxy3Y=";
     fetchSubmodules = true;
   };
 
-  patches = [
+  patches = if stdenv.isx86_64 then [] else [
     ./no-sig.patch
   ];
 
@@ -65,14 +67,19 @@ buildDotnetModule rec {
     "SS14.Launcher/SS14.Launcher.csproj"
   ];
 
-  nugetDeps = ./deps.nix;
+  nugetDeps = ./deps.json;
 
   passthru = {
     inherit version;
   };
 
   # SDK 8.0 required for Robust.LoaderApi
-  dotnet-sdk = with dotnetCorePackages; combinePackages [ sdk_9_0 sdk_8_0 ];
+  dotnet-sdk =
+    with dotnetCorePackages;
+    combinePackages [
+      sdk_9_0
+      sdk_8_0
+    ];
   dotnet-runtime = dotnetCorePackages.runtime_9_0;
 
   dotnetFlags = [
@@ -81,7 +88,30 @@ buildDotnetModule rec {
     "-nologo"
   ];
 
-  nativeBuildInputs = [ wrapGAppsHook4 iconConvTools copyDesktopItems ];
+  nativeBuildInputs = [
+    wrapGAppsHook4
+    iconConvTools
+    copyDesktopItems
+  ];
+
+  LD_LIBRARY_PATH = lib.makeLibraryPath [
+    fontconfig
+    libX11
+    libICE
+    libSM
+    libXi
+    libXcursor
+    libXext
+    libXrandr
+
+    glfw
+    SDL2
+    glibc
+    libGL
+    openal
+    freetype
+    fluidsynth
+  ];
 
   runtimeDeps = [
     # Required by the game.
