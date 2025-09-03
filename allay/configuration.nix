@@ -5,10 +5,24 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  channelPath = "/etc/nix/channels/nixpkgs";
+in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+  ];
+
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+  };
+
+  nix.nixPath = [
+    "nixpkgs=${channelPath}"
+  ];
+
+  systemd.tmpfiles.rules = [
+    "L+ ${channelPath} - - - - ${pkgs.path}"
   ];
 
   boot.loader.grub.enable = true;
