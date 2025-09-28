@@ -3,6 +3,7 @@ let
   bs2k_thorley = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJNDvRbtHRpFIVw9lE0GIEDm9G30EQWH6U9eWLT0konn";
   secondary = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILMND02AdGLP0cSTCjXqqjOWxfKlEKxhgZnugxwUFLQt";
   chell = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOJ+kd1bkPvYO3uZfvnRsYCjOR1H1FdRnLmdNvC4mEZY";
+  florence = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDO/QwqQQB9EcasOLNHw88ybx1OZeTlDWBcdRXD9jn53";
   # primary =
   #   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpAmy/zpf4w3rUtVF7nXWTOz+HyhJJyPfkHVl7xO555";
   # beta =
@@ -27,7 +28,7 @@ in {
   "cf-api-key.age".publicKeys = [bs2k secondary alpha bridget];
   "email-password.age".publicKeys = [bs2k secondary];
   "datadog-key.age".publicKeys = [bs2k secondary];
-  "password.age".publicKeys = [bs2k chell];
+  "password.age".publicKeys = [bs2k chell florence];
   "longview-secondary.age".publicKeys = [bs2k secondary];
   "longview-primary.age".publicKeys = [bs2k];
   "e4mc-dns-key.age".publicKeys = [bs2k] ++ e4mc;
