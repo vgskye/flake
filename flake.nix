@@ -256,6 +256,28 @@
           pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
         };
       };
+      florence = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        modules = [
+          ./shared-caches.nix
+          ./florence/configuration.nix
+          tailscalepkgmodule
+          agenix.nixosModules.default
+          lanzaboote.nixosModules.lanzaboote
+          {
+            nix.registry = {
+              # nixpkgs.flake = nixpkgs-unwrapped;
+              # nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
+              n.flake = nixpkgs-unwrapped;
+              nS.flake = nixpkgs-unwrapped;
+              nU.flake = nixpkgs-unstable-unwrapped;
+            };
+          }
+        ];
+        specialArgs = {
+          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+        };
+      };
       jenny = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
