@@ -32,6 +32,7 @@
   gdk-pixbuf,
   soundfont-fluid,
   stdenv,
+  sdl3,
 
   # Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
   soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2",
@@ -50,8 +51,8 @@ buildDotnetModule rec {
   src = fetchFromGitHub {
     owner = "vgskye";
     repo = "SS14.Launcher";
-    rev = "6531fb61c5f0673dc749fbd6571803f2706df079";
-    hash = "sha256-I6IWfW6Z0ceOiN+RB3VQcoipnGm+BOTlNKX5UGAxy3Y=";
+    rev = "d412f3ba2159c897e4cfdcc2a2ea1dfc6160f054";
+    hash = "sha256-2XpmjEDJn3I7DUTzZ0ZXhasVutRPMton+rAhEnct4rM=";
     fetchSubmodules = true;
   };
 
@@ -144,12 +145,14 @@ buildDotnetModule rec {
     glew
 
     # TODO: Figure out dependencies for CEF support.
+
+    sdl3
   ];
 
   # ${soundfont-path} is escaped here:
   # https://github.com/NixOS/nixpkgs/blob/d29975d32b1dc7fe91d5cb275d20f8f8aba399ad/pkgs/build-support/setup-hooks/make-wrapper.sh#L126C35-L126C45
   # via https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html under ${parameter@operator}
-  makeWrapperArgs = [ ''--set ROBUST_SOUNDFONT_OVERRIDE ${soundfont-path}'' ];
+  makeWrapperArgs = [ ''--set SDL_VIDEODRIVER wayland'' ''--set ROBUST_SOUNDFONT_OVERRIDE ${soundfont-path}'' ];
 
   executables = [ "SS14.Launcher" ];
 
