@@ -1211,6 +1211,46 @@ in {
       );
   };
 
+
+  programs.zed-editor = {
+    enable = true;
+    userSettings = {
+      disable_ai = true;
+      telemetry = {
+        diagnostics = false;
+        metrics = false;
+      };
+      ui_font_family = "Inter";
+      buffer_font_family = "Monaspace Neon Var";
+      title_bar.show_sign_in = false;
+      lsp = {
+        rust-analyzer = {
+          initialization_options = {
+            check = {
+              command = "clippy";
+            };
+          };
+        };
+      };
+      extensions = [
+        "tombi"
+        "astro"
+        "svelte"
+        "lua"
+        "nix"
+        "haskell"
+        "fish"
+        "wakatime"
+        "html"
+      ];
+    };
+  };
+
+  catppuccin.zed = {
+    enable = true;
+    icons.enable = true;
+  };
+
   programs.go.enable = true;
   programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
