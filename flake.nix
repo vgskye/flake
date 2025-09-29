@@ -43,7 +43,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin = {
-      url = "github:Stonks3141/ctp-nix";
+      url = "github:catppuccin/nix/release-25.05";
     };
     quiclime = {
       url = "git+https://git.skye.vg/me/quiclime.git?ref=glory-to-arstotzka";

@@ -713,13 +713,7 @@ in {
           pkgs.xorg.libX11
         ];
       }))
-      (packwiz.packages.${pkgs.system}.default.override {
-        buildGoModule = args:
-          pkgs.buildGoModule (args
-            // rec {
-              vendorHash = "sha256-krdrLQHM///dtdlfEhvSUDV2QljvxFc2ouMVQVhN7A0=";
-            });
-      })
+      packwiz.packages.${pkgs.system}.default
 
       pkgs.agenix
 
@@ -785,13 +779,7 @@ in {
         pkgs.love
         pkgs.jetbrains.idea-community # edu license means I can't use Ultimate for contracts
         pkgs.jetbrains.rider
-        (pkgs.ollama-rocm.overrideAttrs (old: {
-          version = "0.9.3";
-          src = old.src.override {
-            hash = "sha256-bAxvlFeCxrxE8PuLbsjAwJYDeZfKb8BDuGBgX8uMgr8=";
-          };
-          vendorHash = "sha256-oHTo8EQGfrKOwg6SRPrL23qSH+p+clBxxiXsuO1auLk=";
-        }))
+        pkgs.ollama-rocm
         pkgs.nrfconnect
 
         (pkgs.wlx-overlay-s.override {
@@ -799,6 +787,7 @@ in {
         })
 
         pkgs.gamescope
+        pkgs.slack
       ]
       else [
         pkgs.fuzzel
@@ -946,7 +935,7 @@ in {
         sqlx completions fish | source
         # export LG_WEBOS_TV_SDK_HOME=/home/bs2k/webOS_TV_SDK/
         # export WEBOS_CLI_TV="$LG_WEBOS_TV_SDK_HOME/CLI/bin"
-        fish_add_path ~/.yarn/bin ~/.cargo/bin ~/.fly/bin/ # $WEBOS_CLI_TV
+        fish_add_path ~/.yarn/bin ~/.cargo/bin ~/.fly/bin/ ~/.local/bin # $WEBOS_CLI_TV
       ''
       + builtins.readFile ./theme.fish;
     functions = {

@@ -128,6 +128,35 @@ in {
   security.tpm2.pkcs11.enable = true;
   security.tpm2.tctiEnvironment.enable = true;
 
+  services.tlp.enable = true;
+  services.tlp.settings = {
+    CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+    PLATFORM_PROFILE_ON_BAT = "low-power";
+    CPU_BOOST_ON_BAT = 0;
+    AMDGPU_ABM_LEVEL_ON_BAT = 3;
+  };
+  services.power-profiles-daemon.enable = false;
+
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      hammer = {
+        ids = [ "k:0001:0001:70533846" ];
+        settings = {
+          main = {
+            capslock = "overload(control, esc)";
+            leftshift = "overload(shift, S-9)";
+            rightshift = "overload(shift, S-0)";
+            f23 = "f13";
+          };
+          global = {
+            overload_tap_timeout = 200;
+          };
+        };
+      };
+    };
+  };
+
   virtualisation = {
     docker.enable = true;
     waydroid.enable = true;
@@ -142,6 +171,10 @@ in {
     xorg.libxcb
     catppuccin-cursors.macchiatoDark
     sddm-chili-theme
+  ];
+
+  systemd.tmpfiles.rules = [
+    "L+ ${channelPath} - - - - ${pkgs.path}"
   ];
 
   programs.dconf.enable = true;
@@ -178,6 +211,7 @@ in {
   # networking.firewall.allowedUDPPorts = [ 25565 ];
 
   services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "both";
 
   boot.binfmt.emulatedSystems = [
     "wasm32-wasi"
