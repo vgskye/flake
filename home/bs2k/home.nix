@@ -191,8 +191,8 @@ in {
       # prusa-slicer = pkgsUnstable.prusa-slicer;
 
       # ghostty = pkgs.callPackage ./ghostty/package.nix {};
-      slimevr-server = pkgs.callPackage ./slimevr-server/package.nix {};
-      slimevr = pkgs.callPackage ./slimevr/package.nix {};
+      # slimevr-server = pkgs.callPackage ./slimevr-server/package.nix {};
+      # slimevr = pkgs.callPackage ./slimevr/package.nix {};
 
       segger-jlink-headless = self.callPackage ./segger-jlink/package.nix {
         headless = true;
@@ -1214,6 +1214,18 @@ in {
 
   programs.zed-editor = {
     enable = true;
+    package = pkgs.callPackage ./zed-editor-bin/package.nix {};
+    extensions = [
+      "tombi"
+      "astro"
+      "svelte"
+      "lua"
+      "nix"
+      "haskell"
+      "fish"
+      "wakatime"
+      "html"
+    ];
     userSettings = {
       disable_ai = true;
       telemetry = {
@@ -1232,17 +1244,6 @@ in {
           };
         };
       };
-      extensions = [
-        "tombi"
-        "astro"
-        "svelte"
-        "lua"
-        "nix"
-        "haskell"
-        "fish"
-        "wakatime"
-        "html"
-      ];
     };
   };
 
