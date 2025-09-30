@@ -164,7 +164,7 @@ in {
       #   if self.system == "x86_64-linux"
       #   then self.callPackage (import ./stockfish.nix) {}
       #   else super.stockfish;
-      
+
 
       # prusa-slicer = super.prusa-slicer.overrideAttrs (old: rec {
       #   version = "2.8.0";
@@ -729,7 +729,7 @@ in {
 
       (pkgs.callPackage ../../nome-manager/package.nix { path = config.programs.home-manager.path; })
       (pkgs.callPackage ../../nomos-rebuild/package.nix {})
-      pkgs.nix-output-monitor 
+      pkgs.nix-output-monitor
 
       pkgs.ripgrep
       pkgs.solaar
@@ -765,6 +765,7 @@ in {
       pkgs.gradience
       pkgs.adw-gtk3
       (pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {})
+      pkgs.nixd
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -1233,8 +1234,15 @@ in {
         metrics = false;
       };
       ui_font_family = "Inter";
-      buffer_font_family = "Monaspace Neon Var";
+      buffer_font_family = "Monaspace Neon";
+      buffer_line_height = "standard";
+      terminal.line_height = "standard";
+      buffer_font_size = 14;
+      ui_font_size = 14;
       title_bar.show_sign_in = false;
+      inlay_hints = {
+        enabled = true;
+      };
       lsp = {
         rust-analyzer = {
           initialization_options = {
