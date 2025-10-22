@@ -157,7 +157,7 @@ in {
   # };
 
   hardware.onlykey.enable = true;
-  services.udev.packages = [pkgs.yubikey-personalization pkgs.openrgb pkgs.logitech-udev-rules pkgs.nrf-udev];
+  services.udev.packages = [pkgs.yubikey-personalization pkgs.openrgb pkgs.logitech-udev-rules pkgs.nrf-udev pkgs.picotool];
   services.pcscd.enable = true;
   hardware.keyboard.zsa.enable = true;
   programs.adb.enable = true;

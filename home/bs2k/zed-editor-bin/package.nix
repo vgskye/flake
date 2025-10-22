@@ -15,11 +15,11 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "zed-editor-bin";
-  version = "0.205.8";
+  version = "0.208.5";
 
   src = fetchzip {
     url = "https://github.com/zed-industries/zed/releases/download/v${version}/zed-linux-x86_64.tar.gz";
-    hash = "sha256-S0xekB1JUxURLa/Vbs+bZ3pyL7VOUbomyk9+t91siYU=";
+    hash = "sha256-NXqt95AgNdY9m3l/CzBm0E5fPssW7/KxltDzv8rEZig=";
   };
 
   nativeBuildInputs = [
@@ -51,8 +51,8 @@ stdenvNoCC.mkDerivation rec {
 
     install -Dm644 share/icons/hicolor/1024x1024/apps/zed.png $out/share/icons/hicolor/1024x1024/apps/zed.png
     install -Dm644 share/icons/hicolor/512x512/apps/zed.png $out/share/icons/hicolor/512x512/apps/zed.png
-    install -Dm644 share/applications/zed.desktop $out/share/applications/zed.desktop
-    sed -i "s/Exec=zed/Exec=zeditor/g" $out/share/applications/zed.desktop
+    install -Dm644 share/applications/zed.desktop $out/share/applications/dev.zed.Zed.desktop
+    sed -i "s/Exec=zed/Exec=zeditor/g" $out/share/applications/dev.zed.Zed.desktop
 
     runHook postInstall
   '';

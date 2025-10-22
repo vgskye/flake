@@ -306,7 +306,7 @@ in {
       # pkgs.keepassxc
       # pkgs.yakuake
       # pkgs.polymc
-      pkgs.thunderbird
+      pkgs.thunderbird-bin
       pkgs.ckan
       pkgs.kdePackages.ark
       # pkgs.eagle
@@ -487,7 +487,23 @@ in {
           # sounddevice
           numpy
           scipy
-          sentence-transformers
+          (sentence-transformers.override {
+            torch = torchWithRocm;
+          })
+          torchWithRocm
+          (torchvision.override {
+            torch = torchWithRocm;
+          })
+          (timm.override {
+            torch = torchWithRocm;
+            torchvision = torchvision.override {
+              torch = torchWithRocm;
+            };
+          })
+          einops
+          ftfy
+          distutils
+          west
           # pyaudio
           # pkgs.yubikey-manager
           # yubico-client
@@ -534,9 +550,9 @@ in {
           # grequests
           # tiktoken]
 
-          # onnxruntime
+          onnxruntime
           pillow
-          # opencv4
+          opencv4
           # cairosvg
           yt-dlp
           ytmusicapi
@@ -613,7 +629,7 @@ in {
           "thumbv8m.main-none-eabihf"
           "riscv32imac-unknown-none-elf"
           "wasm32-unknown-unknown"
-        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-linux-musl" "x86_64-pc-windows-msvc" "aarch64-unknown-linux-gnu" "arm-unknown-linux-musleabihf" "arm-unknown-linux-gnueabihf"] else []);
+        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-uefi" "x86_64-unknown-linux-musl" "x86_64-pc-windows-msvc" "aarch64-unknown-linux-gnu" "arm-unknown-linux-musleabihf" "arm-unknown-linux-gnueabihf"] else []);
       })
 
       pkgs.fastly
@@ -789,6 +805,21 @@ in {
 
         pkgs.gamescope
         pkgs.slack
+        pkgs.picotool
+        pkgs.gcc-arm-embedded
+
+        (pkgs.proxmark3.overrideAttrs (old: rec {
+          version = "4.20728";
+
+          src = pkgs.fetchFromGitHub {
+            owner = "RfidResearchGroup";
+            repo = "proxmark3";
+            rev = "v${version}";
+            hash = "sha256-dmWPi5xOcXXdvUc45keXGUNhYmQEzAHbKexpDOwIHhE=";
+          };
+
+          patches = [];
+        }))
       ]
       else [
         pkgs.fuzzel
