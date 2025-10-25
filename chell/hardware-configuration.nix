@@ -18,7 +18,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.initrd.luks.devices.luksroot = {
-    device = "/dev/disk/by-uuid/8d1325f2-bf42-4b2e-a6bb-68850f2edb97";
+    device = "/dev/disk/by-uuid/930119d3-018d-456f-93aa-9dfc2f1aa2b3";
     allowDiscards = true;
   };
   boot.initrd.luks.devices.lukshdd = {
@@ -38,20 +38,8 @@
 
   fileSystems."/nix" = {
     device = "/dev/mapper/luksroot";
-    fsType = "btrfs";
-    options = ["compress=zstd" "noatime" "subvol=nix"];
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/mapper/luksroot";
-    fsType = "btrfs";
-    options = ["compress=zstd" "subvol=home"];
-  };
-
-  fileSystems."/persist" = {
-    device = "/dev/mapper/luksroot";
-    fsType = "btrfs";
-    options = ["compress=zstd" "subvol=persist"];
+    fsType = "bcachefs";
+    options = ["compress=zstd"];
     neededForBoot = true;
   };
 

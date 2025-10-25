@@ -107,7 +107,7 @@ in {
 
   boot.lanzaboote = {
     enable = true;
-    pkiBundle = "/persist/secure-boot";
+    pkiBundle = "/nix/persist/secure-boot";
     settings = {
       console-mode = "0";
       editor = null;
@@ -278,7 +278,7 @@ in {
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
 
-  age.identityPaths = ["/persist/agenix-key"];
+  age.identityPaths = ["/nix/persist/agenix-key"];
 
   age.secrets.password = {file = ../secrets/password.age;};
 
@@ -308,7 +308,7 @@ in {
   programs.steam.enable = true;
 
   # this folder is where the files will be stored (don't put it in tmpfs)
-  environment.persistence."/persist" = {
+  environment.persistence."/nix/persist" = {
     directories = [
       "/var/lib/bluetooth"
       "/var/lib/cups"
@@ -316,6 +316,7 @@ in {
       "/var/lib/tailscale"
       "/var/lib/flatpak"
       "/var/lib/libvirt"
+      "/home"
     ];
     files = [];
   };
