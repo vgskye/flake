@@ -16,10 +16,16 @@
   fileSystems."/" = {
     device = "/dev/mapper/root";
     fsType = "bcachefs";
+    depends = [ "/dev/mapper/root" "/dev/mapper/toor" ];
   };
 
   boot.initrd.luks.devices.root = {
     device = "/dev/disk/by-uuid/2a205e8c-f20c-4dac-b165-457810fd04c0";
+    allowDiscards = true;
+  };
+
+  boot.initrd.luks.devices.toor = {
+    device = "/dev/disk/by-uuid/e4370d9c-2250-428b-9c6f-873cb75d4fa4";
     allowDiscards = true;
   };
 

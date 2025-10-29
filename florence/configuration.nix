@@ -33,8 +33,33 @@ in {
     settings = {
       console-mode = "0";
       editor = null;
+      timeout = "menu-hidden";
     };
   };
+
+  boot.plymouth = {
+    enable = true;
+    theme = "breeze";
+    extraConfig = ''
+      DeviceScale=1
+    '';
+  };
+
+  boot = {
+    # consoleLogLevel = 3;
+    # initrd.verbose = false;
+    kernelParams = [
+      "quiet"
+      "splash"
+      # "boot.shell_on_fail"
+      # "udev.log_priority=3"
+      # "rd.systemd.show_status=auto"
+      "rtw89_pci.disable_aspm_l1=y"
+      "rtw89_pci.disable_aspm_l1ss=y"
+    ];
+  };
+
+  boot.tmp.useTmpfs = true;
 
   boot.initrd.systemd.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -128,13 +153,14 @@ in {
   security.tpm2.pkcs11.enable = true;
   security.tpm2.tctiEnvironment.enable = true;
 
-  services.tlp.enable = true;
-  services.tlp.settings = {
-    CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-    PLATFORM_PROFILE_ON_BAT = "low-power";
-    CPU_BOOST_ON_BAT = 0;
-    AMDGPU_ABM_LEVEL_ON_BAT = 3;
-  };
+  # services.tlp.enable = true;
+  # services.tlp.settings = {
+  #   CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+  #   PLATFORM_PROFILE_ON_BAT = "low-power";
+  #   CPU_BOOST_ON_BAT = 0;
+  #   AMDGPU_ABM_LEVEL_ON_BAT = 3;
+  # };
+  services.tuned.enable = true;
   services.power-profiles-daemon.enable = false;
 
   services.keyd = {
@@ -170,7 +196,6 @@ in {
   environment.systemPackages = with pkgs; [
     xorg.libxcb
     catppuccin-cursors.macchiatoDark
-    sddm-chili-theme
   ];
 
   systemd.tmpfiles.rules = [
