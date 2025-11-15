@@ -83,14 +83,14 @@ in {
 
   services.flatpak.enable = true;
 
-  services.beesd.filesystems = {
-    home = {
-      spec = "/home";
-      verbosity = "warning";
-      extraOptions = [ "--loadavg-target" "6.0" ];
-      workDir = "persist/bees";
-    };
-  };
+  # services.beesd.filesystems = {
+  #   home = {
+  #     spec = "/home";
+  #     verbosity = "warning";
+  #     extraOptions = [ "--loadavg-target" "6.0" ];
+  #     workDir = "persist/bees";
+  #   };
+  # };
 
   programs.command-not-found.enable = false;
 
@@ -131,8 +131,20 @@ in {
     })
   ];
   boot.kernelModules = ["uwurandom"];
+  boot.kernelParams = [ "drm.panic_screen=qr_code" ];
   # boot.kernelParams = [ "vfio-pci.ids=10de:1f06,10de:10f9,10de:1ada,10de:1adb" ];
   # boot.initrd.kernelModules = [ "vfio-pci" ];
+
+  # boot.kernelPatches = [
+  #   {
+  #     name = "drmpanic";
+  #     patch = null;
+  #     extraConfig = ''
+  #       DRM_PANIC_SCREEN qr_code
+  #       DRM_PANIC_SCREEN_QR_CODE_URL https://m0.vc/k/#
+  #     '';
+  #   }
+  # ];
 
   nixpkgs.config.allowUnfree = true;
 

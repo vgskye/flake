@@ -558,6 +558,7 @@ in {
           ytmusicapi
           matplotlib
           skyfield
+          prophet
         ] ++ (if pkgs.system == "x86_64-linux" then [
           manim
           pyusb
@@ -808,7 +809,7 @@ in {
         pkgs.picotool
         pkgs.gcc-arm-embedded
 
-        (pkgs.proxmark3.overrideAttrs (old: rec {
+        ((pkgs.proxmark3.overrideAttrs (old: rec {
           version = "4.20728";
 
           src = pkgs.fetchFromGitHub {
@@ -819,7 +820,9 @@ in {
           };
 
           patches = [];
-        }))
+        })).override {
+          withGeneric = true;
+        })
       ]
       else [
         pkgs.fuzzel
