@@ -143,7 +143,7 @@ in {
 
   users.users.bs2k = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "tss" "input"];
+    extraGroups = ["wheel" "networkmanager" "tss" "input" "dialout"];
     hashedPasswordFile = config.age.secrets.password.path;
   };
 
@@ -167,7 +167,7 @@ in {
     enable = true;
     keyboards = {
       hammer = {
-        ids = [ "k:0001:0001:70533846" ];
+        ids = [ "k:0001:0001" ];
         settings = {
           main = {
             capslock = "overload(control, esc)";

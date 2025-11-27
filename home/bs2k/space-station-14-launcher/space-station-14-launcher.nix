@@ -3,7 +3,7 @@
   buildDotnetModule,
   dotnetCorePackages,
   fetchFromGitHub,
-  wrapGAppsHook4,
+  wrapGAppsHook3,
   iconConvTools,
   copyDesktopItems,
   makeDesktopItem,
@@ -32,13 +32,24 @@
   gdk-pixbuf,
   soundfont-fluid,
   stdenv,
+  config,
   sdl3,
+
+  alsa-lib,
+  libjack2,
+  pipewire,
+  libpulseaudio,
+  alsaSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
+  jackSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
+  pipewireSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
+  pulseaudioSupport ?
+    config.pulseaudio or stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
 
   # Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
   soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2",
 }:
 let
-  version = "0.33.0-rocksdb";
+  version = "0.35.0-rocksdb";
   pname = "space-station-14-launcher";
 in
 buildDotnetModule rec {
@@ -51,8 +62,8 @@ buildDotnetModule rec {
   src = fetchFromGitHub {
     owner = "vgskye";
     repo = "SS14.Launcher";
-    rev = "d412f3ba2159c897e4cfdcc2a2ea1dfc6160f054";
-    hash = "sha256-2XpmjEDJn3I7DUTzZ0ZXhasVutRPMton+rAhEnct4rM=";
+    rev = "002a848019ef529ff97d4edad522cdec728afe9a";
+    hash = "sha256-YL+pIWDesY38zYAvPjTEQUfBkryQxcTO3JTaiZqJySY=";
     fetchSubmodules = true;
   };
 
@@ -90,7 +101,7 @@ buildDotnetModule rec {
   ];
 
   nativeBuildInputs = [
-    wrapGAppsHook4
+    wrapGAppsHook3
     iconConvTools
     copyDesktopItems
   ];
@@ -147,12 +158,16 @@ buildDotnetModule rec {
     # TODO: Figure out dependencies for CEF support.
 
     sdl3
-  ];
+  ]
+  ++ lib.optional alsaSupport alsa-lib
+  ++ lib.optional jackSupport libjack2
+  ++ lib.optional pipewireSupport pipewire
+  ++ lib.optional pulseaudioSupport libpulseaudio;
 
   # ${soundfont-path} is escaped here:
   # https://github.com/NixOS/nixpkgs/blob/d29975d32b1dc7fe91d5cb275d20f8f8aba399ad/pkgs/build-support/setup-hooks/make-wrapper.sh#L126C35-L126C45
   # via https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html under ${parameter@operator}
-  makeWrapperArgs = [ ''--set SDL_VIDEODRIVER wayland'' ''--set ROBUST_SOUNDFONT_OVERRIDE ${soundfont-path}'' ];
+  makeWrapperArgs = [ ''--set ROBUST_SOUNDFONT_OVERRIDE ${soundfont-path}'' ];
 
   executables = [ "SS14.Launcher" ];
 

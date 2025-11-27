@@ -16,7 +16,7 @@
   fileSystems."/" = {
     device = "/dev/mapper/root";
     fsType = "bcachefs";
-    depends = [ "/dev/mapper/root" "/dev/mapper/toor" ];
+    # depends = [ "/dev/mapper/root" "/dev/mapper/toor" ];
   };
 
   boot.initrd.luks.devices.root = {

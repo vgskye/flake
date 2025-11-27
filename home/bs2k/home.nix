@@ -888,6 +888,9 @@ in {
     '';
     onChange = "${pkgs.fontconfig}/bin/fc-cache -f";
   };
+
+
+  # xdg.configFile.meowmeowmeowmeow.text = toString ((pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {}).passthru.fetch-deps);
   xdg.configFile."fontconfig/conf.d/10-noto-color-emoji.conf" = let
     genOverlay = font: ''
       <alias>
