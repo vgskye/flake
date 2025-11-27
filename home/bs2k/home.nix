@@ -129,7 +129,7 @@ in {
           hash = "sha256-apJJBu/fVHrFBGJ2f1rdU5AkNuekhi0sDiTKkbd2FQg=";
         };
       });
-      godot_4 = pkgsUnstable.godot_4;
+      # godot_4 = pkgsUnstable.godot_4;
 
       libreoffice-qt = override-icon super.libreoffice-qt "" "libreoffice-";
 
@@ -298,7 +298,7 @@ in {
 
       pkgs.kdePackages.kate
       pkgs.git
-      pkgs.onlykey-cli
+      # pkgs.onlykey-cli
       # pkgs.yubikey-manager-qt
       pkgs.yubioath-flutter
 
@@ -730,7 +730,7 @@ in {
           pkgs.xorg.libX11
         ];
       }))
-      packwiz.packages.${pkgs.system}.default
+      # packwiz.packages.${pkgs.system}.default
 
       pkgs.agenix
 
