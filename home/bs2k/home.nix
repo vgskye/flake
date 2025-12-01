@@ -131,7 +131,7 @@ in {
       });
       # godot_4 = pkgsUnstable.godot_4;
 
-      libreoffice-qt = override-icon super.libreoffice-qt "" "libreoffice-";
+      # libreoffice-qt = override-icon super.libreoffice-qt6-fresh "" "libreoffice-";
 
       # prismlauncher-alt = prismlauncher.packages.x86_64-linux.prismlauncher-qt5;
       # override-icon prismlauncher.packages.x86_64-linux.prismlauncher-qt5
@@ -652,7 +652,7 @@ in {
       # pkgs.nordzy-icon-theme
       # pkgs.nordzy-cursor-theme
 
-      pkgs.libreoffice-qt
+      pkgs.libreoffice-qt6-fresh
       pkgs.optar
 
       # pkgs.latte-dock
