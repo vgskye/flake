@@ -285,10 +285,9 @@ in {
       # pkgs.nerdfonts
       pkgs.nanum
       pkgs.noto-fonts
-      pkgs.noto-fonts-extra
       pkgs.noto-fonts-cjk-sans
       pkgs.noto-fonts-cjk-serif
-      pkgs.noto-fonts-emoji
+      pkgs.noto-fonts-color-emoji
       pkgs.cm_unicode
       pkgs.lmmath
 
@@ -320,7 +319,7 @@ in {
       pkgs.spotify-qt
       # pkgs.spotify-tui
       # pkgs.rnix-lsp
-      pkgs.fusee-launcher
+      # pkgs.fusee-launcher
       # pkgs.nur.repos.jakobrs.libtasMulti
       pkgs.love
       pkgs.easyeffects
@@ -388,7 +387,7 @@ in {
       # pkgs.nix-alien
       pkgs.nix-index-update
       pkgs.nix-index
-      comma.packages.${pkgs.system}.comma
+      # comma.packages.${pkgs.system}.comma
       # pkgs.openai-whisper
       (pkgs.python3.withPackages (pythonPackages:
         with pythonPackages;
@@ -560,7 +559,7 @@ in {
           skyfield
           prophet
         ] ++ (if pkgs.system == "x86_64-linux" then [
-          manim
+          # manim
           pyusb
           python-escpos
           pycups
@@ -716,6 +715,10 @@ in {
       # pkgs.xboard
 
       pkgs.vesktop
+      (pkgs.discord.override {
+        moonlight = "/home/bs2k/moonlight/dist";
+        withMoonlight = true;
+      })
 
       pkgs.mold
       # pkgs.cutter
@@ -745,7 +748,7 @@ in {
       (pkgs.callPackage ./nerd-font-symbols/package.nix {})
 
       (pkgs.callPackage ../../nome-manager/package.nix { path = config.programs.home-manager.path; })
-      (pkgs.callPackage ../../nomos-rebuild/package.nix {})
+      # (pkgs.callPackage ../../nomos-rebuild/package.nix {})
       pkgs.nix-output-monitor
 
       pkgs.ripgrep
@@ -779,10 +782,12 @@ in {
       pkgs.cmake
 
       pkgs.libqalculate
-      pkgs.gradience
+      (pkgs.callPackage ./gradience.nix {})
       pkgs.adw-gtk3
       (pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {})
       pkgs.nixd
+      pkgs.gambit
+      pkgs.picard
     ]
     ++ (
       if pkgs.system == "x86_64-linux"

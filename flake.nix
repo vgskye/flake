@@ -1,7 +1,7 @@
 {
   description = "my nix configs";
   inputs = {
-    nixpkgs-unwrapped = {url = "github:NixOS/nixpkgs/nixos-25.05";};
+    nixpkgs-unwrapped = {url = "github:NixOS/nixpkgs/nixos-25.11";};
     nixpkgs = {
       url = "github:numtide/nixpkgs-unfree";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
@@ -13,7 +13,7 @@
     };
     impermanence = {url = "github:nix-community/impermanence";};
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     rust-overlay = {
@@ -43,7 +43,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin = {
-      url = "github:catppuccin/nix/release-25.05";
+      url = "github:catppuccin/nix";
     };
     quiclime = {
       url = "git+https://git.skye.vg/me/quiclime.git?ref=glory-to-arstotzka";

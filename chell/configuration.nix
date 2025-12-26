@@ -412,7 +412,7 @@ in {
   hardware.sane.extraBackends = [
     pkgs.utsushi
     pkgs.epsonscan2
-    pkgs.epkowa
+    # pkgs.epkowa
     pkgs.epson-201401w
   ];
   # hardware.sane.netConf = "100.64.0.5";
@@ -562,7 +562,12 @@ in {
   ];
 
   services.wivrn.enable = true;
-  services.wivrn.package = pkgs.callPackage ./wivrn.nix {};
+  services.wivrn.package = pkgs.wivrn.overrideAttrs (old: {
+    src = pkgs.applyPatches {
+      src = old.src;
+      patches = [./wivrn.patch];
+    };
+  });
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

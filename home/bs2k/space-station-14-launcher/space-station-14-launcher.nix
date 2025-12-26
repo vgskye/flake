@@ -1,9 +1,10 @@
 {
   lib,
+  stdenv,
+  config,
   buildDotnetModule,
   dotnetCorePackages,
   fetchFromGitHub,
-  wrapGAppsHook3,
   iconConvTools,
   copyDesktopItems,
   makeDesktopItem,
@@ -14,42 +15,30 @@
   libXcursor,
   libXext,
   libXrandr,
-  fontconfig,
-  glew,
-  SDL2,
-  glfw,
-  glibc,
   libGL,
   freetype,
-  openal,
-  fluidsynth,
-  gtk3,
-  pango,
-  atk,
-  cairo,
-  zlib,
   glib,
-  gdk-pixbuf,
-  soundfont-fluid,
-  stdenv,
-  config,
-  sdl3,
-
   alsa-lib,
   libjack2,
   pipewire,
   libpulseaudio,
+  at-spi2-atk,
+  at-spi2-core,
+  libxkbcommon,
+  wayland,
+  fontconfig,
   alsaSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
   jackSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
   pipewireSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
   pulseaudioSupport ?
     config.pulseaudio or stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
+  soundfont-fluid,
 
   # Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
   soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2",
 }:
 let
-  version = "0.35.0-rocksdb";
+  version = "0.36.1-rocksdb";
   pname = "space-station-14-launcher";
 in
 buildDotnetModule rec {
@@ -62,8 +51,8 @@ buildDotnetModule rec {
   src = fetchFromGitHub {
     owner = "vgskye";
     repo = "SS14.Launcher";
-    rev = "002a848019ef529ff97d4edad522cdec728afe9a";
-    hash = "sha256-YL+pIWDesY38zYAvPjTEQUfBkryQxcTO3JTaiZqJySY=";
+    rev = "87dc2b0438d28a1c711c14b402a84abb678067c4";
+    hash = "sha256-jTvfVurWD0iPIwVq26QYHe4HM6g8jnvSY3blaoBodqU=";
     fetchSubmodules = true;
   };
 
@@ -85,14 +74,8 @@ buildDotnetModule rec {
     inherit version;
   };
 
-  # SDK 8.0 required for Robust.LoaderApi
-  dotnet-sdk =
-    with dotnetCorePackages;
-    combinePackages [
-      sdk_9_0
-      sdk_8_0
-    ];
-  dotnet-runtime = dotnetCorePackages.runtime_9_0;
+  dotnet-sdk = dotnetCorePackages.sdk_10_0;
+  dotnet-runtime = dotnetCorePackages.runtime_10_0;
 
   dotnetFlags = [
     "-p:FullRelease=true"
@@ -101,50 +84,14 @@ buildDotnetModule rec {
   ];
 
   nativeBuildInputs = [
-    wrapGAppsHook3
     iconConvTools
     copyDesktopItems
   ];
 
-  LD_LIBRARY_PATH = lib.makeLibraryPath [
-    fontconfig
-    libX11
-    libICE
-    libSM
-    libXi
-    libXcursor
-    libXext
-    libXrandr
-
-    glfw
-    SDL2
-    glibc
-    libGL
-    openal
-    freetype
-    fluidsynth
-  ];
-
   runtimeDeps = [
-    # Required by the game.
-    glfw
-    SDL2
-    glibc
     libGL
-    openal
     freetype
-    fluidsynth
-
-    # Needed for file dialogs.
-    gtk3
-    pango
-    cairo
-    atk
-    zlib
     glib
-    gdk-pixbuf
-
-    # Avalonia UI dependencies.
     libX11
     libICE
     libSM
@@ -152,12 +99,11 @@ buildDotnetModule rec {
     libXcursor
     libXext
     libXrandr
-    fontconfig
-    glew
-
-    # TODO: Figure out dependencies for CEF support.
-
-    sdl3
+    at-spi2-atk
+    at-spi2-core
+    libxkbcommon
+    wayland
+    fontconfig.lib
   ]
   ++ lib.optional alsaSupport alsa-lib
   ++ lib.optional jackSupport libjack2
@@ -188,12 +134,6 @@ buildDotnetModule rec {
     cp -r SS14.Loader/bin/${buildType}/*/*/* $out/lib/space-station-14-launcher/loader/
 
     icoFileToHiColorTheme SS14.Launcher/Assets/icon.ico space-station-14-launcher $out
-  '';
-
-  dontWrapGApps = true;
-
-  preFixup = ''
-    makeWrapperArgs+=("''${gappsWrapperArgs[@]}")
   '';
 
   meta = with lib; {
