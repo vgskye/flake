@@ -75,6 +75,7 @@
           header X-Clacks-Overhead "GNU Terry Pratchett"
           header X-Content-Type-Options "nosniff"
           route {
+            reverse_proxy /.well-known/dialtone_ticket/* http://127.0.0.1:25585
             respond /ping "OK"
             redir https://e4mc.link
           }
