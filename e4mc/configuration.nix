@@ -84,8 +84,42 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [80 443 25565];
-  networking.firewall.allowedUDPPorts = [443 25575];
+  networking.firewall.allowedTCPPorts = [80 443 25565 8080 8443];
+  networking.firewall.allowedUDPPorts = [443 25575 7842];
+
+  services.telegraf.extraConfig = {
+    inputs.prometheus = {
+      urls = [
+        # "http://127.0.0.1:25585/metrics"
+        "http://127.0.0.1:9090/metrics"
+      ];
+    };
+  };
+
+  systemd.services.iroh-relay =
+  let
+    pkg = pkgs.callPackage ./iroh-relay.nix {};
+  in
+  {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    description = "iroh relay server";
+    serviceConfig = {
+      Type = "simple";
+      User = "iroh-relay";
+      Group = "acme";
+      ExecStart = "${pkg}/bin/iroh-relay -c ${./relay-config.toml}";
+      Restart = "on-failure";
+    };
+  };
+
+  users.users.iroh-relay = {
+    description = "iroh relay server";
+    useDefaultShell = true;
+    group = "acme";
+    isSystemUser = true;
+  };
 
   programs.mosh.enable = true;
 

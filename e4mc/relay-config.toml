@@ -1,0 +1,9 @@
+http_bind_addr = "[::]:8080"
+metrics_bind_addr = "127.0.0.1:9090"
+enable_quic_addr_discovery = true
+
+[tls]
+https_bind_addr = "[::]:8443"
+cert_mode = "Reloading"
+manual_cert_path = "/var/lib/acme/e4mc/fullchain.pem"
+manual_key_path = "/var/lib/acme/e4mc/key.pem"
