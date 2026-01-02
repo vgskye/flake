@@ -233,6 +233,7 @@
       e4mc-de = e4mcFn "de" "hetzner-mbr-new" "x86_64";
       e4mc-us = e4mcFn "us" "hetzner-mbr" "x86_64";
       e4mc-na = e4mcFn "na" "hetzner-mbr" "x86_64";
+      e4mc-cl = e4mcFn "cl" "vultr" "x86_64";
       chell = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
