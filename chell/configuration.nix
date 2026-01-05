@@ -491,6 +491,7 @@ in {
     waydroid.enable = true;
     # lxd.enable = true;
     libvirtd.enable = true;
+    libvirtd.qemu.swtpm.enable = true;
   };
 
   programs.nix-ld.enable = true;
