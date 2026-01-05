@@ -111,6 +111,8 @@ in {
   # Enable the Plasma 5 Desktop Environment.
   services.desktopManager.plasma6.enable = true;
 
+  services.printing.enable = true;
+
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = {
@@ -187,6 +189,7 @@ in {
     docker.enable = true;
     waydroid.enable = true;
     libvirtd.enable = true;
+    libvirtd.qemu.swtpm.enable = true;
   };
 
   programs.nix-ld.enable = true;

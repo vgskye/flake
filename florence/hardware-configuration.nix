@@ -24,10 +24,10 @@
     allowDiscards = true;
   };
 
-  boot.initrd.luks.devices.toor = {
-    device = "/dev/disk/by-uuid/e4370d9c-2250-428b-9c6f-873cb75d4fa4";
-    allowDiscards = true;
-  };
+  # boot.initrd.luks.devices.toor = {
+  #   device = "/dev/disk/by-uuid/e4370d9c-2250-428b-9c6f-873cb75d4fa4";
+  #   allowDiscards = true;
+  # };
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/5889-C638";
