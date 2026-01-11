@@ -37,8 +37,9 @@
     certs = {
       e4mc = {
         domain = "${region}.e4mc.link";
-        extraDomainNames = ["*.${region}.e4mc.link"];
-        dnsProvider = "cloudflare";
+        extraDomainNames = ["*.${region}.e4mc.link" "broker.e4mc.link" "nbroker.e4mc.link"];
+        dnsProvider = "route53";
+        dnsResolver = "1.1.1.1:53";
         credentialsFile = config.age.secrets.e4mc-cf-key.path;
         postRun = ''
           ${pkgs.curl}/bin/curl -X POST http://127.0.0.1:25585/reload-certs
@@ -79,6 +80,18 @@
             respond /ping "OK"
             redir https://e4mc.link
           }
+        '';
+      };
+      e4mc-broker = {
+        hostName = "broker.e4mc.link";
+        serverAliases = ["nbroker.e4mc.link"];
+        useACMEHost = "e4mc";
+        extraConfig = ''
+          header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+          header X-Clacks-Overhead "GNU Terry Pratchett"
+          header X-Content-Type-Options "nosniff"
+          header Content-Type application/json
+          respond `{"id":"${region}","host":"${region}.e4mc.link","port":25575}`
         '';
       };
     };

@@ -767,6 +767,7 @@ in {
           jdk8
           jdk17
           jdk21
+          jdk25
         ];
       })
       pkgs.prusa-slicer
@@ -828,6 +829,8 @@ in {
         })).override {
           withGeneric = true;
         })
+        pkgs.lsfg-vk
+        pkgs.lsfg-vk-ui
       ]
       else [
         pkgs.fuzzel
@@ -1113,7 +1116,7 @@ in {
 
   programs.vscode = {
     enable = true;
-    # package = pkgs.vscodium;
+    package = pkgs.vscodium;
     mutableExtensionsDir = true;
     userSettings = {
       "update.mode" = "none";
@@ -1132,126 +1135,126 @@ in {
       "editor.semanticHighlighting.enabled" = true;
       "godot_tools.editor_path" = "${pkgs.godot_4}/bin/godot4";
     };
-    extensions = with pkgs.vscode-extensions;
-      [
-        astro-build.astro-vscode
-        svelte.svelte-vscode
-        bradlc.vscode-tailwindcss
-        esbenp.prettier-vscode
-        dbaeumer.vscode-eslint
+    # extensions = with pkgs.vscode-extensions;
+    #   [
+    #     astro-build.astro-vscode
+    #     svelte.svelte-vscode
+    #     bradlc.vscode-tailwindcss
+    #     esbenp.prettier-vscode
+    #     dbaeumer.vscode-eslint
 
-        eamodio.gitlens
-        # # catppuccin-vsc's output is architecture-agnostic
-        # # so just build this once
-        # (catppuccin-vsc.packages.${pkgs.system}.default.override {
-        #   accent = config.catppuccin.accent;
-        # })
-        catppuccin.catppuccin-vsc
+    #     eamodio.gitlens
+    #     # # catppuccin-vsc's output is architecture-agnostic
+    #     # # so just build this once
+    #     # (catppuccin-vsc.packages.${pkgs.system}.default.override {
+    #     #   accent = config.catppuccin.accent;
+    #     # })
+    #     catppuccin.catppuccin-vsc
 
-        mkhl.direnv
-        jnoortheen.nix-ide
-        skellock.just
+    #     mkhl.direnv
+    #     jnoortheen.nix-ide
+    #     skellock.just
 
-        (rust-lang.rust-analyzer.override { setDefaultServerPath = false; })
-        tamasfe.even-better-toml
+    #     (rust-lang.rust-analyzer.override { setDefaultServerPath = false; })
+    #     tamasfe.even-better-toml
 
-        sumneko.lua
+    #     sumneko.lua
 
-        redhat.vscode-yaml
-        ms-azuretools.vscode-docker
-        ms-vscode-remote.remote-ssh
-        github.vscode-github-actions
+    #     redhat.vscode-yaml
+    #     ms-azuretools.vscode-docker
+    #     ms-vscode-remote.remote-ssh
+    #     github.vscode-github-actions
 
-        golang.go
+    #     golang.go
 
-        vue.volar
+    #     vue.volar
 
-        antyos.openscad
+    #     antyos.openscad
 
-        ms-python.python
-        ms-python.vscode-pylance
+    #     ms-python.python
+    #     ms-python.vscode-pylance
 
-        haskell.haskell
-        justusadam.language-haskell
+    #     haskell.haskell
+    #     justusadam.language-haskell
 
-        unifiedjs.vscode-mdx
-      ]
-      ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-        {
-          name = "vscode-deno";
-          publisher = "denoland";
-          version = "3.42.0";
-          sha256 = "sha256-bfhpIxqHeUph51VBMlKBvdBJIeSO9E1ZitrfVl/MqgQ=";
-        }
-        {
-          name = "figura";
-          publisher = "manuel-underscore";
-          version = "1.8.0";
-          sha256 = "sha256-qA1GDS+GyIqa17OrIk4A0u7z5AyknhwNOy0/tF8kaBU=";
-        }
-        {
-          name = "hex-casting";
-          publisher = "object-Object";
-          version = "0.1.35";
-          sha256 = "sha256-Q+PeU8AGqVu99xQ2EirBjCAnoZIUi/+uefN5aC32uxQ=";
-        }
-        {
-          name = "godot-tools";
-          publisher = "geequlim";
-          version = "1.3.1";
-          sha256 = "sha256-wJICDW8bEBjilhjhoaSddN63vVn6l6aepPtx8VKTdZA=";
-        }
-        {
-          name = "devicetree";
-          publisher = "plorefice";
-          version = "0.1.1";
-          sha256 = "sha256-udyeY8OuI9+c26WMR63NqElyJLxdMqgOXkkmWF8233k=";
-        }
-        {
-          name = "shader";
-          publisher = "slevesque";
-          version = "1.1.5";
-          sha256 = "sha256-Pf37FeQMNlv74f7LMz9+CKscF6UjTZ7ZpcaZFKtX2ZM=";
-        }
-        {
-          name = "slint";
-          publisher = "Slint";
-          version = "1.6.0";
-          sha256 = "sha256-Vion8XEjAbnTYg2ETqZTuTa83cZM7+/j8ng4uUPxz+Q=";
-        }
-        {
-          name = "kdl";
-          publisher = "kdl-org";
-          version = "1.3.1";
-          sha256 = "sha256-0Wbyh6yaGyj/fyTUERB5KQd668i0fx/XLc/i2YkXYKg=";
-        }
-        {
-          name = "codespaces";
-          publisher = "github";
-          version = "1.17.1";
-          sha256 = "sha256-U1pjQFwip1UWSFOZgqUGceGQ9XMizcSOwtFTEgRLQrU=";
-        }
-      ]
-      ++ (
-        if pkgs.system == "x86_64-linux"
-        then
-          [
-            vadimcn.vscode-lldb
+    #     unifiedjs.vscode-mdx
+    #   ]
+    #   ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+    #     {
+    #       name = "vscode-deno";
+    #       publisher = "denoland";
+    #       version = "3.42.0";
+    #       sha256 = "sha256-bfhpIxqHeUph51VBMlKBvdBJIeSO9E1ZitrfVl/MqgQ=";
+    #     }
+    #     {
+    #       name = "figura";
+    #       publisher = "manuel-underscore";
+    #       version = "1.8.0";
+    #       sha256 = "sha256-qA1GDS+GyIqa17OrIk4A0u7z5AyknhwNOy0/tF8kaBU=";
+    #     }
+    #     {
+    #       name = "hex-casting";
+    #       publisher = "object-Object";
+    #       version = "0.1.35";
+    #       sha256 = "sha256-Q+PeU8AGqVu99xQ2EirBjCAnoZIUi/+uefN5aC32uxQ=";
+    #     }
+    #     {
+    #       name = "godot-tools";
+    #       publisher = "geequlim";
+    #       version = "1.3.1";
+    #       sha256 = "sha256-wJICDW8bEBjilhjhoaSddN63vVn6l6aepPtx8VKTdZA=";
+    #     }
+    #     {
+    #       name = "devicetree";
+    #       publisher = "plorefice";
+    #       version = "0.1.1";
+    #       sha256 = "sha256-udyeY8OuI9+c26WMR63NqElyJLxdMqgOXkkmWF8233k=";
+    #     }
+    #     {
+    #       name = "shader";
+    #       publisher = "slevesque";
+    #       version = "1.1.5";
+    #       sha256 = "sha256-Pf37FeQMNlv74f7LMz9+CKscF6UjTZ7ZpcaZFKtX2ZM=";
+    #     }
+    #     {
+    #       name = "slint";
+    #       publisher = "Slint";
+    #       version = "1.6.0";
+    #       sha256 = "sha256-Vion8XEjAbnTYg2ETqZTuTa83cZM7+/j8ng4uUPxz+Q=";
+    #     }
+    #     {
+    #       name = "kdl";
+    #       publisher = "kdl-org";
+    #       version = "1.3.1";
+    #       sha256 = "sha256-0Wbyh6yaGyj/fyTUERB5KQd668i0fx/XLc/i2YkXYKg=";
+    #     }
+    #     {
+    #       name = "codespaces";
+    #       publisher = "github";
+    #       version = "1.17.1";
+    #       sha256 = "sha256-U1pjQFwip1UWSFOZgqUGceGQ9XMizcSOwtFTEgRLQrU=";
+    #     }
+    #   ]
+    #   ++ (
+    #     if pkgs.system == "x86_64-linux"
+    #     then
+    #       [
+    #         vadimcn.vscode-lldb
 
-            ms-vscode.cpptools
-            ms-vscode.cmake-tools
-          ]
-          ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-            {
-              name = "pico-w-go";
-              publisher = "paulober";
-              version = "3.5.0";
-              arch = "linux-x64";
-              sha256 = "sha256-6cGcJaYTFWvmR1PKBymoHC8GnQ0AGOSsdoYKlbNE1U0=";
-            }
-          ]
-        else []
-      );
+    #         ms-vscode.cpptools
+    #         ms-vscode.cmake-tools
+    #       ]
+    #       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+    #         {
+    #           name = "pico-w-go";
+    #           publisher = "paulober";
+    #           version = "3.5.0";
+    #           arch = "linux-x64";
+    #           sha256 = "sha256-6cGcJaYTFWvmR1PKBymoHC8GnQ0AGOSsdoYKlbNE1U0=";
+    #         }
+    #       ]
+    #     else []
+    #   );
   };
 
 
