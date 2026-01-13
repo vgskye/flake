@@ -46,7 +46,7 @@
       url = "github:catppuccin/nix";
     };
     quiclime = {
-      url = "git+https://git.skye.vg/me/quiclime.git?ref=glory-to-arstotzka";
+      url = "github:vgskye/e4mc-quiclime/glory-to-arstotzka";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
     };
     babysitter = {

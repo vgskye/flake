@@ -864,18 +864,18 @@
         ]
       },
       "locked": {
-        "lastModified": 1766922607,
-        "narHash": "sha256-x22qKXycDU4rfDqJghWMocspZxk26ZK497OW0KpNgac=",
-        "ref": "glory-to-arstotzka",
-        "rev": "72397ba03b97eccb4c6aecbf71f4ccac22856cba",
-        "revCount": 31,
-        "type": "git",
-        "url": "https://git.skye.vg/me/quiclime.git"
+        "lastModified": 1768297446,
+        "narHash": "sha256-TUeuHkiyjI7YKuubJ9o0YrcqNMtMakqLoDB31Hcg1Bs=",
+        "owner": "vgskye",
+        "repo": "e4mc-quiclime",
+        "rev": "bbdf2b89123b590c6545cbe9c90fd7afee3b5bbd",
+        "type": "github"
       },
       "original": {
+        "owner": "vgskye",
         "ref": "glory-to-arstotzka",
-        "type": "git",
-        "url": "https://git.skye.vg/me/quiclime.git"
+        "repo": "e4mc-quiclime",
+        "type": "github"
       }
     },
     "root": {
