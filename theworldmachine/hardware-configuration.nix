@@ -25,7 +25,7 @@
 
   networking.hostId = "e4c9bd10";
   
-  networking.useDHCP = lib.mkDefault true;
+  networking.useDHCP = false;
   networking.interfaces.enp5s0.ipv6.addresses = [
     {
       address = "2a01:4f9:3071:1ba7::1";
@@ -34,6 +34,16 @@
   ];
   networking.defaultGateway6 = {
     address = "fe80::1";
+    interface = "enp5s0";
+  };
+  networking.interfaces.enp5s0.ipv4.addresses = [
+    {
+      address = "65.21.11.27";
+      prefixLength = 27;
+    }
+  ];
+  networking.defaultGateway = {
+    address = "65.21.11.1";
     interface = "enp5s0";
   };
 

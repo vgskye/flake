@@ -11,19 +11,17 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "xrizer";
-  version = "0.2.0-f491eddd0d9839d85dbb773f61bd1096d5b004ef";
+  version = "0.4.0-10c19ca7af26a0fb205e86a83988fbd0861c7b53";
 
   src = fetchFromGitHub {
-    owner = "RinLovesYou";
+    owner = "ImSapphire";
     repo = "xrizer";
-    rev = "f491eddd0d9839d85dbb773f61bd1096d5b004ef";
-    hash = "sha256-12M7rkTMbIwNY56Jc36nC08owVSPOr1eBu0xpJxikdw=";
+    rev = "10c19ca7af26a0fb205e86a83988fbd0861c7b53";
+    hash = "sha256-ENPc7bgmx0eJxlCMyZzf4G0jnLPc3B5Yox56wbC1AjQ=";
   };
 
   useFetchCargoVendor = true;
-  cargoHash = "sha256-87JcULH1tAA487VwKVBmXhYTXCdMoYM3gOQTkM53ehE=";
-
-
+  cargoHash = "sha256-orfK5pwWv91hA7Ra3Kk+isFTR+qMHSZ0EYZTVbf0fO0=";
 
   doCheck = false;
 

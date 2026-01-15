@@ -12,6 +12,7 @@
   catppuccin-vsc,
   fenix,
   firefox,
+  nixpkgs-xr,
   ...
 }: let
   override-icon = pkg: oldPrefix: newPrefix:
@@ -61,6 +62,7 @@ in {
     rust-overlay.overlays.default
     nix-alien.overlays.default
     agenix.overlays.default
+    nixpkgs-xr.overlays.default
     (self: super: {
       # monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
@@ -248,7 +250,7 @@ in {
 
   home.sessionVariables = {
     # GTK_THEME = config.gtk.theme.name;
-    HSA_OVERRIDE_GFX_VERSION = "10.3.0";
+    # HSA_OVERRIDE_GFX_VERSION = "10.3.0";
     NIXOS_OZONE_WL = "1";
     QT_QUICK_CONTROLS_STYLE = "org.kde.desktop";
     __RA_LSP_SERVER_DEBUG = "/home/bs2k/.nix-profile/bin/rust-analyzer";

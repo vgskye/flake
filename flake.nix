@@ -94,6 +94,10 @@
       url = "github:Mic92/nix-fast-build";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
     };
+    nixpkgs-xr = {
+      url = "github:nix-community/nixpkgs-xr";
+      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+    };
   };
   outputs = {
     self,
@@ -123,6 +127,7 @@
     switchblade,
     firefox,
     nix-fast-build,
+    nixpkgs-xr,
   }: let
     tailscalepkgmodule = {pkgsUnstable, ...}: {
       services.tailscale.package = pkgsUnstable.tailscale;
@@ -244,6 +249,7 @@
           agenix.nixosModules.default
           lanzaboote.nixosModules.lanzaboote
           {
+            nixpkgs.overlays = [ nixpkgs-xr.overlays.default ];
             nix.registry = {
               # nixpkgs.flake = nixpkgs-unwrapped;
               # nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
@@ -400,6 +406,7 @@
               catppuccin-vsc
               fenix
               firefox
+              nixpkgs-xr
               ;
             pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
             pkgsAmd64 = nixpkgs-unstable.legacyPackages.x86_64-linux;
