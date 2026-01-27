@@ -35,51 +35,56 @@ in {
     "nixpkgs=${channelPath}"
   ];
 
-  # nixpkgs.overlays = [
-  #   (self: super: {
-  #     # systemd = super.systemd.overrideAttrs (old: {
-  #     #   patches = old.patches ++ [
-  #     #     ./0019-tpm2_context_init-fix-driver-name-checking.patch
-  #     #   ];
-  #     # });
-  #     steam = super.steam.override {
-  #       extraPkgs = pkgs:
-  #         with pkgs; [
-  #           portaudio
-  #           # ((pkgs.callPackage ../alvr.nix) { })
-  #           # binutils-unwrapped
-  #           # alsaLib
-  #           # openssl
-  #           # glib
-  #           # (ffmpeg-full.override { nonfreeLicensing = true; samba = null; })
-  #           # cairo
-  #           # pango
-  #           # atk
-  #           # gdk-pixbuf
-  #           # gtk3
-  #           # clang
-  #           # (pkgs.vulkan-tools-lunarg.overrideAttrs (oldAttrs: rec {
-  #           #   patches = [
-  #           #     (fetchurl {
-  #           #       url =
-  #           #         "https://gist.githubusercontent.com/ckiee/038809f55f658595107b2da41acff298/raw/6d8d0a91bfd335a25e88cc76eec5c22bf1ece611/vulkantools-log.patch";
-  #           #       sha256 = "14gji272r53pykaadkh6rswlzwhh9iqsy1y4q0gdp8ai4ycqd129";
-  #           #     })
-  #           #   ];
-  #           # }))
-  #           # vulkan-headers
-  #           # vulkan-loader
-  #           # vulkan-validation-layers
-  #           # xorg.libX11
-  #           # xorg.libXrandr
-  #           # libunwind
-  #           # python3 # for the xcb crate
-  #           # libxkbcommon
-  #           # jack2
-  #         ];
-  #     };
-  #   })
-  # ];
+  nixpkgs.overlays = [
+    (self: super: {
+      xrizer = super.xrizer.overrideAttrs (old: {
+        patches = builtins.filter (
+          patch: (!builtins.elem patch.name [ "xrizer-fix-flaky-tests.patch" ])
+        ) old.patches;
+      });
+      # systemd = super.systemd.overrideAttrs (old: {
+      #   patches = old.patches ++ [
+      #     ./0019-tpm2_context_init-fix-driver-name-checking.patch
+      #   ];
+      # });
+      # steam = super.steam.override {
+      #   extraPkgs = pkgs:
+      #     with pkgs; [
+      #       portaudio
+      #       # ((pkgs.callPackage ../alvr.nix) { })
+      #       # binutils-unwrapped
+      #       # alsaLib
+      #       # openssl
+      #       # glib
+      #       # (ffmpeg-full.override { nonfreeLicensing = true; samba = null; })
+      #       # cairo
+      #       # pango
+      #       # atk
+      #       # gdk-pixbuf
+      #       # gtk3
+      #       # clang
+      #       # (pkgs.vulkan-tools-lunarg.overrideAttrs (oldAttrs: rec {
+      #       #   patches = [
+      #       #     (fetchurl {
+      #       #       url =
+      #       #         "https://gist.githubusercontent.com/ckiee/038809f55f658595107b2da41acff298/raw/6d8d0a91bfd335a25e88cc76eec5c22bf1ece611/vulkantools-log.patch";
+      #       #       sha256 = "14gji272r53pykaadkh6rswlzwhh9iqsy1y4q0gdp8ai4ycqd129";
+      #       #     })
+      #       #   ];
+      #       # }))
+      #       # vulkan-headers
+      #       # vulkan-loader
+      #       # vulkan-validation-layers
+      #       # xorg.libX11
+      #       # xorg.libXrandr
+      #       # libunwind
+      #       # python3 # for the xcb crate
+      #       # libxkbcommon
+      #       # jack2
+      #     ];
+      # };
+    })
+  ];
 
   services.flatpak.enable = true;
 
