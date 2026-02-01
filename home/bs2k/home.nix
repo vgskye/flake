@@ -795,6 +795,7 @@ in {
       pkgs.nixd
       pkgs.gambit
       pkgs.picard
+      pkgs.quodlibet-full
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
