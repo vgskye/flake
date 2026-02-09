@@ -36,7 +36,7 @@ in {
   time.timeZone = "Europe/Helsinki";
 
   virtualisation.docker.enable = true;
-  # virtualisation.docker.daemon.settings.ipv6 = true;
+  virtualisation.docker.daemon.settings.ipv6 = true;
 
   age.identityPaths = ["/nix/agenix-key"];
 
