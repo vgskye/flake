@@ -455,6 +455,8 @@ in {
   };
   users.groups.plugdev = { };
 
+  fonts.fontconfig.useEmbeddedBitmaps = true;
+
   programs.gamemode = {
     enable = true;
     settings = {

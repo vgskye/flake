@@ -909,7 +909,7 @@ in {
 
 
   # xdg.configFile.meowmeowmeowmeow.text = toString ((pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {}).passthru.fetch-deps);
-  xdg.configFile."fontconfig/conf.d/10-noto-color-emoji.conf" = let
+  xdg.configFile."fontconfig/conf.d/99-noto-color-emoji.conf" = let
     genOverlay = font: ''
       <alias>
         <family>${font}</family>
@@ -921,6 +921,7 @@ in {
     '';
     overlays = builtins.concatStringsSep "\n" (map genOverlay [
       "Inter"
+      "Inter Variable"
     ]);
   in {
     text = ''
@@ -928,6 +929,11 @@ in {
       <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
       <fontconfig>
         ${overlays}
+        <match target="font">
+          <edit name="embeddedbitmap" mode="assign">
+            <bool>true</bool>
+          </edit>
+        </match>
       </fontconfig>
     '';
     onChange = "${pkgs.fontconfig}/bin/fc-cache -f";
