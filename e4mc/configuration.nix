@@ -37,8 +37,8 @@
     certs = {
       e4mc = {
         domain = "${region}.e4mc.link";
-        extraDomainNames = ["*.${region}.e4mc.link" "broker.e4mc.link" "nbroker.e4mc.link"];
-        dnsProvider = "route53";
+        extraDomainNames = ["*.${region}.e4mc.link" "broker.e4mc.link"];
+        dnsProvider = "bunny";
         dnsResolver = "1.1.1.1:53";
         credentialsFile = config.age.secrets.e4mc-cf-key.path;
         postRun = ''

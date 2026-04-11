@@ -813,9 +813,7 @@ in {
         pkgs.ollama-rocm
         pkgs.nrfconnect
 
-        (pkgs.wlx-overlay-s.override {
-          rustPlatform = pkgsUnstable.rustPlatform;
-        })
+        pkgs.wlx-overlay-s
 
         pkgs.gamescope
         pkgs.slack
@@ -1323,24 +1321,24 @@ in {
   programs.go.enable = true;
   programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
-  # programs.firefox.package = pkgs.lib.mkDefault firefox.packages.${pkgs.system}.firefox-nightly-bin;
+  programs.firefox.package = pkgs.lib.mkDefault firefox.packages.${pkgs.system}.firefox-nightly-bin;
 
-  programs.firefox.package = let
-    unwrapped = pkgs.firefox-unwrapped.overrideAttrs (old: {
-      src = pkgs.applyPatches {
-        src = old.src;
-        postPatch = ''
-          ${pkgs.git}/bin/git apply ${./ff-better-jxl.patch}
-        '';
-        # patches = [
-        #   # ./ff/0001-Replace-libjxl-with-jxl-rs-full-stack-containing-D27.patch
-        #   # ./ff/0002-enable-JXL-by-default.patch
-        #   ./ff/0001-jxl-megapatch.patch
-        # ];
-      };
-    });
-    wrapped = pkgs.wrapFirefox unwrapped { pname = "firefox"; };
-  in pkgs.lib.mkDefault wrapped;
+  # programs.firefox.package = let
+  #   unwrapped = pkgs.firefox-unwrapped.overrideAttrs (old: {
+  #     src = pkgs.applyPatches {
+  #       src = old.src;
+  #       postPatch = ''
+  #         ${pkgs.git}/bin/git apply ${./ff-better-jxl.patch}
+  #       '';
+  #       # patches = [
+  #       #   # ./ff/0001-Replace-libjxl-with-jxl-rs-full-stack-containing-D27.patch
+  #       #   # ./ff/0002-enable-JXL-by-default.patch
+  #       #   ./ff/0001-jxl-megapatch.patch
+  #       # ];
+  #     };
+  #   });
+  #   wrapped = pkgs.wrapFirefox unwrapped { pname = "firefox"; };
+  # in pkgs.lib.mkDefault wrapped;
 
   programs.chromium = {
     enable = pkgs.system == "aarch64-linux";

@@ -38,7 +38,7 @@
   soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2",
 }:
 let
-  version = "0.36.1-rocksdb";
+  version = "0.37.1-rocksdb";
   pname = "space-station-14-launcher";
 in
 buildDotnetModule rec {
@@ -51,8 +51,8 @@ buildDotnetModule rec {
   src = fetchFromGitHub {
     owner = "vgskye";
     repo = "SS14.Launcher";
-    rev = "87dc2b0438d28a1c711c14b402a84abb678067c4";
-    hash = "sha256-jTvfVurWD0iPIwVq26QYHe4HM6g8jnvSY3blaoBodqU=";
+    rev = "39d97ecc12c325fea119cfb6cfe831336a3a9ac9";
+    hash = "sha256-L5HtMkUYduA1E5rDW31E4CMWUA+sZ0VSTg6T6axs7jY=";
     fetchSubmodules = true;
   };
 
