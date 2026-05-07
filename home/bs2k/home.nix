@@ -162,10 +162,10 @@ in {
       #     nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
       #   };
 
-      # stockfish =
-      #   if self.system == "x86_64-linux"
-      #   then self.callPackage (import ./stockfish.nix) {}
-      #   else super.stockfish;
+      stockfish =
+        if self.system == "x86_64-linux"
+        then self.callPackage (import ./stockfish.nix) {}
+        else super.stockfish;
 
 
       # prusa-slicer = super.prusa-slicer.overrideAttrs (old: rec {
@@ -449,58 +449,64 @@ in {
                 ++ lib.optionals (!cudaSupport && !rocmSupport) lib.platforms.darwin;
             };
           });
-          # torchRocmBin = torch-bin.overrideAttrs (old: {
-          #   src = {
-          #     name = "torch-2.5.1-cp312-cp312-linux_x86_64.whl";
-          #     url = "https://download.pytorch.org/whl/rocm6.2.4/torch-2.6.0%2Brocm6.2.4-cp312-cp312-manylinux_2_28_x86_64.whl";
-          #     hash = pkgs.lib.fakeHash;
-          #   };
-          #   buildInputs = with pkgs.rocmPackages; [
-          #     rocm-core
-          #     clr
-          #     rccl
-          #     miopen
-          #     miopengemm
-          #     rocrand
-          #     rocblas
-          #     rocsparse
-          #     hipsparse
-          #     rocthrust
-          #     rocprim
-          #     hipcub
-          #     roctracer
-          #     rocfft
-          #     rocsolver
-          #     hipfft
-          #     hipsolver
-          #     hipblas
-          #     rocminfo
-          #     rocm-thunk
-          #     rocm-comgr
-          #     rocm-device-libs
-          #     rocm-runtime
-          #     clr.icd
-          #     hipify
-          #   ];
-          # });
+          torchRocmBin = (torch-bin.overrideAttrs (old: {
+            src = pkgs.fetchurl {
+              name = "torch-2.9.1+rocm6.4-cp313-cp313-manylinux_2_28_x86_64.whl";
+              url = "https://download-r2.pytorch.org/whl/rocm6.4/torch-2.9.1%2Brocm6.4-cp313-cp313-manylinux_2_28_x86_64.whl";
+              hash = "sha256-Gawe9ds/luARctD2K8BDjG06hmc1jDoAIE+7tE2nQik=";
+            };
+            buildInputs = with pkgs.rocmPackages; [
+              rocm-core
+              clr
+              rccl
+              miopen
+              aotriton
+              rocrand
+              rocblas
+              rocsparse
+              hipsparse
+              rocthrust
+              rocprim
+              hipcub
+              roctracer
+              rocfft
+              rocsolver
+              hipfft
+              hiprand
+              hipsolver
+              hipblas-common
+              hipblas
+              hipblaslt
+              rocminfo
+              rocm-comgr
+              rocm-device-libs
+              rocm-runtime
+              rocm-smi
+              clr.icd
+              hipify
+            ];
+            extraRunpaths = [];
+          })).override {
+            triton = triton-no-cuda;
+          };
         in
         [
           # sounddevice
           numpy
           scipy
-          (sentence-transformers.override {
-            torch = torchWithRocm;
+          (transformers.override {
+            torch = torchRocmBin;
           })
-          torchWithRocm
-          (torchvision.override {
-            torch = torchWithRocm;
-          })
-          (timm.override {
-            torch = torchWithRocm;
-            torchvision = torchvision.override {
-              torch = torchWithRocm;
-            };
-          })
+          torchRocmBin
+          # (torchvision.override {
+          #   torch = torchRocmBin;
+          # })
+          # (timm.override {
+          #   torch = torchRocmBin;
+          #   torchvision = torchvision.override {
+          #     torch = torchRocmBin;
+          #   };
+          # })
           einops
           ftfy
           distutils
@@ -613,7 +619,7 @@ in {
 
           chromadb
           (accelerate.override {
-            torch = torchWithRocm;
+            torch = torchRocmBin;
           })
           ollama
         ] else [])))
@@ -796,6 +802,7 @@ in {
       pkgs.gambit
       pkgs.picard
       pkgs.quodlibet-full
+      pkgsUnstable.halloy
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -1147,6 +1154,7 @@ in {
       "terminal.integrated.minimumContrastRatio" = 1;
       "editor.semanticHighlighting.enabled" = true;
       "godot_tools.editor_path" = "${pkgs.godot_4}/bin/godot4";
+      "raspberry-pi-pico.python3Path" = "/home/bs2k/.nix-profile/bin/python";
     };
     # extensions = with pkgs.vscode-extensions;
     #   [

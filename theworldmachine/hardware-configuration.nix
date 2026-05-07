@@ -16,7 +16,7 @@
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/69F0-AB49";
+    { device = "/dev/disk/by-uuid/FE2D-DCF7";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
@@ -46,6 +46,10 @@
     address = "65.21.11.1";
     interface = "enp5s0";
   };
+  networking.nameservers = [
+    "1.1.1.1"
+    "1.0.0.1"
+  ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
