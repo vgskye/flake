@@ -33,7 +33,7 @@
 
   security.acme = {
     acceptTerms = true;
-    defaults.email = "me@skye.vg";
+    defaults.email = "skye@is-quite.gay";
     certs = {
       e4mc = {
         domain = "${region}.e4mc.link";

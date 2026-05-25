@@ -622,6 +622,7 @@ in {
             torch = torchRocmBin;
           })
           ollama
+          pyacoustid
         ] else [])))
 
       (fenixStructured {

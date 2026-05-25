@@ -5,9 +5,7 @@ SYNAPSE_DATA_DIR="/var/lib/docker/volumes/synapse_data/_data"
 
 TEMP_DIR="/tmp/backups-$(date +%s)"
 
-trap "curl -m 10 --retry 5 $HCPING_URL/fail; rm -rf $TEMP_DIR" ERR
-
-curl -m 10 --retry 5 $HCPING_URL/start
+trap "rm -rf $TEMP_DIR" ERR
 
 mkdir "$TEMP_DIR"
 
@@ -27,5 +25,3 @@ restic forget --keep-last 4 --keep-weekly 4 --keep-monthly 12 --group-by ""
 restic prune
 
 rm -rf "$TEMP_DIR"
-
-curl -m 10 --retry 5 $HCPING_URL

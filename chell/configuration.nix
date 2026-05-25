@@ -496,6 +496,7 @@ in {
   virtualisation = {
     docker = {enable = true;};
     waydroid.enable = true;
+    podman.enable = true;
     # lxd.enable = true;
     libvirtd.enable = true;
     libvirtd.qemu.swtpm.enable = true;
@@ -567,6 +568,7 @@ in {
   boot.binfmt.emulatedSystems = [
     "wasm32-wasi"
     "aarch64-linux"
+    "riscv64-linux"
   ];
 
   services.wivrn.enable = true;

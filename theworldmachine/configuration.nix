@@ -51,28 +51,28 @@ in {
     owner = "acme";
   };
 
-  users.users.gaybox = {
-    group = "gaybox";
-    isSystemUser = true;
-  };
+  # users.users.gaybox = {
+  #   group = "gaybox";
+  #   isSystemUser = true;
+  # };
 
-  users.groups.gaybox = {
-  };
+  # users.groups.gaybox = {
+  # };
 
-  systemd.services.gaybox = {
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
-    serviceConfig = {
-      Type = "simple";
-      User = "gaybox";
-      Group = "gaybox";
-      ExecStart = "/gaybox/startserver.sh";
-    };
-    path = [
-      pkgs.jdk
-      pkgs.wget
-    ];
-  };
+  # systemd.services.gaybox = {
+  #   wantedBy = [ "multi-user.target" ];
+  #   after = [ "network-online.target" ];
+  #   serviceConfig = {
+  #     Type = "simple";
+  #     User = "gaybox";
+  #     Group = "gaybox";
+  #     ExecStart = "/gaybox/startserver.sh";
+  #   };
+  #   path = [
+  #     pkgs.jdk
+  #     pkgs.wget
+  #   ];
+  # };
 
   age.secrets.geoipupdate = {
     file = ../secrets/geoipupdate.age;
@@ -95,7 +95,7 @@ in {
 
   security.acme = {
     acceptTerms = true;
-    defaults.email = "me@skye.vg";
+    defaults.email = "skye@is-quite.gay";
     certs = {
       mail = {
         domain = "mail.is-quite.gay";
@@ -115,37 +115,37 @@ in {
     };
   };
 
-  systemd.timers.backups = {
-    wantedBy = ["timers.target"];
-    timerConfig = {
-      OnCalendar = "*-*-* 00:00:00";
-      Unit = "backups.service";
-    };
-  };
+  # systemd.timers.backups = {
+  #   wantedBy = ["timers.target"];
+  #   timerConfig = {
+  #     OnCalendar = "*-*-* 00:00:00";
+  #     Unit = "backups.service";
+  #   };
+  # };
 
-  age.secrets.restic-secrets = {
-    file = ../secrets/restic-secrets-twm.age;
-    mode = "400";
-    owner = "root";
-  };
+  # age.secrets.restic-secrets = {
+  #   file = ../secrets/restic-secrets-twm.age;
+  #   mode = "400";
+  #   owner = "root";
+  # };
 
-  systemd.services.backups = {
-    script = builtins.readFile ./backup.sh;
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-      EnvironmentFile = config.age.secrets.restic-secrets.path;
-    };
-    path = [
-      pkgs.curl
-      pkgs.sqlite
-      pkgs.docker
-      pkgs.restic
-      pkgs.openssh
-      pkgs.bash
-      pkgs.which
-    ];
-  };
+  # systemd.services.backups = {
+  #   script = builtins.readFile ./backup.sh;
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     User = "root";
+  #     EnvironmentFile = config.age.secrets.restic-secrets.path;
+  #   };
+  #   path = [
+  #     pkgs.curl
+  #     pkgs.sqlite
+  #     pkgs.docker
+  #     pkgs.restic
+  #     pkgs.openssh
+  #     pkgs.bash
+  #     pkgs.which
+  #   ];
+  # };
 
   networking.firewall.allowedTCPPorts = [80 443 25 465 587 993 25565 8100];
   networking.firewall.allowedUDPPorts = [80 443 24454];
