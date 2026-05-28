@@ -38,7 +38,7 @@
 
   fileSystems."/nix" = {
     device = "/dev/mapper/luksroot";
-    fsType = "bcachefs";
+    fsType = "btrfs";
     options = ["compress=zstd"];
     neededForBoot = true;
   };

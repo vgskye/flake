@@ -88,14 +88,14 @@ in {
 
   services.flatpak.enable = true;
 
-  # services.beesd.filesystems = {
-  #   home = {
-  #     spec = "/home";
-  #     verbosity = "warning";
-  #     extraOptions = [ "--loadavg-target" "6.0" ];
-  #     workDir = "persist/bees";
-  #   };
-  # };
+  services.beesd.filesystems = {
+    ssd = {
+      spec = "/nix";
+      verbosity = "warning";
+      hashTableSizeMB = 4096;
+      extraOptions = [ "--loadavg-target" "6.0" ];
+    };
+  };
 
   programs.command-not-found.enable = false;
 
