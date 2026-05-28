@@ -66,7 +66,7 @@ in {
     (self: super: {
       # monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
-      kicad = override-exec super.kicad "" "GDK_BACKEND=x11 ";
+      kicad = override-exec pkgsUnstable.kicad "" "GDK_BACKEND=x11 ";
       prusa-slicer = override-exec super.prusa-slicer "" "GDK_BACKEND=x11 ";
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
@@ -631,6 +631,7 @@ in {
           "wasm32-unknown-unknown"
           "wasm32-wasip1"
           "wasm32-wasip2"
+          "wasm32v1-none"
           "thumbv7em-none-eabihf"
           # "wasm32-unknown-emscripten"
           # "x86_64-unknown-linux-musl"
