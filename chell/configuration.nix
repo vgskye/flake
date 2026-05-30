@@ -537,8 +537,8 @@ in {
   #   '';
   # };
 
-  security.pam.u2f.enable = true;
-  security.pam.u2f.control = "required";
+  # security.pam.u2f.enable = true;
+  # security.pam.u2f.control = "required";
 
   security.pki.certificateFiles = [ ./dn42.crt ];
 
@@ -563,7 +563,10 @@ in {
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
 
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    extraDaemonFlags = ["--encrypt-state"];
+  };
 
   boot.binfmt.emulatedSystems = [
     "wasm32-wasi"

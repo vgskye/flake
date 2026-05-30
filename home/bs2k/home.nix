@@ -820,6 +820,7 @@ in {
       pkgs.picard
       pkgs.quodlibet-full
       pkgsUnstable.halloy
+      pkgs.obsidian
     ]
     ++ (
       if pkgs.system == "x86_64-linux"

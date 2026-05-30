@@ -241,8 +241,11 @@ in {
   # networking.firewall.allowedTCPPorts = [ 25565 ];
   # networking.firewall.allowedUDPPorts = [ 25565 ];
 
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "both";
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both";
+    extraDaemonFlags = ["--encrypt-state"];
+  };
 
   boot.binfmt.emulatedSystems = [
     "wasm32-wasi"
