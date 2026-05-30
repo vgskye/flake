@@ -254,7 +254,22 @@ in {
     NIXOS_OZONE_WL = "1";
     QT_QUICK_CONTROLS_STYLE = "org.kde.desktop";
     __RA_LSP_SERVER_DEBUG = "/home/bs2k/.nix-profile/bin/rust-analyzer";
+    YKCS11_PATH = "${pkgs.yubico-piv-tool}/lib/libykcs11.so";
     # CHROME_EXECUTABLE = "${pkgs.google-chrome}/bin/google-chrome-stable";
+  };
+
+  services.ssh-agent = {
+    enable = true;
+    package = 
+      pkgs.symlinkJoin {
+        name = "ssh-agent-wrapped";
+        paths = [pkgs.openssh];
+        buildInputs = [pkgs.makeWrapper];
+        postBuild = ''
+          wrapProgram $out/bin/ssh-agent \
+            --append-flags "-P '${pkgs.yubico-piv-tool}/lib/libykcs11.so*'"
+        '';
+      };
   };
 
   # Home Manager needs a bit of information about you and the
@@ -873,10 +888,10 @@ in {
         pkgs.spot
       ]
     );
-  xdg.configFile."openvr/openvrpaths.vrpath".text = if pkgs.system == "x86_64-linux"
-      then
-        ''{"version":1,"runtime":["${pkgsUnstable.callPackage ./xrizer.nix {}}/lib/xrizer"]}''
-      else "";
+  # xdg.configFile."openvr/openvrpaths.vrpath".text = if pkgs.system == "x86_64-linux"
+  #     then
+  #       ''{"version":1,"runtime":["${pkgsUnstable.callPackage ./xrizer.nix {}}/lib/xrizer"]}''
+  #     else "";
   # xdg.configFile."openvr/openvrpaths.vrpath".text = ''{"version":1,"runtime":["${pkgs.opencomposite}/lib/opencomposite"]}'';
   fonts.fontconfig.enable = true;
   xdg.configFile."fontconfig/conf.d/10-nerd-font-symbols.conf" = let

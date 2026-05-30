@@ -15,8 +15,16 @@
 
   fileSystems."/" = {
     device = "/dev/mapper/root";
-    fsType = "bcachefs";
-    # depends = [ "/dev/mapper/root" "/dev/mapper/toor" ];
+    fsType = "btrfs";
+    options = ["compress=zstd"];
+  };
+
+  services.beesd.filesystems = {
+    ssd = {
+      spec = "/";
+      verbosity = "warning";
+      extraOptions = [ "--loadavg-target" "2.0" ];
+    };
   };
 
   boot.initrd.luks.devices.root = {
