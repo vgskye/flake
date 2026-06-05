@@ -846,13 +846,13 @@ in {
         pkgs.gcc-arm-embedded
 
         ((pkgs.proxmark3.overrideAttrs (old: rec {
-          version = "4.21128";
+          version = "4.21611";
 
           src = pkgs.fetchFromGitHub {
             owner = "RfidResearchGroup";
             repo = "proxmark3";
             rev = "v${version}";
-            hash = "sha256-KlSYbYEdLVsQCbRilqolGewH5ra9QXOHVgYk34aCous=";
+            hash = "sha256-H7oaXx4wAr6CtOyNaMupMC3CHbOEL04FGo7vPqfuJlM=";
           };
 
           patches = [];

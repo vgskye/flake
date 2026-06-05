@@ -124,6 +124,7 @@
       Group = "acme";
       ExecStart = "${pkg}/bin/iroh-relay -c ${./relay-config.toml}";
       Restart = "on-failure";
+      LimitNOFILE = "infinity";
     };
   };
 
