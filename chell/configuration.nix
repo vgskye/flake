@@ -174,10 +174,9 @@ in {
   # };
 
   hardware.onlykey.enable = true;
-  services.udev.packages = [pkgs.yubikey-personalization pkgs.openrgb pkgs.logitech-udev-rules pkgs.nrf-udev pkgs.picotool];
+  services.udev.packages = [pkgs.yubikey-personalization pkgs.openrgb pkgs.logitech-udev-rules pkgs.nrf-udev pkgs.picotool pkgs.android-tools pkgs.libsigrok-sipeed];
   services.pcscd.enable = true;
   hardware.keyboard.zsa.enable = true;
-  programs.adb.enable = true;
   services.udev.extraRules = ''
     ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3744", MODE="0666", GROUP="plugdev", TAG+="uaccess"
     ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", MODE="0666", GROUP="plugdev", TAG+="uaccess"
@@ -410,7 +409,7 @@ in {
   services.printing.enable = true;
   services.printing.drivers = [
     pkgs.epson-201401w
-    (pkgs.callPackage ./sewoo.nix {})
+    # (pkgs.callPackage ./sewoo.nix {})
   ];
 
   hardware.sane.enable = true;
@@ -512,7 +511,7 @@ in {
     catppuccin-cursors.macchiatoDark
     # ((pkgs.callPackage ../alvr.nix) { })
     # ((pkgs.callPackage ../sddm-chili.nix) {})
-    sddm-chili-theme
+    # sddm-chili-theme
     rocmPackages.clr
   ];
 
@@ -540,7 +539,7 @@ in {
   # security.pam.u2f.enable = true;
   # security.pam.u2f.control = "required";
 
-  security.pki.certificateFiles = [ ./dn42.crt ];
+  # security.pki.certificateFiles = [ ./dn42.crt ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

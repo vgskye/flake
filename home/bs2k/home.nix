@@ -13,6 +13,7 @@
   fenix,
   firefox,
   nixpkgs-xr,
+  moonlight,
   ...
 }: let
   override-icon = pkg: oldPrefix: newPrefix:
@@ -464,55 +465,55 @@ in {
                 ++ lib.optionals (!cudaSupport && !rocmSupport) lib.platforms.darwin;
             };
           });
-          torchRocmBin = (torch-bin.overrideAttrs (old: {
-            src = pkgs.fetchurl {
-              name = "torch-2.9.1+rocm6.4-cp313-cp313-manylinux_2_28_x86_64.whl";
-              url = "https://download-r2.pytorch.org/whl/rocm6.4/torch-2.9.1%2Brocm6.4-cp313-cp313-manylinux_2_28_x86_64.whl";
-              hash = "sha256-Gawe9ds/luARctD2K8BDjG06hmc1jDoAIE+7tE2nQik=";
-            };
-            buildInputs = with pkgs.rocmPackages; [
-              rocm-core
-              clr
-              rccl
-              miopen
-              aotriton
-              rocrand
-              rocblas
-              rocsparse
-              hipsparse
-              rocthrust
-              rocprim
-              hipcub
-              roctracer
-              rocfft
-              rocsolver
-              hipfft
-              hiprand
-              hipsolver
-              hipblas-common
-              hipblas
-              hipblaslt
-              rocminfo
-              rocm-comgr
-              rocm-device-libs
-              rocm-runtime
-              rocm-smi
-              clr.icd
-              hipify
-            ];
-            extraRunpaths = [];
-          })).override {
-            triton = triton-no-cuda;
-          };
+          # torchRocmBin = (torch-bin.overrideAttrs (old: {
+          #   src = pkgs.fetchurl {
+          #     name = "torch-2.9.1+rocm6.4-cp313-cp313-manylinux_2_28_x86_64.whl";
+          #     url = "https://download-r2.pytorch.org/whl/rocm6.4/torch-2.9.1%2Brocm6.4-cp313-cp313-manylinux_2_28_x86_64.whl";
+          #     hash = "sha256-Gawe9ds/luARctD2K8BDjG06hmc1jDoAIE+7tE2nQik=";
+          #   };
+          #   buildInputs = with pkgs.rocmPackages; [
+          #     rocm-core
+          #     clr
+          #     rccl
+          #     miopen
+          #     aotriton
+          #     rocrand
+          #     rocblas
+          #     rocsparse
+          #     hipsparse
+          #     rocthrust
+          #     rocprim
+          #     hipcub
+          #     roctracer
+          #     rocfft
+          #     rocsolver
+          #     hipfft
+          #     hiprand
+          #     hipsolver
+          #     hipblas-common
+          #     hipblas
+          #     hipblaslt
+          #     rocminfo
+          #     rocm-comgr
+          #     rocm-device-libs
+          #     rocm-runtime
+          #     rocm-smi
+          #     clr.icd
+          #     hipify
+          #   ];
+          #   extraRunpaths = [];
+          # })).override {
+          #   triton = triton-no-cuda;
+          # };
         in
         [
           # sounddevice
           numpy
           scipy
           (transformers.override {
-            torch = torchRocmBin;
+            torch = torchWithRocm;
           })
-          torchRocmBin
+          torchWithRocm
           # (torchvision.override {
           #   torch = torchRocmBin;
           # })
@@ -634,7 +635,7 @@ in {
 
           chromadb
           (accelerate.override {
-            torch = torchRocmBin;
+            torch = torchWithRocm;
           })
           ollama
           pyacoustid
@@ -669,7 +670,7 @@ in {
       pkgs.llvmPackages_latest.lld
       pkgs.llvmPackages_latest.clang
       pkgs.bintools
-      pkgs.clang-tools
+      # pkgs.clang-tools
 
       pkgs.any-nix-shell
       # pkgs.prismlauncher-alt
@@ -745,7 +746,7 @@ in {
 
       pkgs.vesktop
       (pkgs.discord.override {
-        moonlight = "/home/bs2k/moonlight/dist";
+        moonlight = moonlight.packages.${pkgs.system}.moonlight;
         withMoonlight = true;
       })
 
@@ -757,11 +758,7 @@ in {
 
       pkgs.aseprite
 
-      (pkgs.craftos-pc.overrideAttrs (old: {
-        buildInputs = old.buildInputs ++ [
-          pkgs.xorg.libX11
-        ];
-      }))
+      pkgs.craftos-pc
       # packwiz.packages.${pkgs.system}.default
 
       pkgs.agenix
@@ -814,13 +811,18 @@ in {
       pkgs.libqalculate
       (pkgs.callPackage ./gradience.nix {})
       pkgs.adw-gtk3
-      (pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {})
+      # (pkgs.callPackage ./space-station-14-launcher/space-station-14-launcher.nix {})
       pkgs.nixd
       pkgs.gambit
       pkgs.picard
       pkgs.quodlibet-full
       pkgsUnstable.halloy
       pkgs.obsidian
+      ((pkgs.pulseview.override {
+        libsigrok = pkgs.libsigrok-sipeed;
+      }).overrideAttrs (old: {
+        patches = [./pulseview.patch];
+      }))
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -830,7 +832,10 @@ in {
         pkgs.slimevr-server # .mitmCache.updateScript
         pkgs.galaxy-buds-client
         pkgs.lutris
-        pkgs.blender-hip
+        (pkgs.blender.override {
+          cudaSupport = false;
+          rocmSupport = true;
+        })
         pkgs.arduino
         pkgs.love
         pkgs.jetbrains.idea
@@ -838,7 +843,7 @@ in {
         pkgs.ollama-rocm
         pkgs.nrfconnect
 
-        pkgs.wlx-overlay-s
+        pkgs.wayvr
 
         pkgs.gamescope
         pkgs.slack
@@ -1152,28 +1157,27 @@ in {
 
   catppuccin.starship.enable = true;
 
-  programs.vscode = {
+  programs.vscodium = {
     enable = true;
-    package = pkgs.vscodium;
     mutableExtensionsDir = true;
-    userSettings = {
-      "update.mode" = "none";
-      "rust-analyzer.check.command" = "clippy";
-      "nix.enableLanguageServer" = true;
-      "nix.serverPath" = "${pkgs.nil}/bin/nil";
-      "editor.fontFamily" = "\"Monaspace Neon\", \"Symbols Nerd Font\", \"Twitter Color Emoji\"";
-      "editor.fontLigatures" = "'calt', 'ss03', 'liga'";
-      "yaml.schemaStore.enable" = true;
-      "redhat.telemetry.enabled" = false;
-      "svelte.enable-ts-plugin" = true;
-      "workbench.colorTheme" = "Catppuccin ${mkUpper config.catppuccin.flavor}";
-      "catppuccin.accentColor" = config.catppuccin.accent;
-      "telemetry.telemetryLevel" = "off";
-      "terminal.integrated.minimumContrastRatio" = 1;
-      "editor.semanticHighlighting.enabled" = true;
-      "godot_tools.editor_path" = "${pkgs.godot_4}/bin/godot4";
-      "raspberry-pi-pico.python3Path" = "/home/bs2k/.nix-profile/bin/python";
-    };
+    # userSettings = {
+    #   "update.mode" = "none";
+    #   "rust-analyzer.check.command" = "clippy";
+    #   "nix.enableLanguageServer" = true;
+    #   "nix.serverPath" = "${pkgs.nil}/bin/nil";
+    #   "editor.fontFamily" = "\"Monaspace Neon\", \"Symbols Nerd Font\", \"Twitter Color Emoji\"";
+    #   "editor.fontLigatures" = "'calt', 'ss03', 'liga'";
+    #   "yaml.schemaStore.enable" = true;
+    #   "redhat.telemetry.enabled" = false;
+    #   "svelte.enable-ts-plugin" = true;
+    #   "workbench.colorTheme" = "Catppuccin ${mkUpper config.catppuccin.flavor}";
+    #   "catppuccin.accentColor" = config.catppuccin.accent;
+    #   "telemetry.telemetryLevel" = "off";
+    #   "terminal.integrated.minimumContrastRatio" = 1;
+    #   "editor.semanticHighlighting.enabled" = true;
+    #   "godot_tools.editor_path" = "${pkgs.godot_4}/bin/godot4";
+    #   "raspberry-pi-pico.python3Path" = "/home/bs2k/.nix-profile/bin/python";
+    # };
     # extensions = with pkgs.vscode-extensions;
     #   [
     #     astro-build.astro-vscode
@@ -1348,6 +1352,7 @@ in {
   programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.lib.mkDefault firefox.packages.${pkgs.system}.firefox-nightly-bin;
+  programs.firefox.configPath = ".mozilla/firefox";
 
   # programs.firefox.package = let
   #   unwrapped = pkgs.firefox-unwrapped.overrideAttrs (old: {

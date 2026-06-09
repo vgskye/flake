@@ -1,7 +1,7 @@
 {
   description = "my nix configs";
   inputs = {
-    nixpkgs-unwrapped = {url = "github:NixOS/nixpkgs/nixos-25.11";};
+    nixpkgs-unwrapped = {url = "github:NixOS/nixpkgs/nixos-26.05";};
     nixpkgs = {
       url = "github:numtide/nixpkgs-unfree";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
@@ -13,7 +13,7 @@
     };
     impermanence = {url = "github:nix-community/impermanence";};
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     rust-overlay = {
@@ -43,7 +43,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin = {
-      url = "github:catppuccin/nix/release-25.11";
+      url = "github:catppuccin/nix/release-26.05";
     };
     quiclime = {
       url = "github:vgskye/e4mc-quiclime/glory-to-arstotzka";
@@ -98,6 +98,12 @@
       url = "github:nix-community/nixpkgs-xr";
       inputs.nixpkgs.follows = "nixpkgs-unwrapped";
     };
+    moonlight = {
+      # This corresponds to the nightly releases of moonlight.
+      # For a stable release, add the version to the end of the URL: "github:moonlight-mod/moonlight/vX.Y.Z"
+      url = "github:moonlight-mod/moonlight";
+      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+    };
   };
   outputs = {
     self,
@@ -128,6 +134,7 @@
     firefox,
     nix-fast-build,
     nixpkgs-xr,
+    moonlight,
   }: let
     tailscalepkgmodule = {pkgsUnstable, ...}: {
       services.tailscale.package = pkgsUnstable.tailscale;
@@ -407,6 +414,7 @@
               fenix
               firefox
               nixpkgs-xr
+              moonlight
               ;
             pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
             pkgsAmd64 = nixpkgs-unstable.legacyPackages.x86_64-linux;
