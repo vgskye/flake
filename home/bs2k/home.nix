@@ -67,7 +67,7 @@ in {
     (self: super: {
       # monaspace = pkgs.callPackage (import ./monaspace/package.nix) {};
 
-      kicad = override-exec pkgsUnstable.kicad "" "GDK_BACKEND=x11 ";
+      kicad = override-exec super.kicad "" "GDK_BACKEND=x11 ";
       prusa-slicer = override-exec super.prusa-slicer "" "GDK_BACKEND=x11 ";
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
@@ -201,6 +201,31 @@ in {
         headless = true;
       };
       nrfconnect = self.callPackage ./nrfconnect.nix {};
+
+      opensc = super.opensc.overrideAttrs (old: {
+        src = pkgs.fetchFromGitHub {
+          owner = "haijie-ftsafe";
+          repo = "OpenSC_Self";
+          rev = "52e312aa47c91536884226bd4f904d7f70452692";
+          hash = "sha256-8rcLTJrSOZ5bcQybVPZSL/8yrSKIAfiy0kouxtCrY1c=";
+        };
+        # src = pkgs.fetchFromGitHub {
+        #   owner = "OpenSC";
+        #   repo = "OpenSC";
+        #   rev = "758c0bfae1cca6a5a4d96896746ae50c70db9b9d";
+        #   hash = "sha256-lLcyi2I3yCmRiVNTuVyyQ54mPp7OPWC5IBEZcywdXls=";
+        # };
+        patches = [
+          # (pkgs.fetchpatch {
+          #   url = "https://patch-diff.githubusercontent.com/raw/OpenSC/OpenSC/pull/3203.patch";
+          #   hash = "sha256-XMHygRGBqZaaZZ2j/O0W9VUv/jtszqNna2Bnh/QOCaE=";
+          # })
+          # (pkgs.fetchpatch {
+          #   url = "https://patch-diff.githubusercontent.com/raw/OpenSC/OpenSC/pull/3081.patch";
+          #   hash = "sha256-HpP865fzF80bvdLz1Z5uvhy6t2y1+KGhxiVAecp910s=";
+          # })
+        ];
+      });
     })
     (self: super: let
       scale-electron = pkg: bin:
@@ -230,7 +255,7 @@ in {
   # };
 
   services.spotifyd = {
-    enable = true;
+    enable = false;
     package = pkgs.spotifyd.override {
       withMpris = true;
       # withKeyring = true;
@@ -256,6 +281,7 @@ in {
     QT_QUICK_CONTROLS_STYLE = "org.kde.desktop";
     __RA_LSP_SERVER_DEBUG = "/home/bs2k/.nix-profile/bin/rust-analyzer";
     YKCS11_PATH = "${pkgs.yubico-piv-tool}/lib/libykcs11.so";
+    OPENSC_PKCS11_PATH = "${pkgs.opensc}/lib/opensc-pkcs11.so";
     # CHROME_EXECUTABLE = "${pkgs.google-chrome}/bin/google-chrome-stable";
   };
 
@@ -268,7 +294,7 @@ in {
         buildInputs = [pkgs.makeWrapper];
         postBuild = ''
           wrapProgram $out/bin/ssh-agent \
-            --append-flags "-P '${pkgs.yubico-piv-tool}/lib/libykcs11.so*'"
+            --append-flags "-P '${pkgs.yubico-piv-tool}/lib/libykcs11.so*,${pkgs.opensc}/lib/opensc-pkcs11.so'"
         '';
       };
   };
@@ -298,6 +324,46 @@ in {
       ] ++ (map (x: pkgs.fenix.stable.${x}) structured.extensions)
         ++ (map (x: pkgs.fenix.targets.${x}.stable.rust-std) structured.targets)
     );
+    minecraftWrap = pkg:
+      let
+        runtimeLibs = with pkgs; [
+          (lib.getLib stdenv.cc.cc)
+          ## native versions
+          glfw3-minecraft
+          openal
+
+          ## openal
+          alsa-lib
+          libjack2
+          libpulseaudio
+          pipewire
+
+          ## glfw
+          libGL
+          libx11
+          libxcursor
+          libxext
+          libxrandr
+          libxxf86vm
+
+          udev # oshi
+
+          vulkan-loader # VulkanMod's lwjgl
+        ];
+      in
+        pkgs.symlinkJoin {
+          name = pkg.name;
+          paths = [pkg];
+          buildInputs = [pkgs.makeWrapper];
+          postBuild = ''
+            for file in $out/bin/*; do
+                if [ -f "$file" ]; then
+                  wrapProgram $file \
+                    --set LD_LIBRARY_PATH "${pkgs.addDriverRunpath.driverLink}/lib:${pkgs.lib.makeLibraryPath runtimeLibs}"
+                fi
+            done
+          '';
+        };
   in
     [
       # pkgs.nerdfonts
@@ -387,7 +453,7 @@ in {
       pkgs.kdePackages.kdenlive
       pkgs.wget
 
-      (pkgsUnstable.catppuccin-kde.override {
+      (pkgs.catppuccin-kde.override {
         flavour = [config.catppuccin.flavor];
         accents = [config.catppuccin.accent];
         winDecStyles = ["classic"];
@@ -639,6 +705,7 @@ in {
           })
           ollama
           pyacoustid
+          z3-solver
         ] else [])))
 
       (fenixStructured {
@@ -670,6 +737,7 @@ in {
       pkgs.llvmPackages_latest.lld
       pkgs.llvmPackages_latest.clang
       pkgs.bintools
+      pkgs.llvmPackages_latest.clang-tools
       # pkgs.clang-tools
 
       pkgs.any-nix-shell
@@ -737,7 +805,7 @@ in {
       pkgs.appimage-run
       pkgs.virt-manager
       # pkgs.flutter
-      pkgs.jdk
+      (minecraftWrap pkgs.jdk25)
 
       pkgs.cutechess
       pkgs.stockfish
@@ -823,6 +891,8 @@ in {
       }).overrideAttrs (old: {
         patches = [./pulseview.patch];
       }))
+      pkgs.opensc
+      pkgs.yubico-piv-tool
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -838,7 +908,7 @@ in {
         })
         pkgs.arduino
         pkgs.love
-        pkgs.jetbrains.idea
+        (minecraftWrap pkgs.jetbrains.idea)
         pkgs.jetbrains.rider
         pkgs.ollama-rocm
         pkgs.nrfconnect
@@ -1351,7 +1421,7 @@ in {
   programs.go.enable = true;
   programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
-  programs.firefox.package = pkgs.lib.mkDefault firefox.packages.${pkgs.system}.firefox-nightly-bin;
+  programs.firefox.package = pkgs.firefox-devedition;
   programs.firefox.configPath = ".mozilla/firefox";
 
   # programs.firefox.package = let

@@ -379,6 +379,7 @@ in {
   hardware.graphics.extraPackages = with pkgs; [
     rocmPackages.clr.icd
   ];
+  hardware.amdgpu.opencl.enable = true;
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
     "L+ ${channelPath} - - - - ${pkgs.path}"
@@ -517,12 +518,7 @@ in {
 
   programs.dconf.enable = true;
 
-  services.displayManager.sddm = {
-    enable = true;
-    theme = "breeze";
-    settings.Theme.CursorTheme = "Catppuccin-Macchiato-Dark-Cursors";
-    wayland.enable = true;
-  };
+  services.displayManager.plasma-login-manager.enable = true;
 
   # boot.plymouth = {
   #   enable = true;
