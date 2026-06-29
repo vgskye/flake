@@ -71,12 +71,12 @@ in {
       prusa-slicer = override-exec super.prusa-slicer "" "GDK_BACKEND=x11 ";
 
       # chessx = override-exec pkgsUnstable.chessx "" "QT_QPA_PLATFORM=xcb ";
-      vesktop = super.vesktop.override {
-        withSystemVencord = false;
-        # vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
-        # gcc13Stdenv = pkgsUnstable.gcc13Stdenv;
-        # electron = self.electron_27;
-      };
+      # vesktop = super.vesktop.override {
+      #   withSystemVencord = false;
+      #   # vencord = pkgs.callPackage (import ./owo-vencord/package.nix) {};
+      #   # gcc13Stdenv = pkgsUnstable.gcc13Stdenv;
+      #   # electron = self.electron_27;
+      # };
 
       # openai-whisper = pkgsUnstable.python310Packages.openai-whisper.override {
       #   torch = pkgsUnstable.python310Packages.torch-bin;
@@ -400,7 +400,7 @@ in {
       # pkgs.tiled
       # pkgs.thefuck
       # pkgs.deploy-rs.deploy-rs
-      pkgs.spotify-qt
+      # pkgs.spotify-qt
       # pkgs.spotify-tui
       # pkgs.rnix-lsp
       # pkgs.fusee-launcher
@@ -700,9 +700,9 @@ in {
           # torchWithCuda
 
           chromadb
-          (accelerate.override {
-            torch = torchWithRocm;
-          })
+          # (accelerate.override {
+          #   torch = torchWithRocm;
+          # })
           ollama
           pyacoustid
           z3-solver
@@ -805,14 +805,14 @@ in {
       pkgs.appimage-run
       pkgs.virt-manager
       # pkgs.flutter
-      (minecraftWrap pkgs.jdk25)
+      pkgs.jdk25
 
       pkgs.cutechess
       pkgs.stockfish
       pkgs.chessx
       # pkgs.xboard
 
-      pkgs.vesktop
+      # pkgs.vesktop
       (pkgs.discord.override {
         moonlight = moonlight.packages.${pkgs.system}.moonlight;
         withMoonlight = true;
@@ -868,7 +868,7 @@ in {
       pkgs.klipper-estimator
       pkgs.libnotify
       pkgs.wl-clipboard-rs
-      pkgs.signal-desktop
+      pkgsUnstable.signal-desktop
       pkgs.ghostty
       pkgs.ghc
       pkgs.haskell-language-server
@@ -898,9 +898,9 @@ in {
       if pkgs.system == "x86_64-linux"
       then [
         pkgs.kicad
-        pkgs.slimevr
-        pkgs.slimevr-server # .mitmCache.updateScript
-        pkgs.galaxy-buds-client
+        # pkgs.slimevr
+        # pkgs.slimevr-server # .mitmCache.updateScript
+        # pkgs.galaxy-buds-client
         pkgs.lutris
         (pkgs.blender.override {
           cudaSupport = false;
@@ -913,7 +913,7 @@ in {
         pkgs.ollama-rocm
         pkgs.nrfconnect
 
-        pkgs.wayvr
+        # pkgs.wayvr
 
         pkgs.gamescope
         pkgs.slack
@@ -934,8 +934,8 @@ in {
         })).override {
           withGeneric = true;
         })
-        pkgs.lsfg-vk
-        pkgs.lsfg-vk-ui
+        # pkgs.lsfg-vk
+        # pkgs.lsfg-vk-ui
       ]
       else [
         pkgs.fuzzel
@@ -961,7 +961,7 @@ in {
         # .run
         pkgs.krita
         # pkgsUnstable.jetbrains.idea-ultimate
-        pkgs.spot
+        # pkgs.spot
       ]
     );
   # xdg.configFile."openvr/openvrpaths.vrpath".text = if pkgs.system == "x86_64-linux"
@@ -1421,7 +1421,7 @@ in {
   programs.go.enable = true;
   programs.go.package = pkgsUnstable.go;
   programs.firefox.enable = true;
-  programs.firefox.package = pkgs.firefox-devedition;
+  # programs.firefox.package = pkgs.firefox-devedition;
   programs.firefox.configPath = ".mozilla/firefox";
 
   # programs.firefox.package = let
