@@ -569,7 +569,7 @@ in {
     "riscv64-linux"
   ];
 
-  services.wivrn.enable = true;
+  # services.wivrn.enable = true;
   # services.wivrn.package = pkgs.wivrn.overrideAttrs (old: {
   #   src = pkgs.applyPatches {
   #     src = old.src;

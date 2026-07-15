@@ -893,6 +893,7 @@ in {
       }))
       pkgs.opensc
       pkgs.yubico-piv-tool
+      pkgs.renderdoc
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
