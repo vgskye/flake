@@ -1,15 +1,11 @@
 {
   description = "my nix configs";
   inputs = {
-    nixpkgs-unwrapped = {url = "github:NixOS/nixpkgs/nixos-26.05";};
     nixpkgs = {
-      url = "github:numtide/nixpkgs-unfree";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      url = "github:NixOS/nixpkgs/nixos-26.05";
     };
-    nixpkgs-unstable-unwrapped = {url = "github:NixOS/nixpkgs/nixos-unstable";};
     nixpkgs-unstable = {
-      url = "github:numtide/nixpkgs-unfree";
-      inputs.nixpkgs.follows = "nixpkgs-unstable-unwrapped";
+      url = "github:NixOS/nixpkgs/nixos-unstable";
     };
     impermanence = {url = "github:nix-community/impermanence";};
     home-manager = {
@@ -47,24 +43,24 @@
     };
     quiclime = {
       url = "github:vgskye/e4mc-quiclime/glory-to-arstotzka";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     babysitter = {
       url = "github:vgskye/babysitter";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.2";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };
     nixinate = {
       url = "github:matthewcroughan/nixinate";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     packwiz = {
       url = "github:packwiz/packwiz";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin-vsc = {
       url = "github:catppuccin/vscode";
@@ -88,28 +84,26 @@
     };
     firefox = {
       url = "github:nix-community/flake-firefox-nightly";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-fast-build = {
       url = "github:Mic92/nix-fast-build";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs-xr = {
       url = "github:nix-community/nixpkgs-xr";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     moonlight = {
       # This corresponds to the nightly releases of moonlight.
       # For a stable release, add the version to the end of the URL: "github:moonlight-mod/moonlight/vX.Y.Z"
       url = "github:moonlight-mod/moonlight";
-      inputs.nixpkgs.follows = "nixpkgs-unwrapped";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs = {
     self,
-    nixpkgs-unwrapped,
     nixpkgs,
-    nixpkgs-unstable-unwrapped,
     nixpkgs-unstable,
     impermanence,
     home-manager,
@@ -227,9 +221,9 @@
           (nixinateModule "remote")
           {
             nix.registry = {
-              n.flake = nixpkgs-unwrapped;
-              nS.flake = nixpkgs-unwrapped;
-              nU.flake = nixpkgs-unstable-unwrapped;
+              n.flake = nixpkgs;
+              nS.flake = nixpkgs;
+              nU.flake = nixpkgs-unstable;
             };
           }
         ];
@@ -258,11 +252,11 @@
           {
             nixpkgs.overlays = [ nixpkgs-xr.overlays.default ];
             nix.registry = {
-              # nixpkgs.flake = nixpkgs-unwrapped;
-              # nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
-              n.flake = nixpkgs-unwrapped;
-              nS.flake = nixpkgs-unwrapped;
-              nU.flake = nixpkgs-unstable-unwrapped;
+              # nixpkgs.flake = nixpkgs;
+              # nixpkgsUnstable.flake = nixpkgs-unstable;
+              n.flake = nixpkgs;
+              nS.flake = nixpkgs;
+              nU.flake = nixpkgs-unstable;
             };
           }
         ];
@@ -280,11 +274,11 @@
           lanzaboote.nixosModules.lanzaboote
           {
             nix.registry = {
-              # nixpkgs.flake = nixpkgs-unwrapped;
-              # nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
-              n.flake = nixpkgs-unwrapped;
-              nS.flake = nixpkgs-unwrapped;
-              nU.flake = nixpkgs-unstable-unwrapped;
+              # nixpkgs.flake = nixpkgs;
+              # nixpkgsUnstable.flake = nixpkgs-unstable;
+              n.flake = nixpkgs;
+              nS.flake = nixpkgs;
+              nU.flake = nixpkgs-unstable;
             };
           }
         ];
@@ -375,11 +369,11 @@
           niri.nixosModules.niri
           {
             nix.registry = {
-              # nixpkgs.flake = nixpkgs-unwrapped;
-              # nixpkgsUnstable.flake = nixpkgs-unstable-unwrapped;
-              n.flake = nixpkgs-unwrapped;
-              nS.flake = nixpkgs-unwrapped;
-              nU.flake = nixpkgs-unstable-unwrapped;
+              # nixpkgs.flake = nixpkgs;
+              # nixpkgsUnstable.flake = nixpkgs-unstable;
+              n.flake = nixpkgs;
+              nS.flake = nixpkgs;
+              nU.flake = nixpkgs-unstable;
             };
           }
         ];

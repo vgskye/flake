@@ -3,7 +3,7 @@
   nix = {
     settings = {
       substituters = [
-        "https://skyettic.fly.dev/fly-skye"
+        # "https://skyettic.fly.dev/fly-skye"
         "https://new-attic.is-quite.gay/skye"
       ];
       trusted-public-keys = [

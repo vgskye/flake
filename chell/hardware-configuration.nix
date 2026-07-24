@@ -15,7 +15,7 @@
   boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = [];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.initrd.luks.devices.luksroot = {
     device = "/dev/disk/by-uuid/930119d3-018d-456f-93aa-9dfc2f1aa2b3";

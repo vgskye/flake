@@ -163,10 +163,10 @@ in {
       #     nativeBuildInputs = [cmake libsForQt5.qt5.wrapQtAppsHook];
       #   };
 
-      stockfish =
-        if self.system == "x86_64-linux"
-        then self.callPackage (import ./stockfish.nix) {}
-        else super.stockfish;
+      # stockfish =
+      #   if self.system == "x86_64-linux"
+      #   then self.callPackage (import ./stockfish.nix) {}
+      #   else super.stockfish;
 
 
       # prusa-slicer = super.prusa-slicer.overrideAttrs (old: rec {
@@ -580,9 +580,9 @@ in {
             torch = torchWithRocm;
           })
           torchWithRocm
-          # (torchvision.override {
-          #   torch = torchRocmBin;
-          # })
+          (torchvision.override {
+            torch = torchWithRocm;
+          })
           # (timm.override {
           #   torch = torchRocmBin;
           #   torchvision = torchvision.override {

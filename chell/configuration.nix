@@ -130,12 +130,12 @@ in {
   # };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.extraModulePackages = [
-    (pkgs.callPackage (import ../uwurandom.nix) {
-      kernel = config.boot.kernelPackages.kernel;
-    })
-  ];
-  boot.kernelModules = ["uwurandom"];
+  # boot.extraModulePackages = [
+  #   (pkgs.callPackage (import ../uwurandom.nix) {
+  #     kernel = config.boot.kernelPackages.kernel;
+  #   })
+  # ];
+  # boot.kernelModules = ["uwurandom"];
   boot.kernelParams = [ "drm.panic_screen=qr_code" ];
   # boot.kernelParams = [ "vfio-pci.ids=10de:1f06,10de:10f9,10de:1ada,10de:1adb" ];
   # boot.initrd.kernelModules = [ "vfio-pci" ];
@@ -380,8 +380,21 @@ in {
     rocmPackages.clr.icd
   ];
   hardware.amdgpu.opencl.enable = true;
-  systemd.tmpfiles.rules = [
-    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
+  hardware.amdgpu.zluda.enable = true;
+  hardware.amdgpu.zluda.package = pkgs.callPackage ./zluda.nix {};
+  systemd.tmpfiles.rules =
+  let
+    rocmEnv = pkgs.symlinkJoin {
+      name = "rocm-combined";
+      paths = with pkgs.rocmPackages; [
+        rocblas
+        hipblas
+        clr
+      ];
+    };
+  in
+  [
+    "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
     "L+ ${channelPath} - - - - ${pkgs.path}"
   ];
   i18n.inputMethod = {
