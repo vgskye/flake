@@ -40,7 +40,7 @@
         extraDomainNames = ["*.${region}.e4mc.link" "broker.e4mc.link"];
         dnsProvider = "bunny";
         dnsResolver = "1.1.1.1:53";
-        credentialsFile = config.age.secrets.e4mc-cf-key.path;
+        environmentFile = config.age.secrets.e4mc-cf-key.path;
         postRun = ''
           ${pkgs.curl}/bin/curl -X POST http://127.0.0.1:25585/reload-certs
         '';
