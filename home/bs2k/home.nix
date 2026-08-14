@@ -708,26 +708,27 @@ in {
           z3-solver
         ] else [])))
 
-      (fenixStructured {
-        extensions = ["rust-src" "rust-analyzer" "llvm-tools-preview"];
-        targets = [
-          "wasm32-unknown-unknown"
-          "wasm32-wasip1"
-          "wasm32-wasip2"
-          "wasm32v1-none"
-          "thumbv7em-none-eabihf"
-          # "wasm32-unknown-emscripten"
-          # "x86_64-unknown-linux-musl"
-          "riscv32i-unknown-none-elf"
+      # (fenixStructured {
+      #   extensions = ["rust-src" "rust-analyzer" "llvm-tools-preview"];
+      #   targets = [
+      #     "wasm32-unknown-unknown"
+      #     "wasm32-wasip1"
+      #     "wasm32-wasip2"
+      #     "wasm32v1-none"
+      #     "thumbv7em-none-eabihf"
+      #     # "wasm32-unknown-emscripten"
+      #     # "x86_64-unknown-linux-musl"
+      #     "riscv32i-unknown-none-elf"
 
-          "thumbv7em-none-eabi"
-          "thumbv7m-none-eabi"
-          "thumbv6m-none-eabi"
-          "thumbv8m.main-none-eabihf"
-          "riscv32imac-unknown-none-elf"
-          "wasm32-unknown-unknown"
-        ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-uefi" "x86_64-unknown-linux-musl" "x86_64-pc-windows-msvc" "aarch64-unknown-linux-gnu" "arm-unknown-linux-musleabihf" "arm-unknown-linux-gnueabihf"] else []);
-      })
+      #     "thumbv7em-none-eabi"
+      #     "thumbv7m-none-eabi"
+      #     "thumbv6m-none-eabi"
+      #     "thumbv8m.main-none-eabihf"
+      #     "riscv32imac-unknown-none-elf"
+      #     "wasm32-unknown-unknown"
+      #   ] ++ (if pkgs.system == "x86_64-linux" then ["x86_64-unknown-uefi" "x86_64-unknown-linux-musl" "x86_64-pc-windows-msvc" "aarch64-unknown-linux-gnu" "arm-unknown-linux-musleabihf" "arm-unknown-linux-gnueabihf"] else []);
+      # })
+      pkgs.rust-analyzer
 
       pkgs.fastly
 
@@ -1094,6 +1095,7 @@ in {
         # export LG_WEBOS_TV_SDK_HOME=/home/bs2k/webOS_TV_SDK/
         # export WEBOS_CLI_TV="$LG_WEBOS_TV_SDK_HOME/CLI/bin"
         fish_add_path ~/.yarn/bin ~/.cargo/bin ~/.fly/bin/ ~/.local/bin # $WEBOS_CLI_TV
+        source /home/bs2k/export-esp.sh
       ''
       + builtins.readFile ./theme.fish;
     functions = {
