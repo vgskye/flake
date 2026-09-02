@@ -865,7 +865,7 @@ in {
           jdk25
         ];
       })
-      pkgs.prusa-slicer
+      # pkgs.prusa-slicer
       pkgs.klipper-estimator
       pkgs.libnotify
       pkgs.wl-clipboard-rs

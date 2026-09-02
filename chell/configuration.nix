@@ -23,7 +23,7 @@ in {
   # };
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
-    substituters = lib.mkBefore ["https://niko.cat-snares.ts.net:9443/skye"];
+    # substituters = lib.mkBefore ["https://niko.cat-snares.ts.net:9443/skye"];
     # trusted-public-keys = ["cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="];
   };
 
@@ -159,7 +159,7 @@ in {
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
-  time.timeZone = "Asia/Seoul";
+  time.timeZone = "Europe/Amsterdam";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
