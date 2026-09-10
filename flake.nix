@@ -410,7 +410,10 @@
               nixpkgs-xr
               moonlight
               ;
-            pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+            pkgsUnstable = import nixpkgs-unstable {
+              inherit system;
+              allowUnfree = true;
+            };
             pkgsAmd64 = nixpkgs-unstable.legacyPackages.x86_64-linux;
           };
 

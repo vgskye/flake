@@ -583,6 +583,9 @@ in {
           (torchvision.override {
             torch = torchWithRocm;
           })
+          (torch-geometric.override {
+            torch = torchWithRocm;
+          })
           # (timm.override {
           #   torch = torchRocmBin;
           #   torchvision = torchvision.override {
@@ -895,6 +898,7 @@ in {
       pkgs.opensc
       pkgs.yubico-piv-tool
       pkgs.renderdoc
+      pkgs.binaryninja-free
     ]
     ++ (
       if pkgs.system == "x86_64-linux"

@@ -381,7 +381,7 @@ in {
   ];
   hardware.amdgpu.opencl.enable = true;
   hardware.amdgpu.zluda.enable = true;
-  hardware.amdgpu.zluda.package = pkgs.callPackage ./zluda.nix {};
+  # hardware.amdgpu.zluda.package = pkgs.callPackage ./zluda.nix {};
   systemd.tmpfiles.rules =
   let
     rocmEnv = pkgs.symlinkJoin {
