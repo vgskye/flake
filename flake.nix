@@ -2,15 +2,12 @@
   description = "my nix configs";
   inputs = {
     nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-26.05";
-    };
-    nixpkgs-unstable = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
     impermanence = {url = "github:nix-community/impermanence";};
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -18,7 +15,7 @@
     };
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     comma = {
       url = "github:nix-community/comma/v1.2.3";
@@ -39,7 +36,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     catppuccin = {
-      url = "github:catppuccin/nix/release-26.05";
+      url = "github:catppuccin/nix";
     };
     quiclime = {
       url = "github:vgskye/e4mc-quiclime/glory-to-arstotzka";
@@ -50,7 +47,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
+      url = "github:nix-community/lanzaboote/v1.1.0";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };
@@ -75,7 +72,7 @@
     };
     niri = {
       url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs";
     };
     switchblade = {
@@ -104,7 +101,6 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-unstable,
     impermanence,
     home-manager,
     rust-overlay,
@@ -199,7 +195,7 @@
           specialArgs = {
             inherit region;
 
-            pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+            pkgsUnstable = nixpkgs.legacyPackages.${system};
           };
         };
       noInstantiate = system: {
@@ -223,12 +219,12 @@
             nix.registry = {
               n.flake = nixpkgs;
               nS.flake = nixpkgs;
-              nU.flake = nixpkgs-unstable;
+              nU.flake = nixpkgs;
             };
           }
         ];
         specialArgs = {
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          pkgsUnstable = nixpkgs.legacyPackages.${system};
         };
       };
       e4mc-jp = e4mcFn "jp" "linode" "x86_64";
@@ -253,15 +249,15 @@
             nixpkgs.overlays = [ nixpkgs-xr.overlays.default ];
             nix.registry = {
               # nixpkgs.flake = nixpkgs;
-              # nixpkgsUnstable.flake = nixpkgs-unstable;
+              # nixpkgsUnstable.flake = nixpkgs;
               n.flake = nixpkgs;
               nS.flake = nixpkgs;
-              nU.flake = nixpkgs-unstable;
+              nU.flake = nixpkgs;
             };
           }
         ];
         specialArgs = {
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          pkgsUnstable = nixpkgs.legacyPackages.${system};
         };
       };
       florence = nixpkgs.lib.nixosSystem rec {
@@ -275,15 +271,15 @@
           {
             nix.registry = {
               # nixpkgs.flake = nixpkgs;
-              # nixpkgsUnstable.flake = nixpkgs-unstable;
+              # nixpkgsUnstable.flake = nixpkgs;
               n.flake = nixpkgs;
               nS.flake = nixpkgs;
-              nU.flake = nixpkgs-unstable;
+              nU.flake = nixpkgs;
             };
           }
         ];
         specialArgs = {
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          pkgsUnstable = nixpkgs.legacyPackages.${system};
         };
       };
       jenny = nixpkgs.lib.nixosSystem rec {
@@ -309,7 +305,7 @@
           })
         ];
         specialArgs = {
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          pkgsUnstable = nixpkgs.legacyPackages.${system};
         };
       };
       bridget = nixpkgs.lib.nixosSystem rec {
@@ -327,7 +323,7 @@
           (nixinateModule "remote")
         ];
         specialArgs = {
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          pkgsUnstable = nixpkgs.legacyPackages.${system};
         };
       };
       alex = nixpkgs.lib.nixosSystem rec {
@@ -342,7 +338,7 @@
           (nixinateModule "remote")
         ];
         specialArgs = {
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          pkgsUnstable = nixpkgs.legacyPackages.${system};
         };
       };
       allay = nixpkgs.lib.nixosSystem rec {
@@ -356,7 +352,7 @@
           (nixinateModule "remote")
         ];
         specialArgs = {
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          pkgsUnstable = nixpkgs.legacyPackages.${system};
         };
       };
       thorley = nixpkgs.lib.nixosSystem rec {
@@ -370,15 +366,15 @@
           {
             nix.registry = {
               # nixpkgs.flake = nixpkgs;
-              # nixpkgsUnstable.flake = nixpkgs-unstable;
+              # nixpkgsUnstable.flake = nixpkgs;
               n.flake = nixpkgs;
               nS.flake = nixpkgs;
-              nU.flake = nixpkgs-unstable;
+              nU.flake = nixpkgs;
             };
           }
         ];
         specialArgs = {
-          pkgsUnstable = nixpkgs-unstable.legacyPackages.${system};
+          pkgsUnstable = nixpkgs.legacyPackages.${system};
           inherit niri;
         };
       };
@@ -410,11 +406,11 @@
               nixpkgs-xr
               moonlight
               ;
-            pkgsUnstable = import nixpkgs-unstable {
+            pkgsUnstable = import nixpkgs {
               inherit system;
               allowUnfree = true;
             };
-            pkgsAmd64 = nixpkgs-unstable.legacyPackages.x86_64-linux;
+            pkgsAmd64 = nixpkgs.legacyPackages.x86_64-linux;
           };
 
           # Optionally use extraSpecialArgs

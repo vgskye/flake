@@ -83,8 +83,10 @@ in {
       # };
       discord-canary = super.discord-canary.override {nss = pkgs.nss_latest;};
       discord = super.discord.override {
-        nss = pkgs.nss_latest;
+        # nss = pkgs.nss_latest;
         withOpenASAR = true;
+        moonlight = moonlight.packages.${pkgs.system}.moonlight;
+        withMoonlight = true;
       };
 
       # catppuccin-gtk = super.catppuccin-gtk.overrideAttrs (old: {
@@ -576,16 +578,16 @@ in {
           # sounddevice
           numpy
           scipy
-          (transformers.override {
-            torch = torchWithRocm;
-          })
-          torchWithRocm
-          (torchvision.override {
-            torch = torchWithRocm;
-          })
-          (torch-geometric.override {
-            torch = torchWithRocm;
-          })
+          # (transformers.override {
+          #   torch = torchWithRocm;
+          # })
+          # torchWithRocm
+          # (torchvision.override {
+          #   torch = torchWithRocm;
+          # })
+          # (torch-geometric.override {
+          #   torch = torchWithRocm;
+          # })
           # (timm.override {
           #   torch = torchRocmBin;
           #   torchvision = torchvision.override {
@@ -817,10 +819,7 @@ in {
       # pkgs.xboard
 
       # pkgs.vesktop
-      (pkgs.discord.override {
-        moonlight = moonlight.packages.${pkgs.system}.moonlight;
-        withMoonlight = true;
-      })
+      pkgs.discord
 
       pkgs.mold
       # pkgs.cutter
@@ -838,7 +837,7 @@ in {
       pkgs.monaspace
       pkgs.twitter-color-emoji
 
-      pkgs.freecad-wayland
+      # pkgs.freecad-wayland
 
       pkgs.minisign
       pkgs.rage
@@ -898,7 +897,7 @@ in {
       pkgs.opensc
       pkgs.yubico-piv-tool
       pkgs.renderdoc
-      pkgs.binaryninja-free
+      (pkgs.callPackage ./binary-ninja.nix {})
     ]
     ++ (
       if pkgs.system == "x86_64-linux"

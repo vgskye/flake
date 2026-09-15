@@ -8,6 +8,7 @@
   ...
 }: let
   channelPath = "/etc/nix/channels/nixpkgs";
+  septabee = pkgs.callPackage ./septabee.nix {};
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -420,19 +421,19 @@ in {
   # };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
-  services.printing.drivers = [
-    pkgs.epson-201401w
-    # (pkgs.callPackage ./sewoo.nix {})
-  ];
+  # services.printing.enable = true;
+  # services.printing.drivers = [
+  #   pkgs.epson-201401w
+  #   # (pkgs.callPackage ./sewoo.nix {})
+  # ];
 
-  hardware.sane.enable = true;
-  hardware.sane.extraBackends = [
-    pkgs.utsushi
-    pkgs.epsonscan2
-    # pkgs.epkowa
-    pkgs.epson-201401w
-  ];
+  # hardware.sane.enable = true;
+  # hardware.sane.extraBackends = [
+  #   pkgs.utsushi
+  #   pkgs.epsonscan2
+  #   # pkgs.epkowa
+  #   pkgs.epson-201401w
+  # ];
   # hardware.sane.netConf = "100.64.0.5";
 
   programs.noisetorch.enable = true;
@@ -527,6 +528,7 @@ in {
     # ((pkgs.callPackage ../sddm-chili.nix) {})
     # sddm-chili-theme
     rocmPackages.clr
+    septabee
   ];
 
   programs.dconf.enable = true;
@@ -577,10 +579,18 @@ in {
   };
 
   boot.binfmt.emulatedSystems = [
-    "wasm32-wasi"
+    "wasm32-wasip1"
     "aarch64-linux"
     "riscv64-linux"
   ];
+
+  security.wrappers.septabee = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_sys_nice+ep";
+    source = "${septabee}/bin/septabee";
+  };
+
 
   # services.wivrn.enable = true;
   # services.wivrn.package = pkgs.wivrn.overrideAttrs (old: {
