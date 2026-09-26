@@ -18,8 +18,9 @@ let
   e4mc-na = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPEQgot7X7+sQD4CSL09yTTPiiTEjxAsG3q7T5e6hhtu";
   e4mc-sg = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDfOxzhcwZIHdht892nbBd/8tOyMyou9Q264Rygka1XM";
   e4mc-cl = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILnm4m5f4zEP/ku6ZvpQew6uKtxiQajmS5N0cFVGeUOf";
+  e4mc-ca = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMz53WvK2BWZT+7xBgtpTjDT5j8YY9+6wJgXuLGi0mKR";
   alex = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM8JVv9KAmACsDEBXRm1vm7ww4rtu4RQPaddU6JJ2MOo";
-  e4mc = [e4mc-us e4mc-de e4mc-jp e4mc-oc e4mc-eu alex e4mc-ap e4mc-na e4mc-sg e4mc-cl];
+  e4mc = [e4mc-us e4mc-de e4mc-jp e4mc-oc e4mc-eu alex e4mc-ap e4mc-na e4mc-sg e4mc-cl e4mc-ca];
   bridget = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHmdvjJ9WkP1bbL965gt8d+d/RUK8TZLwnk+eEMhbaVZ";
   jenny = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPbyhPgceZnlXr5RIgY0TRplK+5/ZaejMDP2oDYAsab3";
   theworldmachine = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBFseK1tVmweXcvELo/2N4Ws+Pyk6lOi+PTk9382x2u1";

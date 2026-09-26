@@ -17,11 +17,11 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "septabee";
-  version = "B-T11";
+  version = "T15";
 
   src = fetchurl {
-    url = "https://septabee.nekoweb.org/important_stuff/SEPTABEE_DOWNLOADS/version_B/septabee_linux_B_T11_offline.7z";
-    hash = "sha256-NYbHt7KjgXaosV1CLd1nI76gYpWTTE0NY2stCOTLHdM=";
+    url = "https://septabee.nekoweb.org/important_stuff/SEPTABEE_DOWNLOADS/version_B/septabee_linux_B_${finalAttrs.version}_offline.7z";
+    hash = "sha256-A+/zGQutL22Ed+GIaDkCsyJ3M1028/Azk7U/VRWhtOQ=";
   };
 
   icon = fetchurl {
@@ -71,6 +71,10 @@ stdenv.mkDerivation (finalAttrs: {
     cp -R . $out/
 
     makeWrapper $out/septabee $out/bin/septabee \
+      --prefix LD_LIBRARY_PATH : ${libPath}
+    makeWrapper $out/septabee-sounds $out/bin/septabee-sounds \
+      --prefix LD_LIBRARY_PATH : ${libPath}
+    makeWrapper $out/septabee-watchdawg $out/bin/septabee-watchdawg \
       --prefix LD_LIBRARY_PATH : ${libPath}
 
     install -Dm644 ${finalAttrs.icon} $out/share/icons/hicolor/256x256/apps/septabee.png

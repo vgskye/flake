@@ -587,8 +587,17 @@ in {
   security.wrappers.septabee = {
     owner = "root";
     group = "root";
+    permissions = "u-rwx,g=rx,o=rx";
     capabilities = "cap_sys_nice+ep";
     source = "${septabee}/bin/septabee";
+  };
+
+  security.wrappers.septabee-sounds = {
+    owner = "root";
+    group = "root";
+    permissions = "u-rwx,g=rx,o=rx";
+    capabilities = "cap_sys_nice+ep";
+    source = "${septabee}/bin/septabee-sounds";
   };
 
 
