@@ -8,6 +8,7 @@
   ...
 }: let
   channelPath = "/etc/nix/channels/nixpkgs";
+  septabee = pkgs.callPackage ../chell/septabee.nix {};
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -16,7 +17,7 @@ in {
 
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
-    substituters = lib.mkBefore ["https://niko.cat-snares.ts.net:9443/skye"];
+    # substituters = lib.mkBefore ["https://niko.cat-snares.ts.net:9443/skye"];
   };
 
   nix.nixPath = [
@@ -79,7 +80,7 @@ in {
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
-  time.timeZone = "Asia/Seoul";
+  time.timeZone = "Europe/Amsterdam";
 
   services.udev.packages = [pkgs.yubikey-personalization pkgs.openrgb pkgs.logitech-udev-rules pkgs.nrf-udev pkgs.picotool];
   services.pcscd.enable = true;
@@ -195,7 +196,28 @@ in {
     libvirtd.qemu.swtpm.enable = true;
   };
 
+  systemd.services.docker.serviceConfig.LimitMEMLOCK = "infinity";
+
   programs.nix-ld.enable = true;
+  # programs.nix-ld.libraries = with pkgs; [
+  #   curl
+  #   dbus
+  #   fontconfig
+  #   freetype
+  #   libdrm
+  #   libGLU
+  #   libxkbcommon
+  #   stdenv.cc.cc.lib
+  #   wayland
+  #   libxcb-image
+  #   libxcb-keysyms
+  #   libxcb-render-util
+  #   libxcb-wm
+  #   libGL
+  #   libX11
+  #   sqlite
+  #   vulkan-loader
+  # ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -243,8 +265,19 @@ in {
   };
 
   boot.binfmt.emulatedSystems = [
-    "wasm32-wasi"
+    "wasm32-wasip1"
     "aarch64-linux"
+  ];
+
+  security.wrappers.septabee = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_sys_nice+ep";
+    source = "${septabee}/bin/septabee";
+  };
+
+  networking.networkmanager.plugins = [
+    pkgs.networkmanager-openvpn
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system

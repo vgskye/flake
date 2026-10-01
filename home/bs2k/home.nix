@@ -898,6 +898,9 @@ in {
       pkgs.yubico-piv-tool
       pkgs.renderdoc
       (pkgs.callPackage ./binary-ninja.nix {})
+      (pkgs.callPackage ./gns3-gui.nix {})
+      pkgs.turbovnc
+      pkgs.wireshark
     ]
     ++ (
       if pkgs.system == "x86_64-linux"
@@ -941,6 +944,7 @@ in {
         })
         # pkgs.lsfg-vk
         # pkgs.lsfg-vk-ui
+        pkgs.vkbasalt
       ]
       else [
         pkgs.fuzzel
