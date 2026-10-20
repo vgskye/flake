@@ -811,7 +811,8 @@ in {
       pkgs.appimage-run
       pkgs.virt-manager
       # pkgs.flutter
-      pkgs.jdk25
+      # pkgs.jdk25
+      (pkgs.callPackage ./temurin.nix {})
 
       pkgs.cutechess
       pkgs.stockfish
