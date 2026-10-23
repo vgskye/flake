@@ -735,7 +735,7 @@ in {
       # })
       pkgs.rust-analyzer
 
-      pkgs.fastly
+      # pkgs.fastly
 
       pkgs.emscripten
 
@@ -927,22 +927,11 @@ in {
         pkgs.gamescope
         pkgs.slack
         pkgs.picotool
-        pkgs.gcc-arm-embedded
+        # pkgs.gcc-arm-embedded
 
-        ((pkgs.proxmark3.overrideAttrs (old: rec {
-          version = "4.21611";
-
-          src = pkgs.fetchFromGitHub {
-            owner = "RfidResearchGroup";
-            repo = "proxmark3";
-            rev = "v${version}";
-            hash = "sha256-H7oaXx4wAr6CtOyNaMupMC3CHbOEL04FGo7vPqfuJlM=";
-          };
-
-          patches = [];
-        })).override {
-          withGeneric = true;
-        })
+        # (pkgs.proxmark3.override {
+        #   withGeneric = true;
+        # })
         # pkgs.lsfg-vk
         # pkgs.lsfg-vk-ui
         pkgs.vkbasalt

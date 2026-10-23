@@ -8,7 +8,7 @@
   ...
 }: let
   channelPath = "/etc/nix/channels/nixpkgs";
-  septabee = pkgs.callPackage ./septabee.nix {};
+  # septabee = pkgs.callPackage ./septabee.nix {};
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -528,7 +528,7 @@ in {
     # ((pkgs.callPackage ../sddm-chili.nix) {})
     # sddm-chili-theme
     rocmPackages.clr
-    septabee
+    # septabee
   ];
 
   programs.dconf.enable = true;
@@ -584,21 +584,21 @@ in {
     "riscv64-linux"
   ];
 
-  security.wrappers.septabee = {
-    owner = "root";
-    group = "root";
-    permissions = "u-rwx,g=rx,o=rx";
-    capabilities = "cap_sys_nice+ep";
-    source = "${septabee}/bin/septabee";
-  };
+  # security.wrappers.septabee = {
+  #   owner = "root";
+  #   group = "root";
+  #   permissions = "u-rwx,g=rx,o=rx";
+  #   capabilities = "cap_sys_nice+ep";
+  #   source = "${septabee}/bin/septabee";
+  # };
 
-  security.wrappers.septabee-sounds = {
-    owner = "root";
-    group = "root";
-    permissions = "u-rwx,g=rx,o=rx";
-    capabilities = "cap_sys_nice+ep";
-    source = "${septabee}/bin/septabee-sounds";
-  };
+  # security.wrappers.septabee-sounds = {
+  #   owner = "root";
+  #   group = "root";
+  #   permissions = "u-rwx,g=rx,o=rx";
+  #   capabilities = "cap_sys_nice+ep";
+  #   source = "${septabee}/bin/septabee-sounds";
+  # };
 
 
   # services.wivrn.enable = true;

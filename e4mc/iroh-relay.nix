@@ -6,20 +6,20 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "iroh-relay";
-  version = "1.0.3";
+  version = "1.4.1";
 
   src = fetchFromGitHub {
     owner = "n0-computer";
     repo = "iroh";
     rev = "v${version}";
-    hash = "sha256-qZft++kZytCC49WK3uqpsdI4Ko3YdBFEws31kZ7SM2Q=";
+    hash = "sha256-9DuN44SKqVePErWDJ3ELwgwvDbVkKG6wZTFNsipCaVA=";
   };
 
   nativeBuildInputs = [
     lld
   ];
 
-  cargoHash = "sha256-8u3vkP0wCNzLaT6Bb1wnBzl7c1req8NsAhj2zbT6EtE=";
+  cargoHash = "sha256-j6+ewPmutDpxm1ESjvMu2l61ijmbla2W/n/tqJcGQJU=";
 
   buildFeatures = [ "server" ];
   cargoBuildFlags = [
